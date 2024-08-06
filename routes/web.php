@@ -24,16 +24,22 @@ Route::get('/', function () {
     return view('home');
 })->name('ob.home');
 
+
 Route::get('/stockin', function () {
     $item = item::get();
     return view('stockin', compact('item'));
 })->name('ob.stockin');
 
-Route::post('/stockin',[ObatController::class, 'itemstockin', 'updatestock'])->name('ob.cstockin');
+Route::post('/stockin',[ObatController::class, 'itemstockin'])->name('ob.cstockin');
+
 
 Route::get('/stockout', function () {
-    return view('stockout');
+    $item = item::get();
+    return view('stockout', compact('item'));
 })->name('ob.stockout');
+
+Route::post('/stockout', [ObatController::class, 'itemstockout'])->name('ob.cstockout');
+
 
 Route::post('home', [PageController::class, 'createitem','createstock'])->name('ob.create');
 
@@ -75,4 +81,8 @@ Route::post('/itemupdate/{id}', [ObatController::class, 'updateitem'])->name('ob
 
 Route::get('/tes', function () {
     return view('tes');
+});
+
+Route::get('/htu', function () {
+    return view('htu');
 });

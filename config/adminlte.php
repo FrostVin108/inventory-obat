@@ -316,11 +316,11 @@ return [
             'can' => 'manage-blog',
         ],
         [
-            'text' => 'pages',
-            'url' => 'admin/pages',
-            'icon' => 'far fa-fw fa-file',
-            'label' => 4,
-            'label_color' => 'success',
+            'text' => 'How To Use',
+            'url' => '/htu',
+            'icon' => 'far fa-fw fas fa-question',
+            // 'label' => 1,
+            // 'label_color' => 'success',
         ],
         ['header' => 'Database'],
         [
