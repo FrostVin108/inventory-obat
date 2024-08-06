@@ -58,11 +58,12 @@ class ObatController extends Controller
 
     public function destroyitem($id)
     {
-       $obatitem = Item::findOrFail($id);
+        Stock::where('item_id', $id)->delete();  
+        $obatitem = Item::findOrFail($id);
         // dd($obatuom);
-       $obatitem->delete();
+        $obatitem->delete();
 
-       return redirect()->route('wh.iteminv');
+        return redirect()->route('wh.iteminv');
     }
 
     public function edititem(Request $request, $id){

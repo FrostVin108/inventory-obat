@@ -14,8 +14,13 @@ class InventoryController extends Controller
     public function invobat()
     {
         $obatitem = Item::with("UOM")->get();
-        // dd($obatitem);
-        return view('iteminv', compact('obatitem'));
+
+        $stock = [];
+        foreach ($obatitem as $item) {
+            $stock[] = Stock::where('item_id', $item->id)->first();
+        }
+        // dd($stock);
+        return view('iteminv', compact('obatitem', 'stock'));
 
     }
 
@@ -25,11 +30,4 @@ class InventoryController extends Controller
         // dd($obatuom);
         return view('uominv', compact('obatuom'));
     }
-
-    // public function invstock()
-    // {
-    //     // with("item")->get(); 
-    //     $obatstock = Stock::get();
-    //     return view('iteminv', compact('obatstock'));
-    // }
 }

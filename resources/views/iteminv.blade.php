@@ -27,7 +27,11 @@
                     <td>{{ $obi->item_code }}</td>
                     <td>{{ $obi->description }}</td>
                     <td>{{ $obi->Uom->unit_of_measurement}}</td>
-                    <td>{{ $obi->qty }}</td>
+                    {{-- <td>{{ $stock[$key]->first()->qty }}</td> --}}
+                    {{-- <td>{{ $stock->where('item_id', $obi->id)->first()->qty }}</td> --}}
+                    @foreach ($stock as $s)
+                        <td>{{ $s->qty }}</td>
+                    @endforeach
                     <td>
                         <form method="POST" onsubmit="return confirm('Apakah Anda Yakin?');" action="{{ route('ob.itemdel', $obi->id) }}">
                             <a href="{{ route('ob.edititem', $obi->id) }}" class="btn btn-sm btn-primary">EDIT</a>
