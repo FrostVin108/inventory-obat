@@ -21,19 +21,15 @@
             </tr>
             </thead>
             <tbody>
-                @forelse ($obatitem as $key => $obi)
+                @forelse ($obatitem as $key => $obi )
+                
                 <tr>
                     <td>{{ $key +1 }}</td>
                     <td>{{ $obi->item_code }}</td>
                     <td>{{ $obi->description }}</td>
                     <td>{{ $obi->Uom->unit_of_measurement}}</td>
-                    {{-- <td>{{ $stock[$key]->first()->qty }}</td> --}}
-                    {{-- <td>{{ $stock->where('item_id', $obi->id)->first()->qty }}</td> --}}
-                        @foreach ($stock as $s)
-                        <td>{{ $s->qty }}</td>
-                        @endforeach
-                        
-                    
+                        <td>{{ $obi->stock->qty }}</td>
+                        <td>
                         <form method="POST" onsubmit="return confirm('Apakah Anda Yakin?');" action="{{ route('ob.itemdel', $obi->id) }}">
                             <a href="{{ route('ob.edititem', $obi->id) }}" class="btn btn-sm btn-primary">EDIT</a>
                             @csrf
@@ -42,15 +38,15 @@
                         </form>
                     </td>
                 </tr>
-            </tbody>
-          
-           
+                
 
+            </tbody>
             @empty
             <div class="alert alert-danger">
                 Data Belum Terisi. 
             </div>
             @endforelse 
+            
         </table>
     </div>
 </div>

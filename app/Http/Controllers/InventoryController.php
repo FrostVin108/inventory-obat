@@ -15,12 +15,12 @@ class InventoryController extends Controller
     {
         $obatitem = Item::with("UOM")->get();
 
-        $stock = [];
+    
         foreach ($obatitem as $item) {
-            $stock[] = Stock::where('item_id', $item->id)->first();
+            $item->stock = Stock::where('item_id', $item->id)->first();
         }
         // dd($stock);
-        return view('iteminv', compact('obatitem', 'stock'));
+        return view('iteminv', compact('obatitem'));
 
     }
 

@@ -9,7 +9,7 @@
     <div class="card-body">
         <form method="POST" action="{{ route('ob.updateitem', $edititem->id) }}">
             @csrf
-            @method('post')
+            @method('put')
             <div class="form-group" >
                 <label for="exampleInputEmail1">Insert Item Description</label>
                 <input type="text" class="form-control @error('description') is-invalid @enderror" placeholder="Enter Description" name="description" value="{{ old('description', $edititem->description) }}">

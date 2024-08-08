@@ -74,12 +74,10 @@ class ObatController extends Controller
         $uom = uom::get();
         //render view with post
     
-        $stock = [];
-        foreach ($edititem as $item) {
-            $stock[] = Stock::where('item_id', $item->id)->firstOrFail();
-        }
+        $stock = Stock::where('item_id',$edititem->id )->firstOrFail();
+        
 
-        return view('edititem',compact('uom'), compact('edititem'), compact('stock') );
+        return view('edititem' ,compact('uom','edititem','stock'));
     }
     
             /**
@@ -116,39 +114,39 @@ class ObatController extends Controller
         return redirect()->route('wh.iteminv');
     }
 
-    // public function itemstockin(Request $request){
-    //     // logic stock in
-    // $item = item::find($request->item_id);
-    // $stock = stock::where('item_id', $item->id)->first();
-    // if ($stock) {
-    //     $stock->qty += $request->qty;
-    //     $stock->save();
-    // } else {
-    //     stock::create([
-    //         'item_id' => $item->id,
-    //         'qty' => $request->qty,
-    //         'transaction_type'=> "IN",
-    //     ]);
-    // }
-    // return redirect()->route('ob.home')->with('success', 'Stock in berhasil');
-    // }
+    public function itemstockin(Request $request){
+        // logic stock in
+    $item = item::find($request->item_id);
+    $stock = stock::where('item_id', $item->id)->first();
+    if ($stock) {
+        $stock->qty += $request->qty;
+        $stock->save();
+    } else {
+        stock::create([
+            'item_id' => $item->id,
+            'qty' => $request->qty,
+            'transaction_type'=> "IN",
+        ]);
+    }
+    return redirect()->route('ob.home')->with('success', 'Stock in berhasil');
+    }
 
-    // public function itemstockout(Request $request){
+    public function itemstockout(Request $request){
     
-    //    // logic stock out
-    // $item = item::find($request->item_id);
-    // $stock = stock::where('item_id', $item->id)->first();
-    // if ($stock) {
-    //     if ($stock->qty >= $request->qty) {
-    //         $stock->qty -= $request->qty;
-    //         $stock->save();
-    //         return redirect()->route('ob.home')->with('success', 'Stock out berhasil');
-    //     } else {
-    //         return redirect()->route('ob.stockout')->with('error', 'Stock tidak cukup');
-    //     }
-    // } else {
-    //     return redirect()->route('ob.stockout')->with('error', 'Item tidak ditemukan');
-    // }
-    // }
+       // logic stock out
+    $item = item::find($request->item_id);
+    $stock = stock::where('item_id', $item->id)->first();
+    if ($stock) {
+        if ($stock->qty >= $request->qty) {
+            $stock->qty -= $request->qty;
+            $stock->save();
+            return redirect()->route('ob.home')->with('success', 'Stock out berhasil');
+        } else {
+            return redirect()->route('ob.stockout')->with('error', 'Stock tidak cukup');
+        }
+    } else {
+        return redirect()->route('ob.stockout')->with('error', 'Item tidak ditemukan');
+    }
+    }
 
 }
