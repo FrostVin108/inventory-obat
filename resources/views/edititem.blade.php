@@ -33,7 +33,7 @@
                 <div class="form-group" >
                     <label for="exampleInputEmail1">Insert Uom</label>
                     <select name="unit_of_measurement_id" class="form-control @error('uom') is-invalid @enderror"  value="{{ old('unit_of_measurement_id', $edititem->unit_of_measurement_id) }}">
-                        <option value="{{ old('unit_of_measurement_id', $edititem->unit_of_measurement_id) }}">{{ old('unit_of_measurement', $edititem->unit_of_measurement) }}</option>
+                        <option value="{{ old('unit_of_measurement_id', $edititem->unit_of_measurement_id) }}">{{ $edititem->uom->unit_of_measurement}}</option>
                         @foreach ($uom as $uom)
                             <option value="{{$uom->id}}">{{$uom->unit_of_measurement}}</option>
                         @endforeach

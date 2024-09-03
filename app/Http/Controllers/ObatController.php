@@ -71,9 +71,13 @@ class ObatController extends Controller
         // get post by ID
         $edititem = Item::findOrFail($id);
         // dd ($obat);
-        $uom = uom::get();
+
+        $uom = UOM::where('id', $edititem->unit_of_measurement_id )->firstOrFail();
+
+        $uom = UOM::get();
         //render view with post
-    
+        
+        
         $stock = Stock::where('item_id',$edititem->id )->firstOrFail();
         
 
@@ -107,10 +111,11 @@ class ObatController extends Controller
             
         ]);
 
-        Stock::update([
-            'item_id'=> $post->findOrFail($id),
+        $post = Stock::findOrFail($id);
+        $post->update([
             'qty' => $request->qty,
         ]);
+
         return redirect()->route('wh.iteminv');
     }
 
