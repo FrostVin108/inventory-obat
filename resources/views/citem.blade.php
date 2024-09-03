@@ -1,8 +1,7 @@
 @extends('layouts.app')
 
 @section('content_header')
-    <h1>Insert Item</h1>
-  
+    <h1 style="font-size: 27px"> <i class="fas fa-download" style="font-size: 30px"></i> Insert Item</h1>
 @stop
 
 @section('content')

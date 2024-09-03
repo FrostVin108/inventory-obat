@@ -296,10 +296,16 @@ return [
     'menu' => [
         // Navbar items:
         [
-            'type' => 'navbar-search',
-            'text' => 'search',
-            'topnav_right' => true,
+            'type' => 'fullscreen-widget',
+            'topnav_left' => true,
         ],
+        // [
+        //     'url' => '/back',
+        //     'icon' => 'far fa-fw fas fa-question',
+        //     'topnav_right' => true,
+        //     // 'label' => 1,
+        //     // 'label_color' => 'success',
+        // ],
         [
             'type' => 'fullscreen-widget',
             'topnav_right' => true,

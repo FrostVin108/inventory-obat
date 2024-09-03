@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content_header')
-    <h1>Item</h1> 
+    <h1 style="font-size: 27px"> <i class="far fa-edit" style="font-size: 30px"></i> Editing Item</h1>
 @stop
 
 @section('content')
@@ -13,7 +13,7 @@
             <div class="form-group" >
                 <label for="exampleInputEmail1">Insert Item Description</label>
                 <input type="text" class="form-control @error('description') is-invalid @enderror" placeholder="Enter Description" name="description" value="{{ old('description', $edititem->description) }}">
-              </div>
+            </div>
               @error('description')
               <div class="alert alert-danger mt-2">
                   {{ $message }}
@@ -48,17 +48,21 @@
                 <div class="form-group" >
                     <label for="exampleInputEmail1">Insert Item Quantity</label>
                     <input type="number" class="form-control @error('qty') is-invalid @enderror" placeholder="Enter Item Quantity" name="qty" value="{{ old('qty', $stock->qty) }}">
-                  </div>
+                </div>
                   @error('qty')
-                  <div class="alert alert-danger mt-2">
+                <div class="alert alert-danger mt-2">
                       {{ $message }}
-                  </div>
+                </div>
                   @enderror
                 
-
-              <button type="submit" class="btn btn-success">Submit</button>
-              <a href="{{ route('wh.iteminv') }}" class="btn btn-warning">Return</a> 
-            </form>
+            <div class="button-position"    >
+                    <button type="submit" class="btn btn-success"><i class="fas fa-upload"></i> Submit</button>
+                    <button type="reset" class="btn btn-secondary"><i class="	fas fa-undo"></i> Undo</button>
+                    <a href="{{ route('wh.iteminv') }}" class="btn btn-warning float-right"> <i class="	fas fa-sign-out-alt"></i> Return</a> 
+            </div>
+        </form>
     </div>
 </div>
+
+
 @stop

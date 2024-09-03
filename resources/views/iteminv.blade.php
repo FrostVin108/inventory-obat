@@ -1,15 +1,19 @@
 @extends('layouts.app')
 
 @section('content_header')
-    <h1>Item Warehouse</h1>
-  
+        <h1 style="font-size: 27px"> <i class="fas fa-warehouse" style="font-size: 30px"></i> Item Warehouse</h1>
+        
 @stop
 
 @section('content')
 <div class="card">
     <div class="card-body">
         <table class="table table-bordered">
-            <a href="citem" class="btn btn-success">Create</a>
+            <div class="form-control" style="border: none;">
+                <a href="citem" class="btn btn-success" > <i class="fas fa-plus-square"></i> Create</a>
+                <a href="{{route('ob.home')}}" class="btn btn-info"> <i class="	fas fa-reply"></i> Go Back</a>
+            </div>
+            <br>
             <thead>
             <tr>
                 <th scope="col">id</th>
@@ -31,10 +35,10 @@
                         <td>{{ $obi->stock->qty }}</td>
                         <td>
                         <form method="POST" onsubmit="return confirm('Apakah Anda Yakin?');" action="{{ route('ob.itemdel', $obi->id) }}">
-                            <a href="{{ route('ob.edititem', $obi->id) }}" class="btn btn-sm btn-primary">EDIT</a>
+                            <a href="{{ route('ob.edititem', $obi->id) }}" class="btn btn-sm btn-primary"><i class="far fa-edit"></i> Edit</a>
                             @csrf
                             @method('delete')
-                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>    
+                            <button type="submit" class="btn btn-sm btn-danger"><i class="	fas fa-trash"></i> Delete</button>    
                         </form>
                     </td>
                 </tr>
@@ -50,4 +54,12 @@
         </table>
     </div>
 </div>
+
+<style>
+    .logo-setting{
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+    }
+</style>
 @stop
