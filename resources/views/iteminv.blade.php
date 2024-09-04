@@ -56,14 +56,9 @@
             
         </table>
     </div>
-    <ul>
-        @foreach ($obatitem as $item)
-            <li>{{ $item->description }}</li>
-        @endforeach
-    </ul>
 </div>
 
-{{ $obatitem->links() }}
+
 <style>
     .logo-setting{
         display: flex;

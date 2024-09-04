@@ -8,8 +8,12 @@
 @section('content')
 <div class="card">
     <div class="card-body">
+        <a href="uom" class="btn btn-success">Create</a>
+
+        <br>
+        <br>
         <table class="table table-bordered">
-            <a href="uom" class="btn btn-success">Create</a>
+            
             <thead>
             <tr>
                 <th width="5%" scope="col">id</th>

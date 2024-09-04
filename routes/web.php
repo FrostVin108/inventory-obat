@@ -93,5 +93,13 @@ Route::get('/htu', function () {
 Route::get('/translist', [InventoryController::class, 'transactionlist'])->name('trans.list');
 
 
-
 Route::get('/getSuppliesQty', [InventoryController::class, 'getSuppliesQty'])->name('supliesqty');
+
+
+Route::get('/report', function(){
+    return view('report');
+})->name('report');
+
+Route::get('/department', function(){
+    return view('department');
+})->name('department');

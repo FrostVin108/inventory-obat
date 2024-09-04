@@ -13,10 +13,11 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
+            $table->enum('transaction_type', ['IN','OUT']);
+            $table->unsignedBigInteger('order_id');
+            $table->foreign('order_id')->references('id')->on('order');
             $table->unsignedBigInteger('item_id');
             $table->foreign('item_id')->references('id')->on('items');
-            $table->enum('transaction_type', ['IN','OUT']);
-            $table->integer('qty');
             $table->timestamps();
         });
     }
