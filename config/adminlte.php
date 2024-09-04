@@ -349,6 +349,11 @@ return [
             'icon' => '	fas fa-boxes',
             'submenu' => [
                 [
+                    'icon' => 'fas fa-history',
+                    'text' => 'Transaction History',
+                    'url' => '/translist',
+                ],
+                [
                     'icon' => '	fas fa-arrow-circle-down',
                     'text' => 'Stock in',
                     'url' => '/stockin',

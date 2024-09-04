@@ -8,23 +8,22 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <div class="card shadow p-3 mb-5 bg-white rounded">
     <div class="card-body">
-        {{-- <div class="side-by-side"> --}}
+        <div class="side-by-side">
             {{-- row1 --}}
-            <div class="">
-                <div class="column">
+            {{-- border: solid 2px yellow; --}}
+                <div class="column" style="height: 340px;  width: 300px;">
                     
-                    <a class="col-md-3 info-box bg-info" href="iteminv">
+                    <a class=" info-box bg-info" href="iteminv">
                         <span class="info-box-icon "><i class="fas fa-warehouse"></i></span>
                         <div class="info-box-content ">
-                            <span class="info-box-tex text-left">Item Warehouse</span>
+                            <span class="info-box-tex text-left">Item Obat</span>
                             <div class="progress">
                                 <div class="progress-bar" style="width: 100%"></div>
                             </div>
                             <span class="text-left info-box-number ">Total:all item</span>
                         </div>
                     </a> 
-        
-                    <a class="col-md-3 info-box bg-info" href="{{ route('ob.stockout') }}">
+                    <a class=" info-box bg-info" href="{{ route('ob.stockout') }}">
                         <span class="info-box-icon "><i class="fas fa-arrow-circle-up"></i></span>
                         <div class="info-box-content ">
                             <span class="info-box-tex text-left">Stock Out</span>
@@ -33,9 +32,8 @@
                             </div>
                             <span class="text-left info-box-number ">Total:all item</span>
                         </div>
-                    </a>
-                                    
-                    <a class="col-md-3 info-box bg-info" href="{{ route('ob.stockin') }}">
+                    </a>                       
+                    <a class=" info-box bg-info" href="{{ route('ob.stockin') }}">
                         <span class="info-box-icon "><i class="fas fa-arrow-circle-down"></i></span>
                         <div class="info-box-content ">
                             <span class="info-box-tex text-left">Stock In</span>
@@ -46,16 +44,18 @@
                         </div>
                     </a>
                 </div>  
-                <div class="donut-chart">
-                    <div id="chart-container" style="width: 400px; height: 400px;">
-                        <canvas id="chart" width="400" height="400" ></canvas>
+            
+            {{-- row2 --}}
+                <div class="row">
+                    <div class="donut-chart">
+                        <div id="chart-container" style="width: 400px; height: 400px;">
+                            <canvas id="chart" width="400" height="400" ></canvas>
+                        </div>
                     </div>
                 </div>
-            </div>
-    
-            {{-- row2 --}}
-
-        
+        </div>
+        <br>
+        <br>
                 {{-- row3 --}}
                 <div class="row">
                     <hr>
@@ -92,6 +92,7 @@
                         </div>
                     </a><hr>
                 </div>
+        
         
         
     </div>
