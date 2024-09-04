@@ -89,3 +89,8 @@ Route::get('/tes', function () {
 Route::get('/htu', function () {
     return view('htu');
 });
+
+
+
+
+Route::get('/getSuppliesQty', [InventoryController::class, 'getSuppliesQty'])->name('supliesqty');

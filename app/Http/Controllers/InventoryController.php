@@ -30,4 +30,17 @@ class InventoryController extends Controller
         // dd($obatuom);
         return view('uominv', compact('obatuom'));
     }
+
+    public function getSuppliesQty()
+    {
+        $stocks = Stock::with('item')->get();
+        $data = [];
+        foreach ($stocks as $stock) {
+            $data[] = [
+                'label' => $stock->item->description,
+                'qty' => $stock->qty
+            ];
+        }
+        return response()->json($data);
+    }
 }
