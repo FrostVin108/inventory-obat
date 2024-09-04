@@ -133,6 +133,22 @@ class ObatController extends Controller
             'transaction_type'=> "IN",
         ]);
     }
+
+    $this->validate($request, [
+        'item_id'=> 'required',
+        'transaction_type' => 'required',
+        'qty'=> 'required|numeric|min:1',
+       
+    ]);
+
+    Transaction::create([
+        'item_id' =>  $item->id,
+        'transaction_type' => $request->transaction_type,
+        'qty'=> $request->qty,
+        // $item ->qty = Stock::find('qty'),
+
+    ]);
+
     return redirect()->route('ob.home')->with('success', 'Stock in berhasil');
     }
 

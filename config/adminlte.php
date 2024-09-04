@@ -328,17 +328,40 @@ return [
             // 'label' => 1,
             // 'label_color' => 'success',
         ],
-        ['header' => 'Database'],
+        ['header' => 'Menu'],
         [
             'text' => 'Home',
             'url' => '/',
             'icon' => 'fas fa-fw fa-home',
         ],
         [
+            'text' => ' Item Obat',
+            'url' => '/iteminv',
+            'icon' => 'far fa-fw fas fa-capsules',
+        ],
+        [
             'text' => ' UOM',
             'url' => '/uominv',
             'icon' => 'far fa-fw fas fa-box',
         ],
+        [
+            'text' => ' Stock',
+            'icon' => '	fas fa-boxes',
+            'submenu' => [
+                [
+                    'icon' => '	fas fa-arrow-circle-down',
+                    'text' => 'Stock in',
+                    'url' => '/stockin',
+                ],
+                [
+                    'icon' => 'fas fa-arrow-circle-up',
+                    'text' => 'Stock out',
+                    'url' => '/stockout',
+                ],
+            ],
+        ],
+
+
         ['header' => 'labels'],
         [
             'text' => 'important',

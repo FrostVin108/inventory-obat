@@ -13,8 +13,9 @@ class InventoryController extends Controller
 {
     public function invobat()
     {
-        $obatitem = Item::with("UOM")->get();
+        $obatitem = Item::with("UOM")->paginate(10);
 
+        // $posts = Post::paginate(10); // Paginate by 10 items per page
     
         foreach ($obatitem as $item) {
             $item->stock = Stock::where('item_id', $item->id)->first();

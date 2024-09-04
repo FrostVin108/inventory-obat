@@ -8,126 +8,91 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <div class="card shadow p-3 mb-5 bg-white rounded">
     <div class="card-body">
-
-        {{-- row1 --}}
-        <div class="row">
-            <hr>
-            <a class="col-md-3 info-box bg-info" href="{{ route('ob.stockin') }}">
-                <span class="info-box-icon "><i class="fas fa-arrow-circle-down"></i></span>
-                <div class="info-box-content ">
-                    <span class="info-box-tex text-left">Stock In</span>
-                    <div class="progress">
-                        <div class="progress-bar" style="width: 100%"></div>
+        {{-- <div class="side-by-side"> --}}
+            {{-- row1 --}}
+            <div class="">
+                <div class="column">
+                    
+                    <a class="col-md-3 info-box bg-info" href="iteminv">
+                        <span class="info-box-icon "><i class="fas fa-warehouse"></i></span>
+                        <div class="info-box-content ">
+                            <span class="info-box-tex text-left">Item Warehouse</span>
+                            <div class="progress">
+                                <div class="progress-bar" style="width: 100%"></div>
+                            </div>
+                            <span class="text-left info-box-number ">Total:all item</span>
+                        </div>
+                    </a> 
+        
+                    <a class="col-md-3 info-box bg-info" href="{{ route('ob.stockout') }}">
+                        <span class="info-box-icon "><i class="fas fa-arrow-circle-up"></i></span>
+                        <div class="info-box-content ">
+                            <span class="info-box-tex text-left">Stock Out</span>
+                            <div class="progress">
+                                <div class="progress-bar" style="width: 100%"></div>
+                            </div>
+                            <span class="text-left info-box-number ">Total:all item</span>
+                        </div>
+                    </a>
+                                    
+                    <a class="col-md-3 info-box bg-info" href="{{ route('ob.stockin') }}">
+                        <span class="info-box-icon "><i class="fas fa-arrow-circle-down"></i></span>
+                        <div class="info-box-content ">
+                            <span class="info-box-tex text-left">Stock In</span>
+                            <div class="progress">
+                                <div class="progress-bar" style="width: 100%"></div>
+                            </div>
+                            <span class="text-left info-box-number ">Total:all item</span>
+                        </div>
+                    </a>
+                </div>  
+                <div class="donut-chart">
+                    <div id="chart-container" style="width: 400px; height: 400px;">
+                        <canvas id="chart" width="400" height="400" ></canvas>
                     </div>
-                    <span class="text-left info-box-number ">Total:all item</span>
                 </div>
-            </a>
-        <hr>
-
-            <a class="col-md-3 info-box bg-info" href="{{ route('ob.stockout') }}">
-                <span class="info-box-icon "><i class="fas fa-arrow-circle-up"></i></span>
-                <div class="info-box-content ">
-                    <span class="info-box-tex text-left">Stock Out</span>
-                    <div class="progress">
-                        <div class="progress-bar" style="width: 100%"></div>
-                    </div>
-                    <span class="text-left info-box-number ">Total:all item</span>
-                </div>
-            </a>
-        <hr>
-
-            <a class="col-md-3 info-box bg-info" href="iteminv">
-                <span class="info-box-icon "><i class="fas fa-warehouse"></i></span>
-                <div class="info-box-content ">
-                    <span class="info-box-tex text-left">Item Warehouse</span>
-                    <div class="progress">
-                        <div class="progress-bar" style="width: 100%"></div>
-                    </div>
-                    <span class="text-left info-box-number ">Total:all item</span>
-                </div>
-            </a><hr>           
-        </div>
-
-        {{-- row2 --}}
-        <div class="row">
-            <hr>
-            <a class="col-md-3 info-box bg-dark" href="">
-                <span class="info-box-icon "><i class="	fas fa-wrench"></i></span>
-                <div class="info-box-content ">
-                    <span class="info-box-tex text-left">Coming Soon</span>
-                    <div class="progress">
-                        <div class="progress-bar" style="width: 100%"></div>
-                    </div>
-                    <span class="text-left info-box-number ">? :coming soon</span>
-                </div>
-            </a><hr>
-            
-            <a class="col-md-3 info-box bg-danger" href="">
-                <span class="info-box-icon "><i class="	fas fa-wrench"></i></span>
-                <div class="info-box-content ">
-                    <span class="info-box-tex text-left">Coming Soon</span>
-                    <div class="progress">
-                        <div class="progress-bar" style="width: 100%"></div>
-                    </div>
-                    <span class="text-left info-box-number ">? :coming soon</span>
-                </div>
-            </a><hr>
-
-            <a class="col-md-3 info-box bg-warning" href="">
-                <span class="info-box-icon "><i class="	fas fa-wrench"></i></span>
-                <div class="info-box-content ">
-                    <span class="info-box-tex text-left">Coming Soon</span>
-                    <div class="progress">
-                        <div class="progress-bar" style="width: 100%"></div>
-                    </div>
-                    <span class="text-left info-box-number ">? :coming soon</span>
-                </div>
-            </a><hr>
-        </div>
-
-        {{-- row3 --}}
-        <div class="card-body donut-chart">
-            <div id="chart-container" style="width: 400px; height: 400px;">
-                <canvas id="chart" width="400" height="400"></canvas>
             </div>
-        </div>
+    
+            {{-- row2 --}}
 
-        {{-- row4 --}}
-        <div class="row">
-            <hr>
-            <a class="col-md-3 info-box bg-danger" href="">
-                <span class="info-box-icon "><i class="	fas fa-wrench"></i></span>
-                <div class="info-box-content ">
-                    <span class="info-box-tex text-left">Coming Soon</span>
-                    <div class="progress">
-                        <div class="progress-bar" style="width: 100%"></div>
-                    </div>
-                    <span class="text-left info-box-number ">? :coming soon</span>
+        
+                {{-- row3 --}}
+                <div class="row">
+                    <hr>
+                    <a class="col-md-3 info-box bg-dark" href="">
+                        <span class="info-box-icon "><i class="	fas fa-wrench"></i></span>
+                        <div class="info-box-content ">
+                            <span class="info-box-tex text-left">Coming Soon</span>
+                            <div class="progress">
+                                <div class="progress-bar" style="width: 100%"></div>
+                            </div>
+                            <span class="text-left info-box-number ">? :coming soon</span>
+                        </div>
+                    </a><hr>
+                    
+                    <a class="col-md-3 info-box bg-danger" href="">
+                        <span class="info-box-icon "><i class="	fas fa-wrench"></i></span>
+                        <div class="info-box-content ">
+                            <span class="info-box-tex text-left">Coming Soon</span>
+                            <div class="progress">
+                                <div class="progress-bar" style="width: 100%"></div>
+                            </div>
+                            <span class="text-left info-box-number ">? :coming soon</span>
+                        </div>
+                    </a><hr>
+        
+                    <a class="col-md-3 info-box bg-warning" href="">
+                        <span class="info-box-icon "><i class="	fas fa-wrench"></i></span>
+                        <div class="info-box-content ">
+                            <span class="info-box-tex text-left">Coming Soon</span>
+                            <div class="progress">
+                                <div class="progress-bar" style="width: 100%"></div>
+                            </div>
+                            <span class="text-left info-box-number ">? :coming soon</span>
+                        </div>
+                    </a><hr>
                 </div>
-            </a><hr>
-            
-            <a class="col-md-3 info-box bg-danger" href="">
-                <span class="info-box-icon "><i class="	fas fa-wrench"></i></span>
-                <div class="info-box-content ">
-                    <span class="info-box-tex text-left">Coming Soon</span>
-                    <div class="progress">
-                        <div class="progress-bar" style="width: 100%"></div>
-                    </div>
-                    <span class="text-left info-box-number ">? :coming soon</span>
-                </div>
-            </a><hr>
-
-            <a class="col-md-3 info-box bg-warning" href="">
-                <span class="info-box-icon "><i class="	fas fa-wrench"></i></span>
-                <div class="info-box-content ">
-                    <span class="info-box-tex text-left">Coming Soon</span>
-                    <div class="progress">
-                        <div class="progress-bar" style="width: 100%"></div>
-                    </div>
-                    <span class="text-left info-box-number ">? :coming soon</span>
-                </div>
-            </a><hr>
-        </div>
+        
         
     </div>
 </div>
@@ -176,13 +141,14 @@
                     options: {
                         title: {
                             display: true,
-                            text: 'Quantity Semua Obat yang ada'
+                            text: 'Quantity Semua Obat yang ada',
+                            fontsize: 40
                          },
                         legend: {
                             display: true,
                             position: 'bottom',
                             labels: {
-                                fontColor: 'rgba(0, 0, 0, 1)'
+                                fontColor: 'rgba(0, 0, 0, 10)'
                             }
                         },
                         cutoutPercentage: 60,
@@ -201,12 +167,20 @@
 <style>
     .donut-chart{
         /* border: solid 2px; */
-        width: 45%;
+        width: 450px;
         border-bottom: solid 4px red;
         border-top: solid 10px red;
         display: flex;
         justify-content: center;
+        /* margin-left: 30vw; */
     }
+
+    .side-by-side{
+        display: flex;
+        justify-content: space-between;
+
+    }
+
 </style>
 
 @stop

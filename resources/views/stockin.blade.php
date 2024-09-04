@@ -27,7 +27,7 @@
                         </div>
                         @enderror
 
-                        <div class="form-froup">
+                        <div class="form-group">
                             <label for="exampleInputEmail">How Many Quantity</label>
                             <input type="number" class="form-control @error('qty') is-invalid @enderror" name="qty">
                             @error('qty')
@@ -36,11 +36,33 @@
                             </div>
                             @enderror
                         </div>
+
+                        <div class="form-group stockin" >
+                            <input type="checkbox"  class="form-control @error('transaction_type') is-invalid @enderror" name="transaction_type" value="IN" style="width: 25px;">
+                            Apakah Anda Mau Stockin?
+                            @error('transaction_type')
+                            <div class="alert alert-danger mt-2">
+                                    {{ $message }}
+                            </div>
+                            @enderror
+                        </div>
+        
                         <button type="submit" class="btn btn-success">Sumbit</button>
-                        <a href="{{ route('ob.home') }}" ><button class="btn btn-warning">Return</button></a>
-                <form>
+                        <form>
+                    <a href="{{ route('ob.home') }}" class="btn btn-warning">Return</a>
            
 
     </div>
 </div>
+
+<style>
+    .stockin{
+        margin-left: 20px;
+        /* border: solid 2px yellow; */
+        width: 300px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+</style>
 @stop

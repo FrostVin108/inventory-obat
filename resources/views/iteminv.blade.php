@@ -1,14 +1,14 @@
 @extends('layouts.app')
 
 @section('content_header')
-        <h1 style="font-size: 27px"> <i class="fas fa-warehouse" style="font-size: 30px"></i> Item Warehouse</h1>
+        <h1 style="font-size: 27px"> <i class="fas fa-warehouse" style="font-size: 30px"></i> Item Obat</h1>
         
 @stop
 
 @section('content')
 <div class="card">
     <div class="card-body">
-        <table class="table table-bordered">
+        <table id="example2" class="table table-bordered table-hover">
             <div class="form-control" style="border: none;">
                 <a href="citem" class="btn btn-success" > <i class="fas fa-plus-square"></i> Create</a>
                 <a href="{{route('ob.home')}}" class="btn btn-info"> <i class="	fas fa-reply"></i> Go Back</a>
@@ -42,7 +42,9 @@
                         </form>
                     </td>
                 </tr>
-                
+
+                <ul>
+
 
             </tbody>
             @empty
@@ -51,15 +53,24 @@
             </div>
             @endforelse 
             
+            
         </table>
     </div>
+    <ul>
+        @foreach ($obatitem as $item)
+            <li>{{ $item->description }}</li>
+        @endforeach
+    </ul>
 </div>
 
+{{ $obatitem->links() }}
 <style>
     .logo-setting{
         display: flex;
         flex-direction: row;
         gap: 10px;
     }
+    
 </style>
+
 @stop
