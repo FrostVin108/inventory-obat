@@ -59,7 +59,7 @@
     .stockin{
         margin-left: 20px;
         /* border: solid 2px yellow; */
-        width: 300px;
+        width: 3000px;
         display: flex;
         align-items: center;
         gap: 10px;

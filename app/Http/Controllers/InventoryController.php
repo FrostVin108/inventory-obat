@@ -32,6 +32,19 @@ class InventoryController extends Controller
         return view('uominv', compact('obatuom'));
     }
 
+    public function transactionlist()
+    {
+        $translist = Transaction::get();
+
+        foreach ($translist as $trans) {
+            $trans->item = Item::where('id', $trans->item_id)->first();
+        }
+        // dd($trans);
+        return view('transactionlist', compact('translist'));
+    }
+
+
+    
     public function getSuppliesQty()
     {
         $stocks = Stock::with('item')->get();
@@ -44,4 +57,5 @@ class InventoryController extends Controller
         }
         return response()->json($data);
     }
+
 }

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\hasONe;
 
 
-class uom extends Model
+class UOM extends Model
 {
     use HasFactory;
     protected $table = 'uoms';

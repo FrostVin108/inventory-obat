@@ -157,17 +157,54 @@ class ObatController extends Controller
        // logic stock out
     $item = item::find($request->item_id);
     $stock = stock::where('item_id', $item->id)->first();
+
+    $item = item::find($request->item_id);
+    $stock = stock::where('item_id', $item->id)->first();
     if ($stock) {
         if ($stock->qty >= $request->qty) {
-            $stock->qty -= $request->qty;
-            $stock->save();
-            return redirect()->route('ob.home')->with('success', 'Stock out berhasil');
+                    $stock->qty -= $request->qty;
+                    $stock->save();
+                    return redirect()->route('ob.home')->with('success', 'Stock out berhasil');
         } else {
+            // try{
+            //     $id = request()->id;
+            //     $gpus = Gpu::find($id);
+            //     $gpus->delete();
+            //     return redirect()->back();
+            // }catch(\Throwable $th ){
+            //     // dd($th);
+            //     // Store the error message in the session
+            //     // Redirect back to the previous page
+            // }
+            \Session::flash('error', "Maaf Item Yang Anda Coba Hilangkan Sedang Terpakai Oleh Salah Satu Data Yang Ada");
             return redirect()->route('ob.stockout')->with('error', 'Stock tidak cukup');
-        }
+           
+                }
     } else {
-        return redirect()->route('ob.stockout')->with('error', 'Item tidak ditemukan');
+        stock::create([
+            'item_id' => $item->id,
+            'qty' => $request->qty,
+            'transaction_type'=> "out",
+        ]);
     }
+
+    $this->validate($request, [
+        'item_id'=> 'required',
+        'transaction_type' => 'required',
+        'qty'=> 'required|numeric|min:1',
+       
+    ]);
+
+    Transaction::create([
+        'item_id' =>  $item->id,
+        'transaction_type' => $request->transaction_type,
+        'qty'=> $request->qty,
+        // $item ->qty = Stock::find('qty'),
+
+    ]);
+
+    return redirect()->route('ob.home')->with('success', 'Stock in berhasil');
+    
     }
 
 }

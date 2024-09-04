@@ -90,6 +90,7 @@ Route::get('/htu', function () {
     return view('htu');
 });
 
+Route::get('/translist', [InventoryController::class, 'transactionlist'])->name('trans.list');
 
 
 

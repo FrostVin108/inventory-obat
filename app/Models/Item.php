@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\hasOne;
 
-class item extends Model
+class Item extends Model
 {
     use HasFactory;
     protected $table = 'items';

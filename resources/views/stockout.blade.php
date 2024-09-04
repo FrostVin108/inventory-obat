@@ -9,6 +9,11 @@
 <div class="card">
     <div class="card-body">
             <h2>Stock Out</h2>
+            @if(session()->has('error'))
+                <div class="alert alert-danger">
+                    {{ session()->get('error') }}
+                </div>
+            @endif
             <form method="POST" action="{{ route('ob.cstockout') }}">
                 @csrf
                 @method('post')
@@ -35,9 +40,32 @@
                         </div>
                         @enderror
                     </div>
+
+                    <div class="form-group stockout" >
+                        <input type="checkbox"  class="form-control @error('transaction_type') is-invalid @enderror" name="transaction_type" value="out" style="width: 25px;">
+                        Apakah Anda Mau Stockout?
+                        @error('transaction_type')
+                        <div class="alert alert-danger mt-2">
+                                {{ $message }}
+                        </div>
+                        @enderror
+                    </div>
+
                     <button type="submit" class="btn btn-success">Sumbit</button>
                     <a href="{{ route('ob.home') }}" ><button class="btn btn-warning">Return</button></a>
                 </form>   
     </div>
 </div>
+
+<style>
+    .stockout{
+        margin-left: 20px;
+        /* border: solid 2px yellow; */
+        width: 3000px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+</style>
+
 @stop
