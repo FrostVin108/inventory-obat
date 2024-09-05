@@ -15,13 +15,27 @@
                     @method('post')
                         <div class="form-group" >
                             <label for="exampleInputEmail1">Choose Item Code</label>
-                            <select name="item_id" class="form-control @error('item_code') is-invalid @enderror">
+                            <select name="item_id" class="form-control @error('item_id') is-invalid @enderror">
                                 @foreach ($item as $ic)
                                     <option value="{{$ic->id}}">{{$ic->item_code}} | {{$ic->description}}</option>
                                 @endforeach
                         </select>
                         </div>
-                        @error('item_code')
+                        @error('item_id')
+                        <div class="alert alert-danger mt-2">
+                                {{ $message }}
+                        </div>
+                        @enderror
+
+                        <div class="form-group" >
+                            <label for="exampleInputEmail1">Pilih Department </label>
+                            <select name="order_id" class="form-control @error('order_id') is-invalid @enderror">
+                                @foreach ($order as $or)
+                                    <option value="{{$or->id}}">{{$or->department}}</option>
+                                @endforeach
+                        </select>
+                        </div>
+                        @error('order_id')
                         <div class="alert alert-danger mt-2">
                                 {{ $message }}
                         </div>

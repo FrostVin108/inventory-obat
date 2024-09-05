@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreign('order_id')->references('id')->on('order');
             $table->unsignedBigInteger('item_id');
             $table->foreign('item_id')->references('id')->on('items');
+            $table->integer('qty');
             $table->timestamps();
         });
     }

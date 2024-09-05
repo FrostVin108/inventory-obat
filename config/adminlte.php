@@ -372,6 +372,23 @@ return [
             'text' => 'Report',
             'icon' => '	fas fa-file-alt',
             'url' => '/report',
+            'submenu' => [
+                [
+                    'icon' => '	fas fa-file-alt',
+                    'text' => 'Total Report',
+                    'url' => '/report',
+                ],
+                [
+                    'icon' => '	fa fa-plus-square',
+                    'text' => 'All In Report',
+                    'url' => '',
+                ],
+                [
+                    'icon' => '	fa fa-minus-square',
+                    'text' => 'All Out Report',
+                    'url' => '',
+                ],
+            ],
         ],
         [
             'text' => 'department',

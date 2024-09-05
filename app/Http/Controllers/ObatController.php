@@ -8,6 +8,7 @@ use App\Models\Item;
 use App\Models\Stock;
 use App\Models\Transaction;
 use App\Models\UOM;
+use App\Models\Order;
 use App\Models\User;
 
 class ObatController extends Controller
@@ -122,6 +123,7 @@ class ObatController extends Controller
     public function itemstockin(Request $request){
         // logic stock in
     $item = item::find($request->item_id);
+    $order = Order::find($request->order_id);
     $stock = stock::where('item_id', $item->id)->first();
     if ($stock) {
         $stock->qty += $request->qty;
@@ -137,12 +139,14 @@ class ObatController extends Controller
     $this->validate($request, [
         'item_id'=> 'required',
         'transaction_type' => 'required',
+        'order_id' => 'required',
         'qty'=> 'required|numeric|min:1',
        
     ]);
 
     Transaction::create([
         'item_id' =>  $item->id,
+        'order_id' => $order->id,
         'transaction_type' => $request->transaction_type,
         'qty'=> $request->qty,
         // $item ->qty = Stock::find('qty'),
@@ -155,9 +159,11 @@ class ObatController extends Controller
     public function itemstockout(Request $request){
     
        // logic stock out
+    $order = Order::find($request->order_id);
     $item = item::find($request->item_id);
     $stock = stock::where('item_id', $item->id)->first();
-
+    
+    $order = Order::find($request->order_id);
     $item = item::find($request->item_id);
     $stock = stock::where('item_id', $item->id)->first();
     if ($stock) {
@@ -166,16 +172,7 @@ class ObatController extends Controller
                     $stock->save();
                     return redirect()->route('ob.home')->with('success', 'Stock out berhasil');
         } else {
-            // try{
-            //     $id = request()->id;
-            //     $gpus = Gpu::find($id);
-            //     $gpus->delete();
-            //     return redirect()->back();
-            // }catch(\Throwable $th ){
-            //     // dd($th);
-            //     // Store the error message in the session
-            //     // Redirect back to the previous page
-            // }
+
             \Session::flash('error', "Maaf Item Yang Anda Coba Hilangkan Sedang Terpakai Oleh Salah Satu Data Yang Ada");
             return redirect()->route('ob.stockout')->with('error', 'Stock tidak cukup');
            
@@ -191,12 +188,14 @@ class ObatController extends Controller
     $this->validate($request, [
         'item_id'=> 'required',
         'transaction_type' => 'required',
+        'order_id' => 'required',
         'qty'=> 'required|numeric|min:1',
        
     ]);
 
     Transaction::create([
         'item_id' =>  $item->id,
+        'order_id' => $order->id,
         'transaction_type' => $request->transaction_type,
         'qty'=> $request->qty,
         // $item ->qty = Stock::find('qty'),

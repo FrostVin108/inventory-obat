@@ -5,6 +5,7 @@ use App\Http\Controllers\ObatController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\DepartmentController;
 use App\Models\uom;
+use App\Models\Order;
 use App\Models\stock;
 use App\Models\item;
 use App\Models\transaction;
@@ -28,7 +29,8 @@ Route::get('/', function () {
 
 Route::get('/stockin', function () {
     $item = item::get();
-    return view('transaction/stockin', compact('item'));
+    $order = Order::get();
+    return view('transaction/stockin', compact('item', 'order'));
 })->name('ob.stockin');
 
 Route::post('/stockin',[ObatController::class, 'itemstockin'])->name('ob.cstockin');
@@ -36,7 +38,8 @@ Route::post('/stockin',[ObatController::class, 'itemstockin'])->name('ob.cstocki
 
 Route::get('/stockout', function () {
     $item = item::get();
-    return view('transaction/stockout', compact('item'));
+    $order = Order::get();
+    return view('transaction/stockout', compact('item', 'order'));
 })->name('ob.stockout');
 
 Route::post('/stockout', [ObatController::class, 'itemstockout'])->name('ob.cstockout');
