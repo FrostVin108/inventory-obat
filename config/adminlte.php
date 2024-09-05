@@ -379,13 +379,13 @@ return [
                     'url' => '/report',
                 ],
                 [
-                    'icon' => '	fa fa-plus-square',
-                    'text' => 'All In Report',
+                    'icon' => 'fa fa-plus-square',
+                    'text' => 'Total IN And Out Per Month',
                     'url' => '',
                 ],
                 [
                     'icon' => '	fa fa-minus-square',
-                    'text' => 'All Out Report',
+                    'text' => 'Total In and Out Per User',
                     'url' => '',
                 ],
             ],

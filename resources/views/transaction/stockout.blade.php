@@ -56,7 +56,7 @@
                     </div>
 
                     <div class="form-group stockout" >
-                        <input type="checkbox"  class="form-control @error('transaction_type') is-invalid @enderror" name="transaction_type" value="out" style="width: 25px;">
+                        <input type="checkbox"  class="form-control @error('transaction_type') is-invalid @enderror" name="transaction_type" value="OUT" style="width: 25px;">
                         Apakah Anda Mau Stockout?
                         @error('transaction_type')
                         <div class="alert alert-danger mt-2">

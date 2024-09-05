@@ -1,0 +1,152 @@
+const transactions = @json($transactions);
+const totalStockIn = stockInData.reduce((acc, current) => acc + current, 0);
+const labels = [];
+const stockInData = [];
+const stockOutData = [];
+
+const transactionGroups = transactions.reduce((acc, transaction) => {
+  const date = moment(transaction.created_at).format('YYYY-MM-DD');
+  const key = `${date}_${transaction.transaction_type}`;
+  if (!acc[key]) {
+    acc[key] = { date, transactionType: transaction.transaction_type, qty: 0 };
+  }
+  acc[key].qty += transaction.qty;
+  return acc;
+}, {});
+
+Object.keys(transactionGroups).forEach((key) => {
+  const { date, transactionType, qty } = transactionGroups[key];
+  const index = labels.indexOf(date);
+  if (index === -1) {
+    labels.push(date);
+    stockInData.push(0);
+    stockOutData.push(0);
+  }
+  if (transactionType === 'IN') {
+    stockInData[index] += qty;
+  } else {
+    stockOutData[index] += qty;
+  }
+});
+
+// Create a table
+const table = document.createElement('table');
+table.classList.add('table', 'table-striped');
+
+// Create table headers
+const thead = document.createElement('thead');
+const tr = document.createElement('tr');
+const th1 = document.createElement('th');
+th1.textContent = 'IN';
+const th2 = document.createElement('th');
+th2.textContent = 'OUT';
+tr.appendChild(th1);
+tr.appendChild(th2);
+thead.appendChild(tr);
+table.appendChild(thead);
+
+Create table body
+const tbody = document.createElement('tbody');
+table.appendChild(tbody);
+
+  // Populate table body
+  labels.forEach((label, index) => {
+    const row = document.createElement('tr');
+    const cell1 = document.createElement('td');
+    cell1.textContent = stockInData[index];
+    const cell2 = document.createElement('td');
+    cell2.textContent = stockOutData[index];
+    row.appendChild(cell1);
+    row.appendChild(cell2);
+    document.querySelector('#chart-container table tbody').appendChild(row);
+  });
+// Append table to the page
+document.getElementById('chart-container').appendChild(table);
+
+// Create chart
+const ctx = document.getElementById('stockChart').getContext('2d');
+const chart = new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels: labels,
+    datasets: [{
+      label: 'Stock In',
+      data: stockInData,
+      backgroundColor: 'rgba(75, 192, 192, 0.2)',
+      borderColor: 'rgba(75, 192, 192, 1)',
+      borderWidth: 1,
+      stack: 'combined'
+    }, {
+      label: 'Stock Out',
+      data: stockOutData,
+      backgroundColor: 'rgba(255, 99, 132, 0.2)',
+      borderColor: 'rgba(255, 99, 132, 1)',
+      borderWidth: 1,
+      stack: 'combined'
+    }]
+  },
+  options: {
+    scales: {
+      y: {
+        beginAtZero: true,
+        max: 130
+      }
+    },
+    plugins: {
+      title: {
+        display: true,
+        text: 'Stock In/Out Chart'
+      }
+    }
+  }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+public function reportmonth()
+    {
+
+
+//      In your controller
+        $stockInData = Transaction::where('transaction_type', 'IN')
+            ->whereMonth('created_at', date('m'))
+            ->groupBy(Transaction::raw('DATE(created_at)'))
+            ->selectRaw('DATE(created_at) as date, SUM(qty) as total_qty')
+            ->get()
+            ->pluck('total_qty')
+            ->all();
+
+        $stockOutData = Transaction::where('transaction_type', 'OUT')
+            ->whereMonth('created_at', date('m'))
+            ->groupBy(Transaction::raw('DATE(created_at)'))
+            ->selectRaw('DATE(created_at) as date, SUM(qty) as total_qty')
+            ->get()
+            ->pluck('total_qty')
+            ->all();
+
+
+            $translist = Transaction::get();
+        
+            foreach ($stockInData as $trans) {
+                $trans->item = Item::where('id', $trans->item_id)->first();
+            }
+    
+            foreach ($stockInData as $trans) {
+                $trans->order = Order::where('id', $trans->order_id)->first();
+            }
+
+        // Pass the data to your view
+        return view('reportmonthly', compact('stockInData', 'stockOutData'));
+    }

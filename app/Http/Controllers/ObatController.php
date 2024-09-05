@@ -138,7 +138,7 @@ class ObatController extends Controller
 
     $this->validate($request, [
         'item_id'=> 'required',
-        'transaction_type' => 'required',
+        
         'order_id' => 'required',
         'qty'=> 'required|numeric|min:1',
        
@@ -146,7 +146,7 @@ class ObatController extends Controller
 
     Transaction::create([
         'item_id' =>  $item->id,
-        'order_id' => $order->id,
+        
         'transaction_type' => $request->transaction_type,
         'qty'=> $request->qty,
         // $item ->qty = Stock::find('qty'),
@@ -158,11 +158,7 @@ class ObatController extends Controller
 
     public function itemstockout(Request $request){
     
-       // logic stock out
-    $order = Order::find($request->order_id);
-    $item = item::find($request->item_id);
-    $stock = stock::where('item_id', $item->id)->first();
-    
+    // logic stock out
     $order = Order::find($request->order_id);
     $item = item::find($request->item_id);
     $stock = stock::where('item_id', $item->id)->first();
@@ -170,6 +166,24 @@ class ObatController extends Controller
         if ($stock->qty >= $request->qty) {
                     $stock->qty -= $request->qty;
                     $stock->save();
+
+                    $this->validate($request, [
+                        'item_id'=> 'required',
+                        'transaction_type' => 'required',
+                        'order_id' => 'required',
+                        'qty'=> 'required|numeric|min:1',
+                       
+                    ]);
+                
+                    Transaction::create([
+                        'item_id' =>  $item->id,
+                        'order_id' => $order->id,
+                        'transaction_type' => $request->transaction_type,
+                        'qty'=> $request->qty,
+                        // $item ->qty = Stock::find('qty'),
+                
+                    ]);
+                    
                     return redirect()->route('ob.home')->with('success', 'Stock out berhasil');
         } else {
 
@@ -185,24 +199,10 @@ class ObatController extends Controller
         ]);
     }
 
-    $this->validate($request, [
-        'item_id'=> 'required',
-        'transaction_type' => 'required',
-        'order_id' => 'required',
-        'qty'=> 'required|numeric|min:1',
-       
-    ]);
+    
+    
 
-    Transaction::create([
-        'item_id' =>  $item->id,
-        'order_id' => $order->id,
-        'transaction_type' => $request->transaction_type,
-        'qty'=> $request->qty,
-        // $item ->qty = Stock::find('qty'),
-
-    ]);
-
-    return redirect()->route('ob.home')->with('success', 'Stock in berhasil');
+    // return redirect()->route('ob.home')->with('success', 'Stock in berhasil');
     
     }
 

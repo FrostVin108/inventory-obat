@@ -97,9 +97,7 @@ Route::get('/translist', [InventoryController::class, 'transactionlist'])->name(
 Route::get('/getSuppliesQty', [InventoryController::class, 'getSuppliesQty'])->name('supliesqty');
 
 
-Route::get('/report', function(){
-    return view('report');
-})->name('report');
+Route::get('/report', [InventoryController::class, 'reportmonth'])->name('report');
 
 Route::get('/department', function(){
     return view('department/department');
@@ -120,3 +118,7 @@ Route::get('/editdepart/{id}', [DepartmentController::class, 'editdepart'])->nam
 Route::put('/updatedepart/{id}', [DepartmentController::class, 'updatedepart'])->name('depart.update');
 
 Route::delete('/destroydepart/{id}', [DepartmentController::class, 'detroydepart'])->name('depart.delete');
+
+
+
+Route::get('/report', [InventoryController::class, 'monthlyreport'])->name('report.month');
