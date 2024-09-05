@@ -28,7 +28,7 @@ class ObatController extends Controller
         // dd ($obat);
     
         //render view with post
-        return view('edituom', compact('edituom') );
+        return view('uom/edituom', compact('edituom') );
         }
 
             /**
@@ -81,7 +81,7 @@ class ObatController extends Controller
         $stock = Stock::where('item_id',$edititem->id )->firstOrFail();
         
 
-        return view('edititem' ,compact('uom','edititem','stock'));
+        return view('obitem/edititem' ,compact('uom','edititem','stock'));
     }
     
             /**

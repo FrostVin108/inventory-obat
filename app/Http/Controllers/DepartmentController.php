@@ -17,7 +17,7 @@ class DepartmentController extends Controller
     {
         $users = Order::all();
         // dd($obatuom);
-        return view('department', compact('users'));
+        return view('department/department', compact('users'));
     }
     
     public function createdepartment(Request $request)
@@ -49,7 +49,7 @@ class DepartmentController extends Controller
         // dd ($obat);
     
         //render view with post
-        return view('departedit', compact('editdepart') );
+        return view('department/departedit', compact('editdepart') );
         }
 
             /**

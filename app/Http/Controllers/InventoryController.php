@@ -21,7 +21,7 @@ class InventoryController extends Controller
             $item->stock = Stock::where('item_id', $item->id)->first();
         }
         // dd($stock);
-        return view('iteminv', compact('obatitem'));
+        return view('obitem/iteminv', compact('obatitem'));
 
     }
 
@@ -29,7 +29,7 @@ class InventoryController extends Controller
     {
         $obatuom= UOM::all();
         // dd($obatuom);
-        return view('uominv', compact('obatuom'));
+        return view('uom/uominv', compact('obatuom'));
     }
 
     public function transactionlist()
@@ -40,7 +40,7 @@ class InventoryController extends Controller
             $trans->item = Item::where('id', $trans->item_id)->first();
         }
         // dd($trans);
-        return view('transactionlist', compact('translist'));
+        return view('transaction/transactionlist', compact('translist'));
     }
 
 

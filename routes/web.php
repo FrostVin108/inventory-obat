@@ -28,7 +28,7 @@ Route::get('/', function () {
 
 Route::get('/stockin', function () {
     $item = item::get();
-    return view('stockin', compact('item'));
+    return view('transaction/stockin', compact('item'));
 })->name('ob.stockin');
 
 Route::post('/stockin',[ObatController::class, 'itemstockin'])->name('ob.cstockin');
@@ -36,7 +36,7 @@ Route::post('/stockin',[ObatController::class, 'itemstockin'])->name('ob.cstocki
 
 Route::get('/stockout', function () {
     $item = item::get();
-    return view('stockout', compact('item'));
+    return view('transaction/stockout', compact('item'));
 })->name('ob.stockout');
 
 Route::post('/stockout', [ObatController::class, 'itemstockout'])->name('ob.cstockout');
@@ -47,13 +47,13 @@ Route::post('home', [PageController::class, 'createitem','createstock'])->name('
 
 Route::get('/citem', function () {
     $uom = uom::get(); 
-    return view('citem', compact('uom'));
+    return view('obitem/citem', compact('uom'));
 })->name('create.item');
 
 Route::post('/citem', [PageController::class, 'createitem'])->name('ob.citem');
 
 Route::get('/uom', function () {
-    return view('uom');
+    return view('uom/uom');
 })->name('create.uom');
 
 Route::post('/uominv', [PageController::class, 'createuom'])->name('ob.cuom');
@@ -99,7 +99,7 @@ Route::get('/report', function(){
 })->name('report');
 
 Route::get('/department', function(){
-    return view('department');
+    return view('department/department');
 })->name('department');
 
 
@@ -107,7 +107,7 @@ Route::get('/department', function(){
 Route::get('/department', [DepartmentController::class, 'list'])->name('department.list');
 
 Route::get('/createdepartment', function(){
-    return view('departcreate');
+    return view('department/departcreate');
 })->name('depart.create');
 
 Route::post('/departpost', [DepartmentController::class, 'createdepartment'])->name('depart.post');
