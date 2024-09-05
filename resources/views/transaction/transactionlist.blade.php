@@ -12,7 +12,8 @@
             <tr>
                 <th scope="col">No</th>
                 <th scope="col">Item</th>
-                <th scope="col">Transazction Type</th>
+                <th scope="col">Department</th>
+                <th scope="col">Transaction Type</th>
                 <th scope="col">Quantity</th>
                 <th scope="col">Date</th>
             </tr>
@@ -23,6 +24,7 @@
                 <tr>
                     <td>{{ $key +1 }}</td>
                     <td>{{ $trans->item->description }}</td>
+                    <td>{{ $trans->order->department }}</td>
                     <td>{{ $trans->transaction_type	}}</td>
                     <td>{{ $trans->qty }}</td>
                     <td>{{ $trans->created_at }}</td>

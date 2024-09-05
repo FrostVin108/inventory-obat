@@ -31,6 +31,20 @@
                     </div>
                     @enderror
 
+                    <div class="form-group" >
+                        <label for="exampleInputEmail1">Pilih Department </label>
+                        <select name="order_id" class="form-control @error('order_id') is-invalid @enderror">
+                            @foreach ($order as $or)
+                                <option value="{{$or->id}}">{{$or->department}}</option>
+                            @endforeach
+                    </select>
+                    </div>
+                    @error('order_id')
+                    <div class="alert alert-danger mt-2">
+                            {{ $message }}
+                    </div>
+                    @enderror
+
                     <div class="form-froup">
                         <label for="exampleInputEmail">How Many Quantity</label>
                         <input type="number" class="form-control @error('qty') is-invalid @enderror" name="qty">
