@@ -3,6 +3,7 @@
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\ObatController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\DepartmentController;
 use App\Models\uom;
 use App\Models\stock;
 use App\Models\item;
@@ -76,9 +77,6 @@ Route::post('/uomupdate/{id}', [ObatController::class, 'updateuom'])->name('ob.u
 Route::delete('itemdestroy/{id}', [ObatController::class, 'destroyitem'])->name('ob.itemdel');
 
 Route::get('/itemedit/{id}', [ObatController::class, 'edititem'])->name('ob.edititem');
-// Route::get('/itemupdate/{id}', function(){
-//     return view('edititem');
-// })->name('ob.edititem');
 
 Route::put('/itemupdate/{id}', [ObatController::class, 'updateitem'])->name('ob.updateitem');
 
@@ -103,3 +101,19 @@ Route::get('/report', function(){
 Route::get('/department', function(){
     return view('department');
 })->name('department');
+
+
+
+Route::get('/department', [DepartmentController::class, 'list'])->name('department.list');
+
+Route::get('/createdepartment', function(){
+    return view('departcreate');
+})->name('depart.create');
+
+Route::post('/departpost', [DepartmentController::class, 'createdepartment'])->name('depart.post');
+
+Route::get('/editdepart/{id}', [DepartmentController::class, 'editdepart'])->name('depart.edit');
+
+Route::put('/updatedepart/{id}', [DepartmentController::class, 'updatedepart'])->name('depart.update');
+
+Route::delete('/destroydepart/{id}', [DepartmentController::class, 'detroydepart'])->name('depart.delete');

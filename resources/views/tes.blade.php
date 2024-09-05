@@ -1,4 +1,4 @@
-<p>My cat is <strong>very grumpy.</p></strong>
+{{-- <p>My cat is <strong>very grumpy.</p></strong>
 <br>
 
 <h1>Welcome to example.com!</h1>
@@ -19,4 +19,26 @@
     
     </script>
 
-    <kbd    ></kbd>
+    <kbd    ></kbd> --}}
+
+
+    <button id="showDialog">Show Modal</button>
+
+<dialog id="myModal">
+  <p>This is a modal dialog. Enjoy!</p>
+  <button id="closeDialog">Close</button>
+</dialog>
+
+<script>
+  const showDialogButton = document.getElementById('showDialog');
+  const myModal = document.getElementById('myModal');
+  const closeDialogButton = document.getElementById('closeDialog');
+  
+  showDialogButton.addEventListener('click', () => {
+    myModal.showModal();
+  });
+  
+  closeDialogButton.addEventListener('click', () => {
+    myModal.close();
+  });
+</script>
