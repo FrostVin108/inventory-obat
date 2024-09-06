@@ -13,7 +13,6 @@
         <table class="table table-striped table-bordered">
             <thead>
                 <tr>
-                    <th>Item ID</th>
                     <th>Item Description</th>
                     <th>Transaction Type</th>
                     <th>Quantity</th>
@@ -23,7 +22,6 @@
             <tbody>
                 @foreach($order['in_transactions'] as $transaction)
                     <tr>
-                        <td>{{ $transaction['item_id'] }}</td>
                         <td>{{ $transaction['item_description'] }}</td>
                         <td>IN</td>
                         <td>{{ $transaction['qty'] }}</td>
@@ -32,7 +30,6 @@
                 @endforeach
                 @foreach($order['out_transactions'] as $transaction)
                     <tr>
-                        <td>{{ $transaction['item_id'] }}</td>
                         <td>{{ $transaction['item_description'] }}</td>
                         <td>OUT</td>
                         <td>{{ $transaction['qty'] }}</td>

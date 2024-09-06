@@ -156,45 +156,43 @@ class InventoryController extends Controller
 
     public function userin(){
         $transactions = Transaction::whereMonth('created_at', date('m'))
-    ->whereYear('created_at', date('Y'))
-    ->get();
-
-    $transactionsByOrderId = $transactions->groupBy('order_id');
-
-    $data = [];
-
-    foreach ($transactionsByOrderId as $orderId => $transactions) {
-        $order = Order::find($orderId);
-
-        $inTransactions = [];
-        $outTransactions = [];
-
-        foreach ($transactions as $transaction) {
-            $item = Item::find($transaction->item_id);
-
-            if ($transaction->transaction_type == 'IN') {
-                $inTransactions[] = [
-                    'item_id' => $transaction->item_id,
-                    'item_description' => $item->description,
-                    'qty' => $transaction->qty,
-                    'created_at' => $transaction->created_at,
-                ];
-            } elseif ($transaction->transaction_type == 'OUT') {
-                $outTransactions[] = [
-                    'item_id' => $transaction->item_id,
-                    'item_description' => $item->description,
-                    'qty' => $transaction->qty,
-                    'created_at' => $transaction->created_at,
-                ];
+        ->whereYear('created_at', date('Y'))
+        ->get();
+    
+        $transactionsByOrderId = $transactions->groupBy('order_id');
+    
+        $data = [];
+    
+        foreach ($transactionsByOrderId as $orderId => $transactions) {
+            $order = Order::find($orderId);
+    
+            $inTransactions = [];
+            $outTransactions = [];
+    
+            foreach ($transactions as $transaction) {
+                $item = Item::find($transaction->item_id);
+    
+                if ($transaction->transaction_type == 'IN') {
+                    $inTransactions[] = [
+                        'item_description' => $item->description, // Retrieve item description from Item model
+                        'qty' => $transaction->qty,
+                        'created_at' => $transaction->created_at,
+                    ];
+                } elseif ($transaction->transaction_type == 'OUT') {
+                    $outTransactions[] = [
+                        'item_description' => $item->description, // Retrieve item description from Item model
+                        'qty' => $transaction->qty,
+                        'created_at' => $transaction->created_at,
+                    ];
+                }
             }
+    
+            $data[] = [
+                'department' => $order->department,
+                'in_transactions' => $inTransactions,
+                'out_transactions' => $outTransactions,
+            ];
         }
-
-        $data[] = [
-            'department' => $order->department, // Retrieve department name from Order model
-            'in_transactions' => $inTransactions,
-            'out_transactions' => $outTransactions,
-        ];
-    }
 
     return view('report/reportuser', compact('data'));
     }
