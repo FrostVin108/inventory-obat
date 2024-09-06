@@ -101,13 +101,16 @@ class InventoryController extends Controller
             $data = [];
             foreach($items as $item_id => $transactions)
             {
-                $item = Item::find($item_id);
-                $data[] = [
-                'item' => $item->item_id, // access the name attribute of the item
-                'in' => $transactions->where('transaction_type', 'IN')->sum('qty'),
-                'out' => $transactions->where('transaction_type', 'OUT')->sum('qty'),
-                'balance' => $transactions->where('transaction_type', 'IN')->sum('qty') - $transactions->where('transaction_type', 'OUT')->sum('qty')
-                ];
+                if($transactions->first()->item !== null){
+
+                    $item = Item::find($item_id);
+                    $data[] = [
+                    'item' => $transactions->first()->item->description, // access the name attribute of the item
+                    'in' => $transactions->where('transaction_type', 'IN')->sum('qty'),
+                    'out' => $transactions->where('transaction_type', 'OUT')->sum('qty'),
+                    'balance' => $transactions->where('transaction_type', 'IN')->sum('qty') - $transactions->where('transaction_type', 'OUT')->sum('qty')
+                    ];
+                }
             }
 
 
@@ -130,8 +133,23 @@ class InventoryController extends Controller
                 $labels[] = $date;
             }
 
+
+            $startOfMonth = date('Y-m-01');
+            $endOfMonth = date('Y-m-t');
+
+            $stockIn = Transaction::where('transaction_type', 'IN')
+                ->whereBetween('created_at', [$startOfMonth, $endOfMonth])
+                ->sum('qty');
+
+            $stockOut = Transaction::where('transaction_type', 'OUT')
+                ->whereBetween('created_at', [$startOfMonth, $endOfMonth])
+                ->sum('qty');
+
+            $balance = $stockIn - $stockOut;
+
+
             
-            return view('report/report', compact('data', 'labels', 'inQuantities', 'outQuantities'));
+            return view('report/report', compact('data', 'labels', 'inQuantities', 'outQuantities', 'stockIn', 'stockOut', 'balance'));
         }
 //$transactions->first()->item->name,
 }

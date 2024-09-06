@@ -85,10 +85,10 @@
                   <tbody>
                       @foreach($data as $item)
                           <tr>
-                            <td>{{ $item['item'] }}</td>
-                            <td>{{ $item['in'] }}</td>
-                            <td>{{ $item['out'] }}</td>
-                            <td>{{ $item['balance'] }}</td>
+                              <td>{{ $item['item'] }}</td>
+                              <td>{{ $item['in'] }}</td>
+                              <td>{{ $item['out'] }}</td>
+                              <td>{{ $item['balance'] }}</td>
                           </tr>
                       @endforeach
                   </tbody>
@@ -105,38 +105,106 @@
 
           <div class="card-footer ">
 
-            <div class="row ">
-              <!-- /.col -->
-              <div class="col-sm-3 col-6">
-                <div class="description-block border-right">
-                  <span class="description-percentage text-success"><i class="fas fa-caret-up"></i> 20%</span>
-                  <h5 class="description-header">56</h5>
-                  <span class="description-text">Stock in</span>
-                </div>
-                <!-- /.description-block -->
+            <div class="card-footer">
+              <div class="row">
+                  <div class="col-sm-3 col-6">
+                      <div class="description-block border-right">
+                          <h5 class="description-header">{{ $stockIn }}</h5>
+                          <span class="description-text text-md">Stock In <br> </span>
+                           <span class="text-sm">({{ date('M 1, Y') }} - {{ date('M t, Y') }})</span>
+                      </div>
+                  </div>
+      
+                  <div class="col-sm-3 col-6">
+                      <div class="description-block border-right">
+                          <h5 class="description-header">{{ $stockOut }}</h5>
+                           <span class="description-text text-md">Stock Out <br> </span>
+                           <span class="text-sm"> ({{ date('M 1, Y') }} - {{ date('M t, Y') }})</span>
+                      </div>
+                  </div>
+      
+                  <div class="col-sm-3 col-6">
+                      <div class="description-block">
+                          <h5 class="description-header">{{ $balance }}</h5>
+                           <span class="description-text text-md">Balance <br> </span>
+                            <span class="text-sm">({{ date('M 1, Y') }} - {{ date('M t, Y') }})</span>
+                      </div>
+                  </div>
+      
+                  <div class="col-sm-3 col-6">
+                      <div class="description-block">
+                        <span class="description-text text-md"> <i>profit / loss</i><br> </span>
+                          @if($balance > 0)
+                              <span class="description-percentage text-success"><i class="fas fa-caret-up"></i> Profit: {{ $balance }}</span>
+                          @elseif($balance < 0)
+                              <span class="description-percentage text-danger"><i class="fas fa-caret-down"></i> Loss: {{ abs($balance) }}</span>
+                          @else
+                              <span class="description-percentage text-muted">No Profit/Loss</span>
+                          @endif
+                      </div>
+                  </div>
               </div>
+          </div>
+      
 
-              <!-- /.col -->
-              <div class="col-sm-3 col-6">
-                <div class="description-block border-right">
-                  <span class="description-percentage text-success"><i class="fas fa-caret-up"></i> 52%</span>
-                  <h5 class="description-header">140</h5>
-                  <span class="description-text">Balance</span>
+            <div>
+              {{-- <div class="row ">
+                <!-- /.col -->
+                <div class="col-sm-3 col-6">
+                  <div class="description-block border-right">
+                    <span class="description-percentage text-success"><i class="fas fa-caret-up"></i> 20%</span>
+                    <h5 class="description-header">56</h5>
+                    <span class="description-text">Stock in</span>
+                  </div>
+                  <!-- /.description-block -->
                 </div>
-                <!-- /.description-block -->
-              </div>
-
-              <!-- /.col -->
-              <div class="col-sm-3 col-6">
-                <div class="description-block">
-                  <span class="description-percentage text-danger"><i class="fas fa-caret-down"></i> 18%</span>
-                  <h5 class="description-header">34</h5>
-                  <span class="description-text">Stock out</span>
+  
+                <!-- /.col -->
+                <div class="col-sm-3 col-6">
+                  <div class="description-block border-right">
+                    <span class="description-percentage text-success"><i class="fas fa-caret-up"></i> 52%</span>
+                    <h5 class="description-header">140</h5>
+                    <span class="description-text">Balance</span>
+                  </div>
+                  <!-- /.description-block -->
                 </div>
-                <!-- /.description-block -->
-              </div>
-
+  
+                <!-- /.col -->
+                <div class="col-sm-3 col-6">
+                  <div class="description-block">
+                    <span class="description-percentage text-danger"><i class="fas fa-caret-down"></i> 18%</span>
+                    <h5 class="description-header">34</h5>
+                    <span class="description-text">Stock out</span>
+                  </div>
+                  <!-- /.description-block -->
+                </div>
+              </div> --}}
+              {{-- <div class="row">
+                <div class="col-12">
+                  <div class="description-block">
+                    @php
+                      $stockIn = 56;
+                      $stockOut = 34;
+                      $balance = 140;
+                      $initialStock = $balance - $stockIn + $stockOut;
+                      $profit = $balance - $initialStock;
+                    @endphp
+              
+                    @if($profit > 0)
+                      <span class="description-percentage text-success"><i class="fas fa-caret-up"></i> {{ $profit }} ({{ round(($profit / $initialStock) * 100, 2) }}% increase)</span>
+                      <h5 class="description-header">We're making a profit!</h5>
+                    @elseif($profit < 0)
+                      <span class="description-percentage text-danger"><i class="fas fa-caret-down"></i> {{ abs($profit) }} ({{ round((abs($profit) / $initialStock) * 100, 2) }}% decrease)</span>
+                      <h5 class="description-header">We're making a loss.</h5>
+                    @else
+                      <span class="description-percentage text-info"><i class="fas fa-minus"></i> 0 (No change)</span>
+                      <h5 class="description-header">We're breaking even.</h5>
+                    @endif
+                  </div>
+                </div>
+              </div> --}}
             </div>
+
             <!-- /.row -->
 
           </div>

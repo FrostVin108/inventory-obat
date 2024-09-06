@@ -122,38 +122,43 @@ class ObatController extends Controller
 
     public function itemstockin(Request $request){
         // logic stock in
-    $item = item::find($request->item_id);
-    $order = Order::find($request->order_id);
-    $stock = stock::where('item_id', $item->id)->first();
-    if ($stock) {
-        $stock->qty += $request->qty;
-        $stock->save();
-    } else {
-        stock::create([
-            'item_id' => $item->id,
-            'qty' => $request->qty,
-            'transaction_type'=> "IN",
-        ]);
-    }
+        $item = item::find($request->item_id);
+        $order = Order::find($request->order_id);
+        $stock = stock::where('item_id', $item->id)->first();
+        if ($stock) {
+            $stock->qty += $request->qty;
+            $stock->save();
 
-    $this->validate($request, [
-        'item_id'=> 'required',
+            $this->validate($request, [
+                'item_id'=> 'required',
+                'order_id' => 'required',
+                'transaction_type' => 'required',
+                'qty'=> 'required|numeric|min:1',
+            
+            ]);
         
-        'order_id' => 'required',
-        'qty'=> 'required|numeric|min:1',
-       
-    ]);
-
-    Transaction::create([
-        'item_id' =>  $item->id,
+            Transaction::create([
+                'item_id' =>  $item->id,
+                'order_id' =>  $order->id,
+                'transaction_type' => $request->transaction_type,
+                'qty'=> $request->qty,
+                // $item ->qty = Stock::find('qty'),
         
-        'transaction_type' => $request->transaction_type,
-        'qty'=> $request->qty,
-        // $item ->qty = Stock::find('qty'),
+            ]);
+            
+            return redirect()->route('ob.home')->with('success', 'Stock in berhasil');
 
-    ]);
+        } else {
+            stock::create([
+                'item_id' => $item->id,
+                'qty' => $request->qty,
+                'transaction_type'=> "IN",
+            ]);
+        }
 
-    return redirect()->route('ob.home')->with('success', 'Stock in berhasil');
+
+
+ 
     }
 
     public function itemstockout(Request $request){

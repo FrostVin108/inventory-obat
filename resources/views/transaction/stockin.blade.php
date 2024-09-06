@@ -27,7 +27,7 @@
                         </div>
                         @enderror
 
-                        {{-- <div class="form-group" >
+                        <div class="form-group" >
                             <label for="exampleInputEmail1">Pilih Department </label>
                             <select name="order_id" class="form-control @error('order_id') is-invalid @enderror">
                                 @foreach ($order as $or)
@@ -39,7 +39,7 @@
                         <div class="alert alert-danger mt-2">
                                 {{ $message }}
                         </div>
-                        @enderror --}}
+                        @enderror
 
                         <div class="form-group">
                             <label for="exampleInputEmail">How Many Quantity</label>
