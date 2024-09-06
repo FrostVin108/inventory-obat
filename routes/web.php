@@ -125,3 +125,5 @@ Route::get('/report', [InventoryController::class, 'all_item' ])->name('report.m
 // Route::get('/report', [InventoryController::class, 'all_item' ]);
 
 // Route::get('/report', [InventoryController::class, 'all_item' ])->name('report');
+
+Route::get('/report/userin', [InventoryController::class, 'userin'])->name('report.user.in');

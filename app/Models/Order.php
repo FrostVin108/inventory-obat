@@ -15,4 +15,9 @@ class Order extends Model
     protected $fillable = [
         'department',
     ];
+
+    public function transactions()
+{
+    return $this->hasMany(Transaction::class, 'order_id', 'id');
+}
 }

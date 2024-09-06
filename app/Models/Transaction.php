@@ -21,8 +21,10 @@ class Transaction extends Model
         'qty',
     ];
 
+
     public function item()
     {
         return $this->belongsTo(Item::class, 'item_id', 'id');
     }
+    
 }

@@ -66,7 +66,7 @@
                     </div>
 
                     <button type="submit" class="btn btn-success">Sumbit</button>
-                    <a href="{{ route('ob.home') }}" ><button class="btn btn-warning">Return</button></a>
+                    <a href="{{ route('ob.home') }}" class="btn btn-warning">Return</a>
                 </form>   
     </div>
 </div>

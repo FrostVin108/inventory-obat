@@ -386,7 +386,7 @@ return [
                 [
                     'icon' => '	fa fa-minus-square',
                     'text' => 'Total In and Out Per User',
-                    'url' => '',
+                    'url' => '/report/userin',
                 ],
             ],
         ],

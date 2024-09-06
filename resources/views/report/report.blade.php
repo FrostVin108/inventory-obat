@@ -217,9 +217,14 @@
     </div>
               {{-- All Button --}}
 
-              <div class="row">
-                <button class="btn btn-app">aaaaaaaaaa</button>
-              </div>
+    <div>
+      <table class="table table-hover">
+        
+      </table>
+    </div>
+
+
+
   </div>
 </div>
 
@@ -232,14 +237,14 @@
       data: {
           labels: {!! json_encode($labels) !!},
           datasets: [{
-              label: 'IN',
+              label: ' Total IN',
               data: {!! json_encode($inQuantities) !!},
               backgroundColor: 'rgba(255, 99, 132, 0.2)',
               borderColor: 'rgba(255, 99, 132, 1)',
               borderWidth: 1
           },
           {
-              label: 'OUT',
+              label: 'Total OUT',
               data: {!! json_encode($outQuantities) !!},
               backgroundColor: 'rgba(54, 162, 235, 0.2)',
               borderColor: 'rgba(54, 162, 235, 1)',
