@@ -5,6 +5,10 @@
 @stop
 
 @section('content')
+
+
+
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <div class="card">
@@ -71,25 +75,24 @@
                 <!-- all month items -->
                 <table class="table table-hover">
                   <thead>
-                    <tr>
-                        <th scope="col">Nama Obat</th>
-                        <th scope="col">In</th>
-                        <th scope="col">out</th>
-                        <th scope="col">balance</th>
-                        
-                    </tr>
-                    </thead>
-                    <tbody>
-                        
-                        
+                      <tr>
+                          <th scope="col">Nama Obat</th>
+                          <th scope="col">In</th>
+                          <th scope="col">Out</th>
+                          <th scope="col">Balance</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      @foreach($data as $item)
                           <tr>
-                            <td>panadol</td>
-                            <td>56</td>
-                            <td>34</td>
-                            <td>22</td>
+                            <td>{{ $item['item'] }}</td>
+                            <td>{{ $item['in'] }}</td>
+                            <td>{{ $item['out'] }}</td>
+                            <td>{{ $item['balance'] }}</td>
                           </tr>
-                </table>
-
+                      @endforeach
+                  </tbody>
+              </table>
 
                 
               </div>
@@ -132,6 +135,7 @@
                 </div>
                 <!-- /.description-block -->
               </div>
+
             </div>
             <!-- /.row -->
 

@@ -199,11 +199,9 @@ class ObatController extends Controller
         ]);
     }
 
-    
-    
-
     // return redirect()->route('ob.home')->with('success', 'Stock in berhasil');
-    
     }
+
+
 
 }

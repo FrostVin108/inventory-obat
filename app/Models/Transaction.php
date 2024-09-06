@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Item;
 
 class Transaction extends Model
 {
@@ -19,4 +20,9 @@ class Transaction extends Model
         'item_id',
         'qty',
     ];
+
+    public function item_id()
+    {
+        return $this->belongsTo(Item::class);
+    }
 }

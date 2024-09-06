@@ -89,5 +89,49 @@ class InventoryController extends Controller
 
         return view('report/report', compact('labels', 'inQuantities', 'outQuantities'));
         }
-    
+
+
+        public function all_item(){
+            $transactions = Transaction::whereMonth('created_at', date('m'))
+            ->whereYear('created_at', date('Y'))
+            ->get();
+        
+            $items = $transactions->groupBy('item_id');
+        
+            $data = [];
+            foreach($items as $item_id => $transactions)
+            {
+                $item = Item::find($item_id);
+                $data[] = [
+                'item' => $item->item_id, // access the name attribute of the item
+                'in' => $transactions->where('transaction_type', 'IN')->sum('qty'),
+                'out' => $transactions->where('transaction_type', 'OUT')->sum('qty'),
+                'balance' => $transactions->where('transaction_type', 'IN')->sum('qty') - $transactions->where('transaction_type', 'OUT')->sum('qty')
+                ];
+            }
+
+
+            $transactions = Transaction::whereBetween('created_at', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])
+            ->get()
+            ->groupBy(function ($transaction) {
+                return $transaction->created_at->format('Y-m-d');
+            });
+
+            $inQuantities = [];
+            $outQuantities = [];
+            $labels = [];
+
+            foreach ($transactions as $date => $transactionsForDate) {
+                $inQuantity = $transactionsForDate->where('transaction_type', 'IN')->sum('qty');
+                $outQuantity = $transactionsForDate->where('transaction_type', 'OUT')->sum('qty');
+        
+                $inQuantities[] = $inQuantity;
+                $outQuantities[] = $outQuantity;
+                $labels[] = $date;
+            }
+
+            
+            return view('report/report', compact('data', 'labels', 'inQuantities', 'outQuantities'));
+        }
+//$transactions->first()->item->name,
 }
