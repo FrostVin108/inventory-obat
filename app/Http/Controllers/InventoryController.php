@@ -49,6 +49,99 @@ class InventoryController extends Controller
         return view('transaction/transactionlist', compact('translist'));
     }
 
+    private function getStockIn()
+    {
+        $today = Carbon::today();
+    
+        return Transaction::where('transaction_type', 'IN')
+            ->whereDate('created_at', $today)
+            ->sum('qty');
+    }
+    
+    private function getStockOut()
+    {
+        $today = Carbon::today();
+    
+        return Transaction::where('transaction_type', 'OUT')
+            ->whereDate('created_at', $today)
+            ->sum('qty');
+    }
+    
+    private function getBalance()
+    {
+        $stockIn = $this->getStockIn();
+        $stockOut = $this->getStockOut();
+    
+        return $stockIn - $stockOut;
+    }
+
+    private function getTransactionLabels()
+    {
+        $transactions = Transaction::whereBetween('created_at', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])
+            ->get()
+            ->groupBy(function ($transaction) {
+                return $transaction->created_at->format('Y-m-d');
+            });
+    
+        $labels = [];
+        foreach ($transactions as $date => $transactionsForDate) {
+            $labels[] = $date;
+        }
+    
+        return $labels;
+    }
+
+    private function getInQuantities()
+    {
+        $transactions = Transaction::whereBetween('created_at', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])
+            ->get()
+            ->groupBy(function ($transaction) {
+                return $transaction->created_at->format('Y-m-d');
+            });
+    
+        $inQuantities = [];
+        foreach ($transactions as $date => $transactionsForDate) {
+            $inQuantities[] = $transactionsForDate->where('transaction_type', 'IN')->sum('qty');
+        }
+    
+        return $inQuantities;
+    }
+    
+    private function getOutQuantities()
+    {
+        $transactions = Transaction::whereBetween('created_at', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])
+            ->get()
+            ->groupBy(function ($transaction) {
+                return $transaction->created_at->format('Y-m-d');
+            });
+    
+        $outQuantities = [];
+        foreach ($transactions as $date => $transactionsForDate) {
+            $outQuantities[] = $transactionsForDate->where('transaction_type', 'OUT')->sum('qty');
+        }
+    
+        return $outQuantities;
+    }
+
+    private function todaysdata()
+    {
+        $today = Carbon::today();
+
+        $todaytransactions = Transaction::whereDate('created_at', $today)
+        ->get();
+
+        foreach ($todaytransactions as $trans) {
+            $trans->item = Item::where('id', $trans->item_id)->first();
+        }
+
+        foreach ($todaytransactions as $trans) {
+            $trans->order = Order::where('id', $trans->order_id)->first();
+        }
+
+        return $todaytransactions;
+
+    }
+
     public function totalin()
     {
         $today = Carbon::today();
@@ -60,11 +153,17 @@ class InventoryController extends Controller
         ->whereDate('created_at', $today)
         ->sum('qty');
         $total = Stock::sum('qty');
-        
 
-        return view('home', compact('totalin', 'totalout', 'total'));
+        $balance = $this->getBalance();
+        $labels = $this->getTransactionLabels();
+        $inQuantities = $this->getInQuantities();
+        $outQuantities = $this->getOutQuantities();
+        $todaytransactions = $this->todaysdata();
+
+        return view('home', compact('totalin', 'totalout', 'total', 'balance', 'labels', 'inQuantities', 'outQuantities','todaytransactions'));
     }
 
+    
         
     public function getSuppliesQty()
     {
@@ -78,9 +177,6 @@ class InventoryController extends Controller
         }
         return response()->json($data);
     }
-
-
-
 
 
 
