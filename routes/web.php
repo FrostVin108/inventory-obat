@@ -22,9 +22,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('home');
-})->name('ob.home');
+Route::get('/', [InventoryController::class, 'totalin'])->name('ob.home');
 
 
 Route::get('/stockin', function () {

@@ -374,7 +374,7 @@ return [
             'url' => '/report',
             'submenu' => [
                 [
-                    'icon' => '	fas fa-file-alt',
+                    'icon' => '	fas fa-poll',
                     'text' => 'Total Report',
                     'url' => '/report',
                 ],

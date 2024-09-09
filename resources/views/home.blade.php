@@ -20,7 +20,7 @@
                             <div class="progress">
                                 <div class="progress-bar" style="width: 100%"></div>
                             </div>
-                            <span class="text-left info-box-number ">Total:all item</span>
+                            <span class="text-left info-box-number ">Total: all item</span>
                         </div>
                     </a> 
                     <a class=" info-box bg-info" href="{{ route('ob.stockout') }}">
@@ -30,17 +30,17 @@
                             <div class="progress">
                                 <div class="progress-bar" style="width: 100%"></div>
                             </div>
-                            <span class="text-left info-box-number ">Total:all item</span>
+                            <span class="text-left info-box-number ">Total: {{$totalout}}</span>
                         </div>
                     </a>                       
-                    <a class=" info-box bg-info" href="{{ route('ob.stockin') }}">
+                    <a class="info-box bg-info" href="{{ route('ob.stockin') }}">
                         <span class="info-box-icon "><i class="fas fa-arrow-circle-down"></i></span>
                         <div class="info-box-content ">
                             <span class="info-box-tex text-left">Stock In</span>
                             <div class="progress">
                                 <div class="progress-bar" style="width: 100%"></div>
                             </div>
-                            <span class="text-left info-box-number ">Total:all item</span>
+                            <span class="text-left info-box-number ">Total: {{$totalin}}</span>
                         </div>
                     </a>
                 </div>  
@@ -48,8 +48,8 @@
             {{-- row2 --}}
                 <div class="row">
                     <div class="donut-chart">
-                        <div id="chart-container" style="width: 400px; height: 400px;">
-                            <canvas id="chart" width="400" height="400" ></canvas>
+                        <div id="chart-container" style="width: 1000px; height: 80%;">
+                            <canvas id="chart" width="80%" height="80%" ></canvas>
                         </div>
                     </div>
                 </div>
