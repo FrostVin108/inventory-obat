@@ -79,66 +79,7 @@ class InventoryController extends Controller
     }
 
 
-        public function all_item(){
-            $transactions = Transaction::whereMonth('created_at', date('m'))
-            ->whereYear('created_at', date('Y'))
-            ->get();
-        
-            $items = $transactions->groupBy('item_id');
-        
-            $data = [];
-            foreach($items as $item_id => $transactions)
-            {
-                if($transactions->first()->item !== null){
 
-                    $item = Item::find($item_id);
-                    $data[] = [
-                    'item' => $transactions->first()->item->description, // access the name attribute of the item
-                    'in' => $transactions->where('transaction_type', 'IN')->sum('qty'),
-                    'out' => $transactions->where('transaction_type', 'OUT')->sum('qty'),
-                    'balance' => $transactions->where('transaction_type', 'IN')->sum('qty') - $transactions->where('transaction_type', 'OUT')->sum('qty')
-                    ];
-                }
-            }
-
-
-            $transactions = Transaction::whereBetween('created_at', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])
-            ->get()
-            ->groupBy(function ($transaction) {
-                return $transaction->created_at->format('Y-m-d');
-            });
-
-            $inQuantities = [];
-            $outQuantities = [];
-            $labels = [];
-
-            foreach ($transactions as $date => $transactionsForDate) {
-                $inQuantity = $transactionsForDate->where('transaction_type', 'IN')->sum('qty');
-                $outQuantity = $transactionsForDate->where('transaction_type', 'OUT')->sum('qty');
-        
-                $inQuantities[] = $inQuantity;
-                $outQuantities[] = $outQuantity;
-                $labels[] = $date;
-            }
-
-
-            $startOfMonth = date('Y-m-01');
-            $endOfMonth = date('Y-m-t');
-
-            $stockIn = Transaction::where('transaction_type', 'IN')
-                ->whereBetween('created_at', [$startOfMonth, $endOfMonth])
-                ->sum('qty');
-
-            $stockOut = Transaction::where('transaction_type', 'OUT')
-                ->whereBetween('created_at', [$startOfMonth, $endOfMonth])
-                ->sum('qty');
-
-            $balance = $stockIn - $stockOut;
-
-
-            
-            return view('report/report', compact('data', 'labels', 'inQuantities', 'outQuantities', 'stockIn', 'stockOut', 'balance'));
-        }
 
 
 

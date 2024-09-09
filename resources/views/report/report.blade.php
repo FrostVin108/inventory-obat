@@ -227,6 +227,39 @@
 
   </div>
 </div>
+<br>
+{{-- table click --}}
+<div class="card">
+  <div class="card-body">
+
+    @foreach($transactions as $date => $transactionGroup)
+      <h5>Date : {{ $date }}</h5>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Item ID</th>
+            <th scope="col">Order ID</th>
+            <th scope="col">Transaction Type</th>
+            <th scope="col">Qty</th>
+          </tr>
+        </thead>
+        <tbody>
+          @foreach($transactionGroup as $transaction)
+            <tr>
+              <td>{{ $transaction->item_id }}</td>
+              <td>{{ $transaction->order_id }}</td>
+              <td>{{ $transaction->transaction_type }}</td>
+              <td>{{ $transaction->qty }}</td>
+            </tr>
+          @endforeach
+        </tbody>
+      </table>
+      <hr style="border: solid 1px black">
+    @endforeach
+
+
+  </div>
+</div>
 
 <script>
   console.log('Chart data:', {!! json_encode($labels) !!}, {!! json_encode($inQuantities) !!}, {!! json_encode($outQuantities) !!});

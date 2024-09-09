@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\ObatController;
 use App\Http\Controllers\PageController;
@@ -119,7 +120,7 @@ Route::delete('/destroydepart/{id}', [DepartmentController::class, 'detroydepart
 
 
 
-Route::get('/report', [InventoryController::class, 'all_item' ])->name('report.month');
+Route::get('/report', [ReportController::class, 'all_item' ])->name('report.month');
 // Route::get('/report', [InventoryController::class, 'all_item' ]);
 
 // Route::get('/report', [InventoryController::class, 'all_item' ])->name('report');

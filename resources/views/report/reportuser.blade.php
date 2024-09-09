@@ -9,9 +9,9 @@
 
 <div class="card">
     <div class="card-body" style="padding: 47px">
-        <input type="text" id="search-input" placeholder="Search...">
-        <button id="search-btn">Search</button>
-        <button id="clear-btn">Clear</button>
+        <input type="text" id="search-input" placeholder="Search..." class="form-control-border" >
+        <button id="search-btn" class="btn btn-success">Search</button>
+        <button id="clear-btn" class="btn btn-warning">Clear</button>
     
         <div id="search-results">
             @foreach($data as $order)
