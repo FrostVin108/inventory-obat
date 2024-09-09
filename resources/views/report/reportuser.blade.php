@@ -17,7 +17,7 @@
             @foreach($data as $order)
                 <div class="department-container">
                     <h2>Department: {{ $order['department'] }}</h2>
-                    <table class="table table-striped table-bordered">
+                    <table class="table table-striped table-bordered table-hover">
                         <thead>
                             <tr>
                                 <th>Item Description</th>
@@ -46,6 +46,24 @@
                         </tbody>
                     </table>
                 </div>
+                <table class="table table-striped table-bordered table-hover table-sm">
+                    <thead>
+                        <tr>
+                            <th>Transaction Type</th>
+                            <th>Count</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>IN</td>
+                            <td>{{ count($order['in_transactions']) }}</td>
+                        </tr>
+                        <tr>
+                            <td>OUT</td>
+                            <td>{{ count($order['out_transactions']) }}</td>
+                        </tr>
+                    </tbody>
+                </table>
                 <br>
             @endforeach
         </div>
