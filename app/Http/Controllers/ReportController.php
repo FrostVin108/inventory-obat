@@ -132,11 +132,14 @@ class ReportController extends Controller
         $startOfMonth = Carbon::now()->startOfMonth()->format('Y-m-d');
         $endOfMonth = Carbon::now()->endOfMonth()->format('Y-m-d');
     
-        $transactions = Transaction::whereBetween('created_at', [$startOfMonth, $endOfMonth])
-            ->get()
-            ->groupBy(function ($transaction) {
-                return $transaction->created_at->format('Y-m-d');
-            });
+        $transactions = Transaction::with('item') // Eager load the related "items"
+        ->with('order')
+        ->whereBetween('created_at', [$startOfMonth, $endOfMonth])
+        ->get()
+        ->groupBy(function ($transaction) {
+            return $transaction->created_at->format('Y-m-d');
+        });
+        
 
         return $transactions;
     }

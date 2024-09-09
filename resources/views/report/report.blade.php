@@ -232,17 +232,17 @@
       <table class="table table-hover">
         <thead>
           <tr>
-            <th scope="col">Item ID</th>
-            <th scope="col">Order ID</th>
+            <th scope="col">Item Name</th>
+            <th scope="col">Order By</th>
             <th scope="col">Transaction Type</th>
-            <th scope="col">Qty</th>
+            <th scope="col">Quantity</th>
           </tr>
         </thead>
         <tbody>
           @foreach($transactionGroup as $transaction)
             <tr>
-              <td>{{ $transaction->item_id }}</td>
-              <td>{{ $transaction->order_id }}</td>
+              <td>{{ $transaction->item->description }}</td>
+              <td>{{ $transaction->order->department }}</td>
               <td>{{ $transaction->transaction_type }}</td>
               <td>{{ $transaction->qty }}</td>
             </tr>
