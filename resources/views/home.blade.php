@@ -20,7 +20,7 @@
                             <div class="progress">
                                 <div class="progress-bar" style="width: 100%"></div>
                             </div>
-                            <span class="text-left info-box-number ">Total: all item</span>
+                            <span class="text-left info-box-number ">Total: {{$total}}</span>
                         </div>
                     </a> 
                     <a class=" info-box bg-info" href="{{ route('ob.stockout') }}">

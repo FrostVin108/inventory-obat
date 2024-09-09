@@ -59,9 +59,10 @@ class InventoryController extends Controller
         $totalout = Transaction::where('transaction_type', 'out')
         ->whereDate('created_at', $today)
         ->sum('qty');
+        $total = Stock::sum('qty');
         
 
-        return view('home', compact('totalin', 'totalout'));
+        return view('home', compact('totalin', 'totalout', 'total'));
     }
 
         
