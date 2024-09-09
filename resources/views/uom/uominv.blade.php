@@ -1,14 +1,14 @@
 @extends('layouts.app')
 
 @section('content_header')
-    <h1>Uom Type</h1>
+    <h1> <i class="	fas fa-box"></i> Uom / Unit Of Measurment Type</h1>
   
 @stop
 
 @section('content')
 <div class="card">
     <div class="card-body">
-        <a href="uom" class="btn btn-success">Create</a>
+        <a href="uom" class="btn btn-success"> <i class="fas fa-plus-square"></i> Add New Type</a>
 
         <br>
         <br>
@@ -17,7 +17,7 @@
             <thead>
             <tr>
                 <th width="5%" scope="col">id</th>
-                <th  scope="col">UOM</th>
+                <th  scope="col">UOM / Unit Of Measurment</th>
                 <th width="20%" scope="col">Action</th>
             </tr>
             </thead>
@@ -28,10 +28,10 @@
                     <td>{{ $obuom->unit_of_measurement}}</td>
                     <td>
                         <form method="POST" onsubmit="return confirm('Apakah Anda Yakin?');" action="{{ route('ob.uomdel', $obuom->id) }}">
-                            <a href="{{ route('ob.edituom', $obuom->id) }}" class="btn btn-sm btn-primary">EDIT</a>
+                            <a href="{{ route('ob.edituom', $obuom->id) }}" class="btn btn-sm btn-primary"> <i class="	far fa-edit"></i> Edit</a>
                             @csrf
                             @method('delete')
-                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>    
+                            <button type="submit" class="btn btn-sm btn-danger"> <i class="	fas fa-trash"></i> Delete</button>    
                         </form>
                     </td>
                 </tr>

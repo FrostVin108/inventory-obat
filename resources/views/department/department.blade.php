@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content_header')
-    <h1 style="font-size: 27px"> <i class="	far fa-address-book" style="font-size: 30px"></i> Department</h1>
+    <h1 style="font-size: 27px"> <i class="fas fa-hard-hat" style="font-size: 30px"></i> Department</h1>
 @stop
 
 @section('content')
@@ -26,10 +26,10 @@
         
                     <td style="height: 40px">
                         <form method="POST" class="action"  onsubmit="return confirm('Apakah Anda Yakin?');" action="{{ route('depart.delete', $usr->id) }}">
-                            <a href="{{ route('depart.edit', $usr->id) }}" class="btn btn-primary">Edit</a>
+                            <a href="{{ route('depart.edit', $usr->id) }}" class="btn btn-primary"> <i class="far fa-edit"></i> Edit</a>
                             @csrf
                             @method('delete')
-                            <button type="submit" class="btn btn-danger">Delete</button>    
+                            <button type="submit" class="btn btn-danger"> <i class="fas fa-trash"></i> Delete</button>    
                         </form>
                     </td>
                 </tr>

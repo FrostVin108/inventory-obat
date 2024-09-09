@@ -15,7 +15,7 @@
                     <div class="inner">
                         <h3>{{$total}}</h3>
             
-                        <p>Items</p>
+                        <p>Total All Stock</p>
                     </div>
                     <div class="icon">
                       <i class="fas fa-warehouse"></i>

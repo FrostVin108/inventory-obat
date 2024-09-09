@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content_header')
-    <h1 style="font-size: 27px"> <i class="fas fa-download" style="font-size: 30px"></i> Editing Department</h1>
+    <h1 style="font-size: 27px"> <i class="fas fa-edit" style="font-size: 30px"></i> Editing Department</h1>
 @stop
 
 @section('content')
@@ -20,8 +20,9 @@
                   {{ $message }}
               </div>
               @enderror
-              <button type="submit" class="btn btn-success">Submit</button>
-              <a href="{{ route('department.list') }}" class="btn btn-warning">Return</a>
+              <button type="submit" class="btn btn-success"> <i class="fas fa-file-upload"></i> Submit</button>
+              <button type="reset" class="btn btn-warning"> <i class="fas fa-undo"></i> Reset</button>
+              <a href="{{ route('department.list') }}" class="btn btn-warning"> <i class="fas fa-reply"></i> Return</a>
             </form>    
     </div>
 </div>

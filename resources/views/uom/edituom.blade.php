@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content_header')
-    <h1>Unit Of Measurement / UOM</h1> 
+    <h1> <i class="fas fa-edit"></i> Editing UOM / Unit Of Measurement </h1> 
 @stop
 
 @section('content')
@@ -20,8 +20,9 @@
                   {{ $message }}
               </div>
               @enderror
-              <button type="submit" class="btn btn-success">Submit</button>
-              <a href="{{ route('wh.uominv') }}" class="btn btn-warning">Return</a>
+              <button type="submit" class="btn btn-success"> <i class="fas fa-file-upload"></i> Submit</button>
+              <button type="reset" class="btn btn-warning"> <i class="fas fa-undo"></i> Reset</button>
+              <a href="{{ route('wh.uominv') }}" class="btn btn-warning"> <i class="fas fa-reply"></i> Return</a>
             </form>    
     </div>
 </div>

@@ -1,8 +1,7 @@
 @extends('layouts.app')
 
 @section('content_header')
-    <h1>Uom / Unit Of Measurement</h1>
-  
+    <h1> <i class="	fas fa-plus-square"></i> Create New Type Uom / Unit Of Measurement</h1>
 @stop
 
 @section('content')
@@ -20,9 +19,9 @@
                   {{ $message }}
               </div>
               @enderror
-              <button type="submit" class="btn btn-success">Submit</button>
+              <button type="submit" class="btn btn-success"> <i class="	fas fa-plus-square"></i> Create</button>
               
-              <a href="{{ route('wh.uominv') }}" class="btn btn-warning">Return</a>
+              <a href="{{ route('wh.uominv') }}" class="btn btn-warning"> <i  class="fas fa-reply"></i> Return</a>
             </form>    
     </div>
 </div>

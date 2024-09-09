@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content_header')
-   <h1> Transaction List</h1>
+   <h1> <i class="fas fa-clipboard-list"></i> Transaction List</h1>
 @stop
 
 @section('content')

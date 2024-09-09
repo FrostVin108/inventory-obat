@@ -56,8 +56,8 @@
                 @enderror
                 
 
-              <button type="submit" class="btn btn-success">Submit</button>
-              <a href="{{ route('wh.iteminv') }}" class="btn btn-warning">Return</a> 
+              <button type="submit" class="btn btn-success"> <i class="	fas fa-plus-square"></i> Submit</button>
+              <a href="{{ route('wh.iteminv') }}" class="btn btn-warning"> <i  class="fas fa-reply"></i>  Return</a> 
             </form>
                 
     </div>

@@ -19,9 +19,9 @@
                   {{ $message }}
               </div>
               @enderror
-              <button type="submit" class="btn btn-success">Submit</button>
+              <button type="submit" class="btn btn-success"> <i class="fas fa-file-upload"></i> Submit</button>
               
-              <a href="{{ route('department.list') }}" class="btn btn-warning">Return</a>
+              <a href="{{ route('department.list') }}" class="btn btn-warning"><i class="fas fa-reply"></i> Return</a>
             </form>    
     </div>
 </div>
