@@ -46,7 +46,7 @@
                 </p> --}}
 
                 <p class="text-center">
-                  <strong>Sales: {{ date('M 1, Y') }} - {{ date('M t, Y') }}</strong>
+                  <strong>Report Date From: {{ date('M 1, Y') }} - {{ date('M t, Y') }}</strong>
                 </p>
 
                 <div class="chart">
@@ -63,7 +63,7 @@
               <!-- /.col -->
               <div class="col-md-4">
                 <p class="text-center">
-                  <strong>All Item </strong>
+                  <strong>{{ date('M 1, Y') }} - {{ date('M t, Y') }} | Item In and Out </strong>
                 </p>
             
 
@@ -71,7 +71,7 @@
                 <table class="table table-hover">
                   <thead>
                       <tr>
-                          <th scope="col">Nama Obat</th>
+                          <th scope="col">Item Name</th>
                           <th scope="col">In</th>
                           <th scope="col">Out</th>
                           <th scope="col">Balance</th>
