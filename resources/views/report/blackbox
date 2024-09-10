@@ -1,0 +1,83 @@
+now i want to add an footer that count all quantity
+
+
+To add a footer that counts all quantities, you can modify the tables in your Blade template as follows:
+
+Table for IN transactions
+
+html
+Edit
+Run
+Copy code
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">Item Name</th>
+            <th scope="col">UOM</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach ($inuom as $key => $item)
+            @if ($item['in'] > 0)
+                <tr>
+                    <td>{{ $key +1 }}</td>
+                    <td>{{ $item['description'] }}</td>
+                    <td>{{ $item['uom'] }}</td>
+                    <td>{{ $item['in'] }}</td>
+                    <td>{{ $item['created_at'] }}</td>
+                </tr>
+            @endif
+        @endforeach
+    </tbody>
+    <tfoot>
+        <tr>
+            <th scope="row">Total</th>
+            <td colspan="2"></td>
+            <td>{{ $inuom->sum('in') }}</td>
+            <td></td>
+        </tr>
+    </tfoot>
+</table>
+Table for OUT transactions
+
+html
+Edit
+Run
+Copy code
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">NO</th>
+            <th scope="col">Item Name</th>
+            <th scope="col">UOM</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach ($inuom as $key => $item)
+            @if ($item['out'] > 0)
+                <tr>
+                    <td>{{ $key +1 }}</td>
+                    <td>{{ $item['description'] }}</td>
+                    <td>{{ $item['uom'] }}</td>
+                    <td>{{ $item['out'] }}</td>
+                    <td>{{ $item['created_at'] }}</td>
+                </tr>
+            @endif
+        @endforeach
+    </tbody>
+    <tfoot>
+        <tr>
+            <th scope="row">Total</th>
+            <td colspan="2"></td>
+            <td>{{ $inuom->sum('out') }}</td>
+            <td></td>
+        </tr>
+    </tfoot>
+</table>
+In both tables, I added a <tfoot> section with a single row that displays the total quantity. The {{ $inuom->sum('in') }} and {{ $inuom->sum('out') }} expressions use the sum method to calculate the total quantity for IN and OUT transactions, respectively.
+
+Note that I assumed the $inuom collection has a sum method available. If that's not the case, you may need to modify the code accordingly.

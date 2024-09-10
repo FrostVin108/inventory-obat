@@ -48,8 +48,9 @@ class ReportController extends Controller
         $stockout = $this->getStockOut($startOfMonth, $endOfMonth);
         $balance = $this->getBalance($startOfMonth, $endOfMonth);
         $transactions = $this->getTransactions($startOfMonth, $endOfMonth);
+        $inuom = $this->getInMonthuom($startOfMonth, $endOfMonth);
 
-        return view('report/report', compact('data', 'labels', 'inQuantities', 'outQuantities', 'stockin', 'stockout', 'balance', 'transactions', 'firstDayOfMonth', 'lastDayOfMonth'));
+        return view('report/report', compact('data', 'labels', 'inQuantities', 'outQuantities', 'stockin', 'stockout', 'balance', 'transactions', 'firstDayOfMonth', 'lastDayOfMonth', 'inuom'));
     }
 
 
@@ -129,7 +130,7 @@ class ReportController extends Controller
         $stockin = Transaction::where('transaction_type', 'IN')
             ->whereBetween('created_at', [$startOfMonth, $endOfMonth])
             ->sum('qty');
-    
+
         return $stockin;
     }
 
@@ -138,7 +139,7 @@ class ReportController extends Controller
         $stockout = Transaction::where('transaction_type', 'OUT')
             ->whereBetween('created_at', [$startOfMonth, $endOfMonth])
             ->sum('qty');
-    
+
         return $stockout;
     }
 
@@ -171,5 +172,26 @@ class ReportController extends Controller
         return $transactions;
     }
 
+    private function getInMonthuom($startOfMonth, $endOfMonth)
+    {
+        $transactions = Transaction::whereBetween('created_at', [$startOfMonth, $endOfMonth])
+            ->get()
+            ->groupBy('item_id');
+
+        $inuom = [];
+        foreach ($transactions as $item_id => $transactions) {
+            $item = Item::find($item_id);
+            $uom = $item->uom; // assuming you have a uom relationship defined in the Item model
+            $inuom[] = [
+                'description' => $item->description,
+                'uom' => $uom->unit_of_measurement, // assuming you have a name column in the UOM table
+                'in' => $transactions->where('transaction_type', 'IN')->sum('qty'),
+                'out' => $transactions->where('transaction_type', 'OUT')->sum('qty'),
+                'created_at' => $transactions->max('created_at'), // add this line
+            ];
+        }
+
+        return $inuom;
+    }
 
 }

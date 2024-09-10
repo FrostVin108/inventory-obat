@@ -153,17 +153,73 @@
                 </div>
                 {{-- All Button --}}
 
-                <div>
-                    <table class="table table-hover">
 
-                    </table>
-                </div>
 
 
 
             </div>
         </div>
       </div>
+      <br>
+
+      <div class="card">
+        <div class="card-body">
+             <h3>Table for IN transactions</h3> 
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">Item Name</th>
+                            <th scope="col">UOM</th>
+                            <th scope="col">Quantity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($inuom as $key => $item)
+                            @if ($item['in'] > 0)
+                                <tr>
+                                    <td>{{ $key +1 }}</td>
+                                    <td>{{ $item['description'] }}</td>
+                                    <td>{{ $item['uom'] }}</td>
+                                    <td>{{ $item['in'] }}</td>
+                                    <td>{{ $item['created_at'] }}</td>
+                                </tr>
+                            @endif
+                        @endforeach
+                    </tbody>
+                </table>
+<br>
+<br>
+                 <h3>Table for OUT transactions </h3>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">NO</th>
+                            <th scope="col">Item Name</th>
+                            <th scope="col">UOM</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($inuom as $key => $item)
+                            @if ($item['out'] > 0)
+                                <tr>
+                                    <td>{{ $key +1 }}</td>
+                                    <td>{{ $item['description'] }}</td>
+                                    <td>{{ $item['uom'] }}</td>
+                                    <td>{{ $item['out'] }}</td>
+                                    <td>{{ $item['created_at'] }}</td>
+                                </tr>
+                            @endif
+                        @endforeach
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                    </tfoot>
+                </table>
+        </div>
+      </div>
+
         <br>
         {{-- table click --}}
         <div class="card">
