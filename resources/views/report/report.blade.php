@@ -18,7 +18,7 @@
 
             <div class="row">
                 <div class="col-md-12">
-                    <div class="card">
+                    
                         <div class="card-header">
                             <h5 class="card-title">Monthly Recap Report</h5>
 
@@ -100,52 +100,55 @@
 
                         <div class="card-footer ">
 
-                            <div class="card-footer">
-                                <div class="row">
-                                    <div class="col-sm-3 col-6">
-                                        <div class="description-block border-right">
-                                            <h5 class="description-header">Stock In</h5>
-                                            <span class="description-text text-md">{{ $stockIn }}</span>
-                                            <span class="text-sm">{{ $firstDayOfMonth }} - {{ $lastDayOfMonth }}</span>
-                                            @if (is_array($stockIn) || is_object($stockIn))
-                                                <ul>
-                                                    @foreach ($stockIn as $item)
-                                                        <li>{{ $item }}</li>
-                                                    @endforeach
-                                                </ul>
-                                            @else
-                                                <p>No stock in data available.</p>
-                                            @endif
-                                        </div>
+                          <div class="card-footer ">
+                            <div class="row">
+                                <div class="col-sm-4 col-6">
+                                    <div class="description-block border-right">
+                                      <span class="text-md"><h5>{{ $stockin }}</h5> </span>
+                                        <h5 class="description-text ">Stock In</h5>
+                                        <span class="text-sm">({{ $firstDayOfMonth }} - {{ $lastDayOfMonth }})</span>
                                     </div>
-
-                                    <div class="col-sm-3 col-6">
-                                        <div class="description-block border-right">
-                                            <h5 class="description-header">Stock Out</h5>
-                                            <span class="description-text text-md">Stock Out <br> </span>
-                                            <span class="text-sm"> {{ $firstDayOfMonth }} - {{ $lastDayOfMonth }}</span>
-                                            @if (is_array($stockOut) || is_object($stockOut))
-                                                <ul>
-                                                    @foreach ($stockOut as $item)
-                                                        <li>{{ $item['quantity'] }}</li>
-                                                    @endforeach
-                                                </ul>
-                                            @else
-                                                <p>No stock out data available.</p>
-                                            @endif
-                                        </div>
-                                    </div>
-
                                 </div>
-
-                                <!-- /.row -->
-
+                        
+                                <div class="col-sm-4 col-6">
+                                    <div class="description-block border-right">
+                                      <span class=" text-md"> <h5>{{ $stockout }}</h5> </span>
+                                        <h5 class="description-text ">Stock Out</h5>
+                                        <span class="text-sm">({{ $firstDayOfMonth }} - {{ $lastDayOfMonth }})</span>
+                                    </div>
+                                </div>
+                        
+                                <div class="col-sm-4 col-6">
+                                    <div class="description-block">
+                                      <span class=" text-md"> <h5>{{ $stockin - $stockout }}</h5> </span>
+                                        <h5 class="description-text ">Balance</h5>
+                                        <span class="text-sm">({{ $firstDayOfMonth }} - {{ $lastDayOfMonth }})</span>
+                                    </div>
+                                </div>
                             </div>
+                            <br>
+                            <div class="card-footer shadow-lg" style="#202020 ">
+                              <div class="row">
+                                  <div class="col-sm-12">
+                                      <div class="description-block">
+                                          <h6 class="description-text"><i class="	fas fa-balance-scale"></i><i> Profit/Loss</i> </h6>
+                                          @if ($stockin > $stockout)
+                                              <span class="text-md text-success"><h5><i class="fas fa-caret-down success"></i> {{ $stockin - $stockout }}</h5> Profit</span>
+                                          @elseif ($stockin < $stockout)
+                                              <span class="text-md text-danger"><h5><i class="fas fa-caret-down danger"></i> {{ $stockout - $stockin }}</h5> Loss</span>
+                                          @else
+                                              <span class="text-md text-muted"><h5>0</h5> No Profit/Loss</span>
+                                          @endif
+                                          <span class="text-sm">({{ $firstDayOfMonth }} - {{ $lastDayOfMonth }})</span>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+
+                        </div>
 
                             <!-- /.card-footer -->
-                        </div>
-                        <!-- /.card -->
-                    </div>
+                      </div>
                     <!-- /.col -->
                 </div>
                 {{-- All Button --}}
@@ -160,6 +163,7 @@
 
             </div>
         </div>
+      </div>
         <br>
         {{-- table click --}}
         <div class="card">
@@ -188,12 +192,14 @@
                         </tbody>
                     </table>
                     <hr style="border: solid 1px black">
+                    <br>
+                    <br>
                 @endforeach
 
 
             </div>
         </div>
-
+    
         <script>
             console.log('Chart data:', {!! json_encode($labels) !!}, {!! json_encode($inQuantities) !!}, {!! json_encode($outQuantities) !!});
 

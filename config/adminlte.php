@@ -375,8 +375,8 @@ return [
             'submenu' => [
                 [
                     'icon' => '	fas fa-poll',
-                    'text' => 'Total Report',
-                    'url' => '/report/monthly/{month}',
+                    'text' => ' Report for ' . date('F'),
+                    'url' => 'report/monthly/' . date('n'),
                 ],
                 [
                     'icon' => '	fa fa-minus-square',

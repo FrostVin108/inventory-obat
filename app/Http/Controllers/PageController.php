@@ -29,7 +29,7 @@ class PageController extends Controller
             'description'=> 'required',
             'item_code' => 'required|min:14',
             'unit_of_measurement_id'=> 'required',
-            'qty'=> 'required|numeric|min:1',
+            'qty'=> 'required|min_digits:1',
            
         ]);
 
@@ -40,11 +40,11 @@ class PageController extends Controller
             // $item ->qty = Stock::find('qty'),
 
         ]);
-
         Stock::create([
             'item_id'=> $item->id,
             'qty' => $request->qty,
         ]);
+
         //  dd(Item::all());
         return redirect()->route('wh.iteminv')->with('success','berhasil membuat');
     }

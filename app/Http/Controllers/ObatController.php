@@ -138,7 +138,7 @@ class ObatController extends Controller
                 'item_id' => 'required',
                 'order_id' => 'required',
                 'transaction_type' => 'required',
-                'qty' => 'required|numeric|min:1',
+                'qty' => 'required|numeric|min:0',
 
             ]);
 

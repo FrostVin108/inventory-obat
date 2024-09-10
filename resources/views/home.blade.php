@@ -64,8 +64,8 @@
                   </div>
                   <div class="icon">
                     <i class="fas fa-clipboard-list"></i>
-                  </div>
-                  <a href="{{ route('report.month') }}" class="small-box-footer" style="height: 35px">Transaction Report <i class="fas fa-arrow-circle-right"></i></a>
+                  </div>  
+                  <a href="{{ route('report.monthly', ['month' => date('m')]) }}" class="small-box-footer" style="height: 35px">Transaction Report {{ date('F') }} <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
     </div>

@@ -20,10 +20,12 @@
               </div>
               @enderror
 
-              <div class="form-group" >
+            <div class="form-group" >
                 <label for="exampleInputEmail1">Insert Item Code</label>
-                <input type="number" class="form-control @error('item_code') is-invalid @enderror" placeholder="Enter Item Code" name="item_code" value="{{ old('item_code', $edititem->item_code) }}">
-              </div>
+                <input type="number" class="form-control @error('item_code') is-invalid @enderror" placeholder="Enter Item Code" name="item_code" value="{{ old('item_code', $edititem->item_code) }}"id="item_code">
+                <span id="item_code-count">0/14</span> <!-- display character count -->
+                <i id="item_code-icon" style="font-size: 18px;"></i> <!-- icon -->
+            </div>
               @error('item_code')
               <div class="alert alert-danger mt-2">
                   {{ $message }}
@@ -64,5 +66,23 @@
     </div>
 </div>
 
+<script>
+    const itemCodeInput = document.getElementById('item_code');
 
+    itemCodeInput.addEventListener('input', function() {
+        const itemCodeCount = this.value.length;
+        const itemCountSpan = document.getElementById('item_code-count');
+        const itemCodeIcon = document.getElementById('item_code-icon');
+        itemCountSpan.innerText = `${itemCodeCount}/14`;
+        if (itemCodeCount <= 13) {
+            itemCountSpan.style.color = 'red';
+            itemCodeIcon.className = 'fas fa-exclamation-circle';
+            itemCodeIcon.style.color = 'red';
+        } else {
+            itemCountSpan.style.color = 'green';
+            itemCodeIcon.className = 'fas fa-check-circle ';
+            itemCodeIcon.style.color = 'green';
+        }
+    });
+</script>
 @stop

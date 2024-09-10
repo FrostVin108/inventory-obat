@@ -44,18 +44,14 @@ class ReportController extends Controller
         $labels = $this->getTransactionLabels($startOfMonth, $endOfMonth);
         $inQuantities = $this->getInQuantities($startOfMonth, $endOfMonth);
         $outQuantities = $this->getOutQuantities($startOfMonth, $endOfMonth);
-        $stockIn = $this->getStockIn($startOfMonth, $endOfMonth);
-        $stockOut = $this->getStockOut($startOfMonth, $endOfMonth);
+        $stockin = $this->getStockIn($startOfMonth, $endOfMonth);
+        $stockout = $this->getStockOut($startOfMonth, $endOfMonth);
         $balance = $this->getBalance($startOfMonth, $endOfMonth);
         $transactions = $this->getTransactions($startOfMonth, $endOfMonth);
 
-        return view('report/report', compact('data', 'labels', 'inQuantities', 'outQuantities', 'stockIn', 'stockOut', 'balance', 'transactions', 'firstDayOfMonth', 'lastDayOfMonth'));
+        return view('report/report', compact('data', 'labels', 'inQuantities', 'outQuantities', 'stockin', 'stockout', 'balance', 'transactions', 'firstDayOfMonth', 'lastDayOfMonth'));
     }
 
-    private function selectdate()
-    {
-
-    }
 
     private function getItemsData($startOfMonth, $endOfMonth)
     {
@@ -133,8 +129,8 @@ class ReportController extends Controller
         $stockin = Transaction::where('transaction_type', 'IN')
             ->whereBetween('created_at', [$startOfMonth, $endOfMonth])
             ->sum('qty');
-
-            return $stockin;
+    
+        return $stockin;
     }
 
     private function getStockOut($startOfMonth, $endOfMonth)
@@ -142,7 +138,7 @@ class ReportController extends Controller
         $stockout = Transaction::where('transaction_type', 'OUT')
             ->whereBetween('created_at', [$startOfMonth, $endOfMonth])
             ->sum('qty');
-
+    
         return $stockout;
     }
 
