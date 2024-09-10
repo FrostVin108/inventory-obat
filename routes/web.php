@@ -120,9 +120,8 @@ Route::delete('/destroydepart/{id}', [DepartmentController::class, 'detroydepart
 
 
 
-Route::get('/report', [ReportController::class, 'all_item' ])->name('report.month');
-// Route::get('/report', [InventoryController::class, 'all_item' ]);
+// Route::get('/report', [ReportController::class, 'all_item' ])->name('report.month');
 
-// Route::get('/report', [InventoryController::class, 'all_item' ])->name('report');
+Route::get('report/monthly/{month}', [ReportController::class, 'getmonthly'])->name('report.monthly');
 
 Route::get('/report/userin', [InventoryController::class, 'userin'])->name('report.user.in');

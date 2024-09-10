@@ -10,6 +10,7 @@
 
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <div class="card">
   <div class="card-body">
@@ -34,6 +35,17 @@
                   <a href="#" class="dropdown-item">Separated link</a>
                 </div>
               </div>
+ <!-- Add a select box to choose the month -->
+ <div class="input-group">
+  <select id="month" class="form-control">
+    @for ($i = 1; $i <= 12; $i++)
+      <option value="{{ $i }}">{{ date('F', mktime(0, 0, 0, $i, 1)) }}</option>
+    @endfor
+  </select>
+  <div class="input-group-append">
+    <button class="btn btn-primary" id="change-month">Change Month</button>
+  </div>
+</div>
 
             </div>
           </div>
@@ -47,7 +59,7 @@
 
                 <p class="text-center">
                   <strong>Report Date From: {{ date('M 1, Y') }} - {{ date('M t, Y') }}</strong>
-                </p>
+              </p>
 
                 <div class="chart">
                   <!-- Sales Chart Canvas -->
@@ -101,48 +113,41 @@
           <div class="card-footer ">
 
             <div class="card-footer">
-              <div class="row">
-                  <div class="col-sm-3 col-6">
-                      <div class="description-block border-right">
-                          <h5 class="description-header">{{ $stockIn }}</h5>
-                          <span class="description-text text-md">Stock In <br> </span>
-                           <span class="text-sm">({{ date('M 1, Y') }} - {{ date('M t, Y') }})</span>
-                      </div>
-                  </div>
-      
-                  <div class="col-sm-3 col-6">
-                      <div class="description-block border-right">
-                          <h5 class="description-header">{{ $stockOut }}</h5>
-                           <span class="description-text text-md">Stock Out <br> </span>
-                           <span class="text-sm"> ({{ date('M 1, Y') }} - {{ date('M t, Y') }})</span>
-                      </div>
-                  </div>
-      
-                  <div class="col-sm-3 col-6">
-                      <div class="description-block">
-                          <h5 class="description-header">{{ $balance }}</h5>
-                           <span class="description-text text-md">Balance <br> </span>
-                            <span class="text-sm">({{ date('M 1, Y') }} - {{ date('M t, Y') }})</span>
-                      </div>
-                  </div>
-      
-                  <div class="col-sm-3 col-6">
-                      <div class="description-block">
-                        <span class="description-text text-md"> <i>profit / loss</i><br> </span>
-                          @if($balance > 0)
-                              <span class="description-percentage text-success"><i class="fas fa-caret-up"></i> Profit: {{ $balance }}</span>
-                          @elseif($balance < 0)
-                              <span class="description-percentage text-danger"><i class="fas fa-caret-down"></i> Loss: {{ abs($balance) }}</span>
-                          @else
-                              <span class="description-percentage text-muted">No Profit/Loss</span>
-                          @endif
-                      </div>
-                  </div>
+            <div class="row">
+              <div class="col-sm-3 col-6">
+                <div class="description-block border-right">
+                  <h5 class="description-header">Stock In</h5>
+                  <span class="description-text text-md">Stock In <br> </span>
+                  <span class="text-sm">({{ date('M 1, Y') }} - {{ date('M t, Y') }})</span>
+                  @if(is_array($stockIn) || is_object($stockIn))
+                    <ul>
+                      @foreach($stockIn as $item)
+                        <li>{{ $item['quantity'] }}</li>
+                      @endforeach
+                    </ul>
+                  @else
+                    <p>No stock in data available.</p>
+                  @endif
+                </div>
               </div>
-          </div>
-      
+          
+              <div class="col-sm-3 col-6">
+                <div class="description-block border-right">
+                  <h5 class="description-header">Stock Out</h5>
+                  <span class="description-text text-md">Stock Out <br> </span>
+                  <span class="text-sm"> ({{ date('M 1, Y') }} - {{ date('M t, Y') }})</span>
+                  @if(is_array($stockOut) || is_object($stockOut))
+                    <ul>
+                      @foreach($stockOut as $item)
+                        <li>{{ $item['quantity'] }}</li>
+                      @endforeach
+                    </ul>
+                  @else
+                    <p>No stock out data available.</p>
+                  @endif
+                </div>
+              </div>
 
-            <div>
             </div>
 
             <!-- /.row -->
@@ -237,5 +242,16 @@
           }
       }
   });
+</script>
+
+<script>
+$(document).ready(function() {
+    $('#change-month').on('click', function() {
+        var month = $('#month').val();
+        var year = '{{ date('Y') }}';
+        var url = '{{ route('report.monthly', ['month' => ':month']) }}'.replace(':month', month);
+        window.location.href = url;
+    });
+});
 </script>
 @endsection

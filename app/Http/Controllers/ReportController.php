@@ -13,30 +13,49 @@ use Carbon\Carbon;
 
 class ReportController extends Controller
 {
-    public function all_item()
+    // public function all_item()
+    // {
+
+
+    //     $data = $this->getItemsData();
+    //     $labels = $this->getTransactionLabels();
+    //     $inQuantities = $this->getInQuantities();
+    //     $outQuantities = $this->getOutQuantities();
+    //     $stockIn = $this->getStockIn();
+    //     $stockOut = $this->getStockOut();
+    //     $balance = $this->getBalance();
+    //     $transactions = $this->getTransactions();
+
+
+    //     return view('report/report', compact('data', 'labels', 'inQuantities', 'outQuantities', 'stockIn', 'stockOut', 'balance', 'transactions'));
+    // }
+
+    public function getmonthly($month)
     {
-        $data = $this->getItemsData();
-        $labels = $this->getTransactionLabels();
-        $inQuantities = $this->getInQuantities();
-        $outQuantities = $this->getOutQuantities();
-        $stockIn = $this->getStockIn();
-        $stockOut = $this->getStockOut();
-        $balance = $this->getBalance();
-        $transactions = $this->getTransactions();
-    
+        $year = date('Y');
+        $startOfMonth = $year . '-' . $month . '-01';
+        $endOfMonth = $year . '-' . $month . '-' . date('t', strtotime($startOfMonth));
+
+        $data = $this->getItemsData($startOfMonth, $endOfMonth);
+        $labels = $this->getTransactionLabels($startOfMonth, $endOfMonth);
+        $inQuantities = $this->getInQuantities($startOfMonth, $endOfMonth);
+        $outQuantities = $this->getOutQuantities($startOfMonth, $endOfMonth);
+        $stockIn = $this->getStockIn($startOfMonth, $endOfMonth);
+        $stockOut = $this->getStockOut($startOfMonth, $endOfMonth);
+        $balance = $this->getBalance($startOfMonth, $endOfMonth);
+        $transactions = $this->getTransactions($startOfMonth, $endOfMonth);
+
         return view('report/report', compact('data', 'labels', 'inQuantities', 'outQuantities', 'stockIn', 'stockOut', 'balance', 'transactions'));
     }
-    
-    private function getItemsData()
+
+    private function getItemsData($startOfMonth, $endOfMonth)
     {
-        $transactions = Transaction::whereMonth('created_at', date('m'))
-            ->whereYear('created_at', date('Y'))
-            ->get();
-    
-        $items = $transactions->groupBy('item_id');
-    
+        $transactions = Transaction::whereBetween('created_at', [$startOfMonth, $endOfMonth])
+            ->get()
+            ->groupBy('item_id');
+
         $data = [];
-        foreach ($items as $item_id => $transactions) {
+        foreach ($transactions as $item_id => $transactions) {
             if ($transactions->first()->item !== null) {
                 $item = Item::find($item_id);
                 $data[] = [
@@ -47,100 +66,101 @@ class ReportController extends Controller
                 ];
             }
         }
-    
+
         return $data;
     }
-    
-    private function getTransactionLabels()
+
+    private function getTransactionLabels($startOfMonth, $endOfMonth)
     {
-        $transactions = Transaction::whereBetween('created_at', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])
+        $transactions = Transaction::whereBetween('created_at', [$startOfMonth, $endOfMonth])
             ->get()
             ->groupBy(function ($transaction) {
                 return $transaction->created_at->format('Y-m-d');
             });
-    
+
         $labels = [];
         foreach ($transactions as $date => $transactionsForDate) {
             $labels[] = $date;
         }
-    
+
         return $labels;
     }
-    
-    private function getInQuantities()
+
+    private function getInQuantities($startOfMonth, $endOfMonth)
     {
-        $transactions = Transaction::whereBetween('created_at', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])
+        $transactions = Transaction::whereBetween('created_at', [$startOfMonth, $endOfMonth])
             ->get()
             ->groupBy(function ($transaction) {
                 return $transaction->created_at->format('Y-m-d');
             });
-    
+
         $inQuantities = [];
         foreach ($transactions as $date => $transactionsForDate) {
             $inQuantities[] = $transactionsForDate->where('transaction_type', 'IN')->sum('qty');
         }
-    
+
         return $inQuantities;
     }
-    
-    private function getOutQuantities()
+
+    private function getOutQuantities($startOfMonth, $endOfMonth)
     {
-        $transactions = Transaction::whereBetween('created_at', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])
+        $transactions = Transaction::whereBetween('created_at', [$startOfMonth, $endOfMonth])
             ->get()
             ->groupBy(function ($transaction) {
                 return $transaction->created_at->format('Y-m-d');
             });
-    
+
         $outQuantities = [];
         foreach ($transactions as $date => $transactionsForDate) {
             $outQuantities[] = $transactionsForDate->where('transaction_type', 'OUT')->sum('qty');
         }
-    
+
         return $outQuantities;
     }
-    
-    private function getStockIn()
+
+
+    private function getStockIn($startOfMonth, $endOfMonth)
     {
-        $startOfMonth = date('Y-m-01');
-        $endOfMonth = date('Y-m-t');
-    
         return Transaction::where('transaction_type', 'IN')
             ->whereBetween('created_at', [$startOfMonth, $endOfMonth])
             ->sum('qty');
     }
-    
-    private function getStockOut()
+
+    private function getStockOut($startOfMonth, $endOfMonth)
     {
-        $startOfMonth = date('Y-m-01');
-        $endOfMonth = date('Y-m-t');
-    
         return Transaction::where('transaction_type', 'OUT')
             ->whereBetween('created_at', [$startOfMonth, $endOfMonth])
             ->sum('qty');
     }
-    
-    private function getBalance()
+
+    private function getBalance($startOfMonth, $endOfMonth)
     {
-        $stockIn = $this->getStockIn();
-        $stockOut = $this->getStockOut();
-    
-        return $stockIn - $stockOut;
+        $balances = [];
+        $items = Item::all();
+        foreach ($items as $item) {
+            $stockIn = $this->getStockIn($startOfMonth, $endOfMonth);
+            $stockOut = $this->getStockOut($startOfMonth, $endOfMonth);
+            $balance = $stockIn - $stockOut;
+            $balances[] = [
+                'item' => $item->description,
+                'balance' => $balance
+            ];
+        }
+        return $balances;
     }
 
-    private function getTransactions()
+    private function getTransactions($startOfMonth, $endOfMonth)
     {
-        $startOfMonth = Carbon::now()->startOfMonth()->format('Y-m-d');
-        $endOfMonth = Carbon::now()->endOfMonth()->format('Y-m-d');
-    
         $transactions = Transaction::with('item') // Eager load the related "items"
-        ->with('order')
-        ->whereBetween('created_at', [$startOfMonth, $endOfMonth])
-        ->get()
-        ->groupBy(function ($transaction) {
-            return $transaction->created_at->format('Y-m-d');
-        });
-        
+            ->with('order')
+            ->whereBetween('created_at', [$startOfMonth, $endOfMonth])
+            ->get()
+            ->groupBy(function ($transaction) {
+                return $transaction->created_at->format('Y-m-d');
+            });
 
         return $transactions;
     }
+
+
 }
