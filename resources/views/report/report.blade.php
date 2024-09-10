@@ -143,61 +143,6 @@
       
 
             <div>
-              {{-- <div class="row ">
-                <!-- /.col -->
-                <div class="col-sm-3 col-6">
-                  <div class="description-block border-right">
-                    <span class="description-percentage text-success"><i class="fas fa-caret-up"></i> 20%</span>
-                    <h5 class="description-header">56</h5>
-                    <span class="description-text">Stock in</span>
-                  </div>
-                  <!-- /.description-block -->
-                </div>
-  
-                <!-- /.col -->
-                <div class="col-sm-3 col-6">
-                  <div class="description-block border-right">
-                    <span class="description-percentage text-success"><i class="fas fa-caret-up"></i> 52%</span>
-                    <h5 class="description-header">140</h5>
-                    <span class="description-text">Balance</span>
-                  </div>
-                  <!-- /.description-block -->
-                </div>
-  
-                <!-- /.col -->
-                <div class="col-sm-3 col-6">
-                  <div class="description-block">
-                    <span class="description-percentage text-danger"><i class="fas fa-caret-down"></i> 18%</span>
-                    <h5 class="description-header">34</h5>
-                    <span class="description-text">Stock out</span>
-                  </div>
-                  <!-- /.description-block -->
-                </div>
-              </div> --}}
-              {{-- <div class="row">
-                <div class="col-12">
-                  <div class="description-block">
-                    @php
-                      $stockIn = 56;
-                      $stockOut = 34;
-                      $balance = 140;
-                      $initialStock = $balance - $stockIn + $stockOut;
-                      $profit = $balance - $initialStock;
-                    @endphp
-              
-                    @if($profit > 0)
-                      <span class="description-percentage text-success"><i class="fas fa-caret-up"></i> {{ $profit }} ({{ round(($profit / $initialStock) * 100, 2) }}% increase)</span>
-                      <h5 class="description-header">We're making a profit!</h5>
-                    @elseif($profit < 0)
-                      <span class="description-percentage text-danger"><i class="fas fa-caret-down"></i> {{ abs($profit) }} ({{ round((abs($profit) / $initialStock) * 100, 2) }}% decrease)</span>
-                      <h5 class="description-header">We're making a loss.</h5>
-                    @else
-                      <span class="description-percentage text-info"><i class="fas fa-minus"></i> 0 (No change)</span>
-                      <h5 class="description-header">We're breaking even.</h5>
-                    @endif
-                  </div>
-                </div>
-              </div> --}}
             </div>
 
             <!-- /.row -->
@@ -282,13 +227,15 @@
       options: {
           scales: {
               y: {
+                type: 'linear',
+                display: true,
+                position: 'left',
                   beginAtZero: true
                   
               }
+              
           }
       }
   });
 </script>
 @endsection
-
-{{-- just make make me a line chart showing for monthly stock which is start from the first day of the month until the last day of the month, for the line chart it self will be following the database table named "transaction", the chart will be having an stacked line first line is the "IN" its will filtering the qty on table  transaction, where its gonna be  --}}

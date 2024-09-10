@@ -247,7 +247,7 @@
                     options: {
                         title: {
                             display: true,
-                            text: 'Quantity Semua Obat yang ada',
+                            text: 'All Medicine Name And Stock',
                             fontsize: 40
                          },
                         legend: {
