@@ -24,19 +24,19 @@
 
                             <div class="card-tools">
                                 <!-- Add a select box to choose the month -->
-                                <div class="input-group">
-                                    <select id="month" class="form-control">
+                                <div class="input-group" style="gap: 5px; margin-right: 60px;">  
+                                    
+                                    <i class="fas fa-calendar-alt " style="font-size: 28px;"></i>
+                                    <select id="month" class=".form-select-sm example" >
                                         @for ($i = 1; $i <= 12; $i++)
-                                            <option value="{{ $i }}">{{ date('F', mktime(0, 0, 0, $i, 1)) }}
+                                            <option value="{{ $i }}" >{{ date('F', mktime(0, 0, 0, $i, 1)) }}
                                             </option>
                                         @endfor
                                     </select>
-                                    <div class="input-group-append">
-                                        <button class="btn btn-primary" id="change-month">Change Month</button>
+                                    <div class="input-group-append ">
+                                        <button class="btn btn-primary btn-sm" id="change-month"><i class="	fas fa-sync"></i> Change</button>
                                     </div>
                                 </div>
-
-
                             </div>
                         </div>
                         <!-- /.card-header -->
