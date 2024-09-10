@@ -376,8 +376,7 @@ return [
                 [
                     'icon' => '	fas fa-poll',
                     'text' => 'Total Report',
-                    'url' => '/report/monthly/1
-                    ',
+                    'url' => '/report/monthly/{month}',
                 ],
                 [
                     'icon' => '	fa fa-minus-square',

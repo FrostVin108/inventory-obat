@@ -33,6 +33,10 @@ class ReportController extends Controller
     public function getmonthly($month)
     {
         $year = date('Y');
+        $firstDayOfMonth = date('Y-m-01', mktime(0, 0, 0, $month, 1, $year));
+        $lastDayOfMonth = date('Y-m-t', mktime(0, 0, 0, $month, 1, $year));
+
+        $year = date('Y');
         $startOfMonth = $year . '-' . $month . '-01';
         $endOfMonth = $year . '-' . $month . '-' . date('t', strtotime($startOfMonth));
 
@@ -45,7 +49,12 @@ class ReportController extends Controller
         $balance = $this->getBalance($startOfMonth, $endOfMonth);
         $transactions = $this->getTransactions($startOfMonth, $endOfMonth);
 
-        return view('report/report', compact('data', 'labels', 'inQuantities', 'outQuantities', 'stockIn', 'stockOut', 'balance', 'transactions'));
+        return view('report/report', compact('data', 'labels', 'inQuantities', 'outQuantities', 'stockIn', 'stockOut', 'balance', 'transactions', 'firstDayOfMonth', 'lastDayOfMonth'));
+    }
+
+    private function selectdate()
+    {
+
     }
 
     private function getItemsData($startOfMonth, $endOfMonth)
@@ -121,16 +130,20 @@ class ReportController extends Controller
 
     private function getStockIn($startOfMonth, $endOfMonth)
     {
-        return Transaction::where('transaction_type', 'IN')
+        $stockin = Transaction::where('transaction_type', 'IN')
             ->whereBetween('created_at', [$startOfMonth, $endOfMonth])
             ->sum('qty');
+
+            return $stockin;
     }
 
     private function getStockOut($startOfMonth, $endOfMonth)
     {
-        return Transaction::where('transaction_type', 'OUT')
+        $stockout = Transaction::where('transaction_type', 'OUT')
             ->whereBetween('created_at', [$startOfMonth, $endOfMonth])
             ->sum('qty');
+
+        return $stockout;
     }
 
     private function getBalance($startOfMonth, $endOfMonth)
