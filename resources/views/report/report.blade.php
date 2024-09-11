@@ -165,32 +165,39 @@
       <div class="card">
         <div class="card-body">
              <h3>Table for IN transactions</h3> 
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th scope="col">Item Name</th>
-                            <th scope="col">UOM</th>
-                            <th scope="col">Quantity</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($inuom as $key => $item)
-                            @if ($item['in'] > 0)
-                                <tr>
-                                    <td>{{ $key +1 }}</td>
-                                    <td>{{ $item['description'] }}</td>
-                                    <td>{{ $item['uom'] }}</td>
-                                    <td>{{ $item['in'] }}</td>
-                                    <td>{{ $item['created_at'] }}</td>
-                                </tr>
-                            @endif
-                        @endforeach
-                    </tbody>
-                </table>
+             <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Item Name</th>
+                        <th scope="col">UOM</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($inuom as $key => $item)
+                        @if (isset($item['in']) && $item['in'] > 0)
+                            <tr>
+                                <td>{{ $key +1 }}</td>
+                                <td>{{ $item['description'] }}</td>
+                                <td>{{ $item['uom'] }}</td>
+                                <td>{{ $item['in'] }}</td>
+                                <td>{{ $item['created_at'] }}</td>
+                            </tr>
+                        @endif
+                    @endforeach
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th colspan="3">Total IN:</th>
+                        <th>{{ $totalIn }}</th>
+                    </tr>
+                </tfoot>
+            </table>
 <br>
 <br>
                  <h3>Table for OUT transactions </h3>
-                <table class="table table-hover">
+                 <table class="table table-hover">
                     <thead>
                         <tr>
                             <th scope="col">NO</th>
@@ -202,7 +209,7 @@
                     </thead>
                     <tbody>
                         @foreach ($inuom as $key => $item)
-                            @if ($item['out'] > 0)
+                            @if (isset($item['out']) && $item['out'] > 0)
                                 <tr>
                                     <td>{{ $key +1 }}</td>
                                     <td>{{ $item['description'] }}</td>
@@ -215,6 +222,9 @@
                     </tbody>
                     <tfoot>
                         <tr>
+                            <th colspan="3">Total OUT:</th>
+                            <th>{{ $totalOut }}</th>
+                        </tr>
                     </tfoot>
                 </table>
         </div>

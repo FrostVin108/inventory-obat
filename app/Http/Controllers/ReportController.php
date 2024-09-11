@@ -13,22 +13,6 @@ use Carbon\Carbon;
 
 class ReportController extends Controller
 {
-    // public function all_item()
-    // {
-
-
-    //     $data = $this->getItemsData();
-    //     $labels = $this->getTransactionLabels();
-    //     $inQuantities = $this->getInQuantities();
-    //     $outQuantities = $this->getOutQuantities();
-    //     $stockIn = $this->getStockIn();
-    //     $stockOut = $this->getStockOut();
-    //     $balance = $this->getBalance();
-    //     $transactions = $this->getTransactions();
-
-
-    //     return view('report/report', compact('data', 'labels', 'inQuantities', 'outQuantities', 'stockIn', 'stockOut', 'balance', 'transactions'));
-    // }
 
     public function getmonthly($month)
     {
@@ -40,6 +24,11 @@ class ReportController extends Controller
         $startOfMonth = $year . '-' . $month . '-01';
         $endOfMonth = $year . '-' . $month . '-' . date('t', strtotime($startOfMonth));
 
+        $inuomData = $this->getInMonthuom($startOfMonth, $endOfMonth);
+        $inuom = $inuomData['inuom'];
+        $totalIn = $inuomData['totalIn'];
+        $totalOut = $inuomData['totalOut'];
+
         $data = $this->getItemsData($startOfMonth, $endOfMonth);
         $labels = $this->getTransactionLabels($startOfMonth, $endOfMonth);
         $inQuantities = $this->getInQuantities($startOfMonth, $endOfMonth);
@@ -48,9 +37,8 @@ class ReportController extends Controller
         $stockout = $this->getStockOut($startOfMonth, $endOfMonth);
         $balance = $this->getBalance($startOfMonth, $endOfMonth);
         $transactions = $this->getTransactions($startOfMonth, $endOfMonth);
-        $inuom = $this->getInMonthuom($startOfMonth, $endOfMonth);
 
-        return view('report/report', compact('data', 'labels', 'inQuantities', 'outQuantities', 'stockin', 'stockout', 'balance', 'transactions', 'firstDayOfMonth', 'lastDayOfMonth', 'inuom'));
+        return view('report/report', compact('data', 'labels', 'inQuantities', 'outQuantities', 'stockin', 'stockout', 'balance', 'transactions', 'firstDayOfMonth', 'lastDayOfMonth', 'inuom', 'totalIn', 'totalOut'));
     }
 
 
@@ -179,19 +167,28 @@ class ReportController extends Controller
             ->groupBy('item_id');
 
         $inuom = [];
+        $totalIn = 0;
+        $totalOut = 0;
         foreach ($transactions as $item_id => $transactions) {
             $item = Item::find($item_id);
             $uom = $item->uom; // assuming you have a uom relationship defined in the Item model
-            $inuom[] = [
-                'description' => $item->description,
-                'uom' => $uom->unit_of_measurement, // assuming you have a name column in the UOM table
-                'in' => $transactions->where('transaction_type', 'IN')->sum('qty'),
-                'out' => $transactions->where('transaction_type', 'OUT')->sum('qty'),
-                'created_at' => $transactions->max('created_at'), // add this line
-            ];
+            $in = $transactions->where('transaction_type', 'IN')->sum('qty');
+            $out = $transactions->where('transaction_type', 'OUT')->sum('qty');
+
+            if ($in > 0 || $out > 0) {
+                $inuom[] = [
+                    'description' => $item->description,
+                    'uom' => $uom->unit_of_measurement, // assuming you have a name column in the UOM table
+                    'in' => $in,
+                    'out' => $out,
+                    'created_at' => $transactions->max('created_at'), // add this line
+                ];
+                $totalIn += $in;
+                $totalOut += $out;
+            }
         }
 
-        return $inuom;
+        return compact('inuom', 'totalIn', 'totalOut');
     }
 
 }
