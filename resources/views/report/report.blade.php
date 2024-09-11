@@ -29,8 +29,7 @@
                                     <i class="fas fa-calendar-alt " style="font-size: 28px;"></i>
                                     <select id="month" class=".form-select-sm example" >
                                         @for ($i = 1; $i <= 12; $i++)
-                                            <option value="{{ $i }}" >{{ date('F', mktime(0, 0, 0, $i, 1)) }}
-                                            </option>
+                                            <option value="{{ $i }}" {{ (session('month') == $i) ? 'selected' : '' }}>{{ date('F', mktime(0, 0, 0, $i, 1)) }}</option>
                                         @endfor
                                     </select>
                                     <div class="input-group-append ">
@@ -168,6 +167,7 @@
              <table class="table table-hover">
                 <thead>
                     <tr>
+                        <th scope="col">No</th>
                         <th scope="col">Item Name</th>
                         <th scope="col">UOM</th>
                         <th scope="col">Quantity</th>
@@ -234,6 +234,7 @@
         {{-- table click --}}
         <div class="card">
             <div class="card-body">
+                <h3>List Item Per day </h3>
 
                 @foreach ($transactions as $date => $transactionGroup)
                     <h5>Date : {{ $date }}</h5>
@@ -306,13 +307,13 @@
         </script>
 
         <script>
-            $(document).ready(function() {
-                $('#change-month').on('click', function() {
-                    var month = $('#month').val();
-                    var year = '{{ date('Y') }}';
-                    var url = '{{ route('report.monthly', ['month' => ':month']) }}'.replace(':month', month);
-                    window.location.href = url;
-                });
-            });
+$(document).ready(function() {
+    $('#change-month').on('click', function() {
+        var month = $('#month').val();
+        var year = '{{ date('Y') }}';
+        var url = '{{ route('report.monthly', ['month' => ':month']) }}'.replace(':month', month);
+        window.location.href = url;
+    });
+});
         </script>
     @endsection

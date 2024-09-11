@@ -29,6 +29,8 @@ class ReportController extends Controller
         $totalIn = $inuomData['totalIn'];
         $totalOut = $inuomData['totalOut'];
 
+        session()->put('month', $month);
+
         $data = $this->getItemsData($startOfMonth, $endOfMonth);
         $labels = $this->getTransactionLabels($startOfMonth, $endOfMonth);
         $inQuantities = $this->getInQuantities($startOfMonth, $endOfMonth);
