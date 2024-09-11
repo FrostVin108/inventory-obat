@@ -6,6 +6,7 @@
 
 @section('content')
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <div class="card">
     <div class="card-body" style="padding: 47px">
@@ -15,57 +16,121 @@
     
         <div id="search-results">
             @foreach($data as $order)
-                <div class="department-container">
-                    <h2>Department: {{ $order['department'] }}</h2>
-                    <table class="table table-striped table-bordered table-hover">
-                        <thead>
-                            <tr>
-                                <th>Item Description</th>
-                                <th>Transaction Type</th>
-                                <th>Quantity</th>
-                                <th>Date Added</th>
-                            </tr>
-                        </thead>
-                        <tbody class="table-body">
-                            @foreach($order['in_transactions'] as $transaction)
-                                <tr>
-                                    <td>{{ $transaction['item_description'] }}</td>
-                                    <td>IN</td>
-                                    <td>{{ $transaction['qty'] }}</td>
-                                    <td>{{ date('Y-m-d H:i:s', strtotime($transaction['created_at'])) }}</td>
-                                </tr>
-                            @endforeach
-                            @foreach($order['out_transactions'] as $transaction)
-                                <tr>
-                                    <td>{{ $transaction['item_description'] }}</td>
-                                    <td>OUT</td>
-                                    <td>{{ $transaction['qty'] }}</td>
-                                    <td>{{ date('Y-m-d H:i:s', strtotime($transaction['created_at'])) }}</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                    <table class="table table-striped table-bordered table-hover table-sm">
-                        <thead>
-                            <tr>
-                                <th>Transaction Type</th>
-                                <th>Count</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>IN</td>
-                                <td>{{ count($order['in_transactions']) }}</td>
-                            </tr>
-                            <tr>
-                                <td>OUT</td>
-                                <td>{{ count($order['out_transactions']) }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <br>
+    <div class="department-container">
+        <h2>Department: {{ $order['department'] }}</h2>
+
+        <canvas id="department-chart-{{ $order['department'] }}" width="70" height="20"></canvas>
+        <br>
+        <br>
+        
+        <table class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Item Description</th>
+                    <th>Transaction Type</th>
+                    <th>Quantity</th>
+                    <th>Date Added</th>
+                </tr>
+            </thead>
+            <tbody class="table-body">
+                @foreach($order['in_transactions'] as $transaction)
+                    <tr>
+                        <td>{{ $transaction['item_description'] }}</td>
+                        <td>IN</td>
+                        <td>{{ $transaction['qty'] }}</td>
+                        <td>{{ date('Y-m-d H:i:s', strtotime($transaction['created_at'])) }}</td>
+                    </tr>
+                @endforeach
+                @foreach($order['out_transactions'] as $transaction)
+                    <tr>
+                        <td>{{ $transaction['item_description'] }}</td>
+                        <td>OUT</td>
+                        <td>{{ $transaction['qty'] }}</td>
+                        <td>{{ date('Y-m-d H:i:s', strtotime($transaction['created_at'])) }}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+        <table class="table table-striped table-bordered table-hover table-sm">
+            <thead>
+                <tr>
+                    <th>Transaction Type</th>
+                    <th>Count</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>IN</td>
+                    <td>{{ count($order['in_transactions']) }}</td>
+                </tr>
+                <tr>
+                    <td>OUT</td>
+                    <td>{{ count($order['out_transactions']) }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <script>
+            var ctx = document.getElementById('department-chart-{{ $order['department'] }}').getContext('2d');
+            var chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'IN',
+                        data: [],
+                        backgroundColor: 'rgba(0, 123, 255, 0.5)',
+                        borderColor: 'rgba(0, 123, 255, 1)',
+                        borderWidth: 1
+                    }, {
+                        label: 'OUT',
+                        data: [],
+                        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            var inItemDescriptions = [];
+            var outItemDescriptions = [];
+            var inQuantities = {};
+            var outQuantities = {};
+
+            @foreach($order['in_transactions'] as $transaction)
+                inItemDescriptions.push('{{ $transaction['item_description'] }}');
+                if (inQuantities['{{ $transaction['item_description'] }}']) {
+                    inQuantities['{{ $transaction['item_description'] }}'] += {{ $transaction['qty'] }};
+                } else {
+                    inQuantities['{{ $transaction['item_description'] }}'] = {{ $transaction['qty'] }};
+                }
             @endforeach
+
+            @foreach($order['out_transactions'] as $transaction)
+                outItemDescriptions.push('{{ $transaction['item_description'] }}');
+                if (outQuantities['{{ $transaction['item_description'] }}']) {
+                    outQuantities['{{ $transaction['item_description'] }}'] += {{ $transaction['qty'] }};
+                } else {
+                    outQuantities['{{ $transaction['item_description'] }}'] = {{ $transaction['qty'] }};
+                }
+            @endforeach
+
+            var itemDescriptions = [...new Set([...inItemDescriptions, ...outItemDescriptions])];
+            chart.data.labels = itemDescriptions;
+            chart.data.datasets[0].data = itemDescriptions.map(item => inQuantities[item] || 0);
+            chart.data.datasets[1].data = itemDescriptions.map(item => outQuantities[item] || 0);
+            chart.update();
+        </script>
+    </div>
+    <br>
+@endforeach
         </div>
     </div>
 </div>
@@ -107,4 +172,6 @@ $(document).ready(function() {
     });
 });
 </script>
+
+
 @endsection
