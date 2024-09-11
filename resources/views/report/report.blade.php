@@ -119,7 +119,56 @@
                         
                                 <div class="col-sm-4 col-6">
                                     <div class="description-block">
-                                      <span class=" text-md"> <h5>{{ $stockin - $stockout }}</h5> </span>
+                                        <span class=" text-md"> 
+                                            @php
+                                            $selectedMonth = session('month'); // get the selected month from the session
+                                            $currentYear = date('Y'); // current year
+                    
+                                            // calculate the previous month and year based on the selected month
+                                            if ($selectedMonth == 1) {
+                                                $previousMonth = 12; // December
+                                                $previousYear = $currentYear - 1; // previous year
+                                            } else {
+                                                $previousMonth = $selectedMonth - 1; // previous month
+                                                $previousYear = $currentYear; // current year
+                                            }
+                    
+                                            // retrieve previous month's "in" and "out" transactions
+                                            $previousMonthIn = DB::table('Transactions')
+                                                ->whereMonth('created_at', $previousMonth)
+                                                ->whereYear('created_at', $previousYear)
+                                                ->where('transaction_type', 'in')
+                                                ->sum('qty');
+                    
+                                            $previousMonthOut = DB::table('Transactions')
+                                                ->whereMonth('created_at', $previousMonth)
+                                                ->whereYear('created_at', $previousYear)
+                                                ->where('transaction_type', 'out')
+                                                ->sum('qty');
+                    
+                                            // retrieve current month's "in" and "out" transactions
+                                            $currentMonthIn = DB::table('Transactions')
+                                                ->whereMonth('created_at', $selectedMonth)
+                                                ->whereYear('created_at', $currentYear)
+                                                ->where('transaction_type', 'in')
+                                                ->sum('qty');
+                    
+                                            $currentMonthOut = DB::table('Transactions')
+                                                ->whereMonth('created_at', $selectedMonth)
+                                                ->whereYear('created_at', $currentYear)
+                                                ->where('transaction_type', 'out')
+                                                ->sum('qty');
+                    
+                                            // calculate the balance
+                                            $newBalance = ($previousMonthIn - $previousMonthOut) + ($currentMonthIn - $currentMonthOut);
+                    
+                                            // calculate the profit/loss
+                                            $profitLoss = ($previousMonthIn - $previousMonthOut) + ($currentMonthIn - $currentMonthOut);
+                                        @endphp
+
+                                            <!-- display the balance -->
+                                            <h5>{{ $newBalance }}</h5>
+                                        </span>
                                         <h5 class="description-text ">Balance</h5>
                                         <span class="text-sm">({{ $firstDayOfMonth }} - {{ $lastDayOfMonth }})</span>
                                     </div>
@@ -131,15 +180,17 @@
                                   <div class="col-sm-12">
                                       <div class="description-block">
                                           <h6 class="description-text"><i class="	fas fa-balance-scale"></i><i> Profit/Loss</i> </h6>
-                                          @if ($stockin > $stockout)
-                                              <span class="text-md text-success"><h5><i class="fas fa-caret-down success"></i> {{ $stockin - $stockout }}</h5> Profit</span>
-                                          @elseif ($stockin < $stockout)
-                                              <span class="text-md text-danger"><h5><i class="fas fa-caret-down danger"></i> {{ $stockout - $stockin }}</h5> Loss</span>
-                                          @else
-                                              <span class="text-md text-muted"><h5>0</h5> No Profit/Loss</span>
-                                          @endif
-                                          <span class="text-sm">({{ $firstDayOfMonth }} - {{ $lastDayOfMonth }})</span>
-                                      </div>
+                                         <!-- display the profit/loss -->
+                                            {{-- @if ($profitLoss > 0)
+                                                <span class="text-success"><h4> <i class=" fas fa-caret-up"></i> {{ $profitLoss }}</h4></span>
+                                            @elseif ($profitLoss < 0)
+                                                <span class="text-danger"><h4> <i class=" fas fa-caret-down"></i> {{ abs($profitLoss) }}</h4></span>
+                                            @else
+                                                <span class="text-muted">0</span>
+                                            @endif --}}
+                                            <span class="text-muted">under progress</span>
+                                        <h5 class="description-text ">Profit/Loss</h5>
+                                        <span class="text-sm">({{ $firstDayOfMonth }} - {{ $lastDayOfMonth }})</span>
                                   </div>
                               </div>
                           </div>
