@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content_header')
-    <h1 style="font-size: 27px"><i class="	fas fa-file-alt"></i> Report</h1>
+    <h1 style="font-size: 27px"><i class="	fas fa-file-alt"></i> Monthly Report</h1>
 @stop
 
 @section('content')
@@ -43,7 +43,7 @@
                             <div class="row">
                                 <div class="col-md-8">
                                     <p class="text-center">
-                                        <strong>Report Date From: {{ $firstDayOfMonth }} - {{ $lastDayOfMonth }}</strong>
+                                        <strong>Report Period: From {{ $firstDayOfMonth }} - {{ $lastDayOfMonth }}</strong>
                                     </p>
 
 
@@ -62,7 +62,7 @@
                                 <!-- /.col -->
                                 <div class="col-md-4">
                                     <p class="text-center">
-                                        <strong>{{ $firstDayOfMonth }} - {{ $lastDayOfMonth }} | Item In and Out </strong>
+                                        <strong>{{ $firstDayOfMonth }} - {{ $lastDayOfMonth }} | Monthly Item Overview</strong>
                                     </p>
 
 
@@ -175,26 +175,6 @@
                                 </div>
                             </div>
                             <br>
-                            {{-- <div class="card-footer shadow-lg" style="#202020 ">
-                              <div class="row">
-                                  <div class="col-sm-12">
-                                      <div class="description-block">
-                                          <h6 class="description-text"><i class="	fas fa-balance-scale"></i><i> Profit/Loss</i> </h6>
-                                            @if ($profitLoss > 0)
-                                                <span class="text-success"><h4> <i class=" fas fa-caret-up"></i> {{ $profitLoss }}</h4></span>
-                                            @elseif ($profitLoss < 0)
-                                                <span class="text-danger"><h4> <i class=" fas fa-caret-down"></i> {{ abs($profitLoss) }}</h4></span>
-                                            @else
-                                                <span class="text-muted">0</span>
-                                            @endif 
-                                            <span class="text-muted">under progress</span>
-                                        <h5 class="description-text ">Profit/Loss</h5>
-                                        <span class="text-sm">({{ $firstDayOfMonth }} - {{ $lastDayOfMonth }})</span>
-                                  </div>
-                              </div>
-                          </div>
-
-                        </div> --}}
 
                             <!-- /.card-footer -->
                       </div>
@@ -213,7 +193,7 @@
 
 
         <div class="card-body">
-             <h3>Table for IN transactions</h3> 
+             <h3>IN Transactions Log</h3> 
              <table class="table table-hover">
                 <thead>
                     <tr>
@@ -246,12 +226,13 @@
             </table>
 <br>
 <br>
-                 <h3>Table for OUT transactions </h3>
+                 <h3>OUT Transactions Log</h3>
                  <table class="table table-hover">
                     <thead>
                         <tr>
                             <th scope="col">NO</th>
                             <th scope="col">Item Name</th>
+                            {{-- <th scope="col">Order By</th> --}}
                             <th scope="col">UOM</th>
                             <th scope="col">Quantity</th>
                             <th scope="col">Date</th>
@@ -263,6 +244,7 @@
                                 <tr>
                                     <td>{{ $key +1 }}</td>
                                     <td>{{ $item['description'] }}</td>
+                                    {{-- <td>{{ $item['department'] }}</td> --}}
                                     <td>{{ $item['uom'] }}</td>
                                     <td>{{ $item['out'] }}</td>
                                     <td>{{ $item['created_at'] }}</td>
@@ -292,7 +274,7 @@
         <div class="card">
             <div class="card-body">
 
-                <h3>List Item Per Day</h3>
+                <h3>Month’s Daily Log</h3>
             
                 <!-- Pagination Links -->
 

@@ -11,8 +11,8 @@
     <div class="card">
         <div class="card-body" style="padding: 47px;">
             <div class="d-flex input-group">
-                <div class="col-md-6 ">
-                    <input type="text" id="search-input" placeholder="Search..." class="form-control-border">
+                <div class="col-md-6 search-post">
+                    <input type="text" id="search-input" placeholder="Search..." class="form-control" style="width: 44%">
                     <button id="search-btn" class="btn btn-success" >Search</button>
                     <button id="clear-btn" class="btn btn-warning">Clear</button>
                 </div>
@@ -150,6 +150,14 @@
             </div>
         </div>
     </div>
+
+    <style>
+        .search-post{
+            display: flex;
+            flex-direction: row;
+            gap: 3px;
+        }
+    </style>
 
     <script>
         $(document).ready(function() {

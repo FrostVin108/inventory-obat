@@ -192,7 +192,8 @@ class ReportController extends Controller
 
     private function getInMonthuom($startOfMonth, $endOfMonth)
     {
-        $transactions = Transaction::whereBetween('created_at', [$startOfMonth, $endOfMonth])
+        $transactions = Transaction::whereBetween('transactions.created_at', [$startOfMonth, $endOfMonth])
+// ->join('order', 'transactions.order_id', '=', 'order.id')
             ->get()
             ->groupBy('item_id');
 
@@ -201,6 +202,7 @@ class ReportController extends Controller
         $totalOut = 0;
         foreach ($transactions as $item_id => $transactions) {
             $item = Item::find($item_id);
+            $order = $transactions->first()->order;
             $uom = $item->uom; // assuming you have a uom relationship defined in the Item model
             $in = $transactions->where('transaction_type', 'IN')->sum('qty');
             $out = $transactions->where('transaction_type', 'OUT')->sum('qty');
@@ -208,6 +210,7 @@ class ReportController extends Controller
             if ($in > 0 || $out > 0) {
                 $inuom[] = [
                     'description' => $item->description,
+                    'department' => $order->department,
                     'uom' => $uom->unit_of_measurement, // assuming you have a name column in the UOM table
                     'in' => $in,
                     'out' => $out,

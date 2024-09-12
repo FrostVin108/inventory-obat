@@ -26,21 +26,6 @@
 
             <div class="col-lg-3 col-6">
                 <!-- small box -->
-                <div class="small-box bg-warning">
-                  <div class="inner">
-                    <h3>{{$totalout}}</h3>
-    
-                    <p>Total Stock Out</p>
-                  </div>
-                  <div class="icon">
-                    <i class="fas fa-arrow-circle-up"></i>
-                  </div>
-                  <a href="{{ route('ob.stockout') }}" class="small-box-footer" style="height: 35px">Stock Out <i class="fas fa-arrow-circle-right"></i></a>
-                </div>
-            </div>
-
-            <div class="col-lg-3 col-6">
-                <!-- small box -->
                 <div class="small-box bg-success">
                   <div class="inner">
                     <h3>{{$totalin}}</h3>
@@ -53,6 +38,21 @@
                   <a href="{{ route('ob.stockin') }}" class="small-box-footer" style="height: 35px">Stock In <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
+
+            <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box bg-warning">
+                  <div class="inner">
+                    <h3>{{$totalout}}</h3>
+    
+                    <p>Total Stock Out</p>
+                  </div>
+                  <div class="icon">
+                    <i class="fas fa-arrow-circle-up"></i>
+                  </div>
+                  <a href="{{ route('ob.stockout') }}" class="small-box-footer" style="height: 35px">Stock Out <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>  
 
             <div class="col-lg-3 col-6">
                 <!-- small box -->
@@ -98,7 +98,7 @@
     <div class="card" style="width: 60%; height: 100%">
             <div class="row-md-7">
                 <p class="text-center">
-                  <strong> Report Date From: {{ date('M 1, Y') }} - {{ date('M t, Y') }}</strong>
+                  <strong> Report Period: {{ date('M 1, Y') }} - {{ date('M t, Y') }}</strong>
                 </p>
     
                 <div class="chart">
@@ -123,7 +123,7 @@
 
 
 <div class="card shadow p-3 mb-5 bg-white rounded" style="width: 50%; height: 100%">
-        <h3>Todays Stock In And Out</h3>
+        <h4><i class="fas "></i> Today's Market Summary</h4>
 
         <br>
                 
@@ -242,8 +242,8 @@
                     options: {
                         title: {
                             display: true,
-                            text: 'All Medicine Name And Stock',
-                            fontsize: 40
+                            text: 'Medicine Inventory and Stock Details',
+                            fontsize: 100
                          },
                         legend: {
                             display: true,
