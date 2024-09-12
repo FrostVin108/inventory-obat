@@ -93,12 +93,12 @@
     </a>
 </div> --}}
 
-<div class="row d-flex" style="gap: 13px">
+<div class="column d-flex" style="gap: 13px">
 
-    <div class="card" style="width: 64%; height: 100%">
+    <div class="card" style="width: 60%; height: 100%">
             <div class="row-md-7">
                 <p class="text-center">
-                  <strong> Sales: {{ date('M 1, Y') }} - {{ date('M t, Y') }}</strong>
+                  <strong> Report Date From: {{ date('M 1, Y') }} - {{ date('M t, Y') }}</strong>
                 </p>
     
                 <div class="chart">
@@ -110,15 +110,10 @@
         
     </div>
     
-    <div class="card" style=" width:500px">
-        <div class="card-body" style=" width:500px">
-            <div class="row-md-7">
-                <div class="donut-chart">
-                    <div id="chart-container" style="width: 1000px; height: 80%;">
-                        <canvas id="chart" width="70%" height="70%" ></canvas>
-                    </div>
-                </div>
-            </div>
+    <div class="card" style="width: 40%; height: 100%">
+        <div class="row-md-7">
+            <canvas id="chart" width="70%" height="63.9%" ></canvas>
+
         </div>
     </div>
     

@@ -175,19 +175,18 @@
                                 </div>
                             </div>
                             <br>
-                            <div class="card-footer shadow-lg" style="#202020 ">
+                            {{-- <div class="card-footer shadow-lg" style="#202020 ">
                               <div class="row">
                                   <div class="col-sm-12">
                                       <div class="description-block">
                                           <h6 class="description-text"><i class="	fas fa-balance-scale"></i><i> Profit/Loss</i> </h6>
-                                         <!-- display the profit/loss -->
-                                            {{-- @if ($profitLoss > 0)
+                                            @if ($profitLoss > 0)
                                                 <span class="text-success"><h4> <i class=" fas fa-caret-up"></i> {{ $profitLoss }}</h4></span>
                                             @elseif ($profitLoss < 0)
                                                 <span class="text-danger"><h4> <i class=" fas fa-caret-down"></i> {{ abs($profitLoss) }}</h4></span>
                                             @else
                                                 <span class="text-muted">0</span>
-                                            @endif --}}
+                                            @endif 
                                             <span class="text-muted">under progress</span>
                                         <h5 class="description-text ">Profit/Loss</h5>
                                         <span class="text-sm">({{ $firstDayOfMonth }} - {{ $lastDayOfMonth }})</span>
@@ -195,7 +194,7 @@
                               </div>
                           </div>
 
-                        </div>
+                        </div> --}}
 
                             <!-- /.card-footer -->
                       </div>
@@ -282,10 +281,24 @@
       </div>
 
         <br>
+{{-- 
+        @foreach ($products as $product)
+        {{ $product->product_name}} --}}
+        
+        
+        
+        
         {{-- table click --}}
         <div class="card">
             <div class="card-body">
                 <h3>List Item Per day </h3>
+
+                <div class="column w-20 pagination-post">
+                    {{ $transactions ->links() }} 
+                </div>
+                <br>
+                <br>
+
 
                 @foreach ($transactions as $date => $transactionGroup)
                     <h5>Date : {{ $date }}</h5>
@@ -312,8 +325,11 @@
                     <hr style="border: solid 1px black">
                     <br>
                     <br>
-                @endforeach
+                    @endforeach
 
+                    <div class="column w-20 pagination-post">
+                        {{ $transactions->appends(request()->query())->links() }}
+                    </div>
 
             </div>
         </div>
@@ -367,4 +383,38 @@ $(document).ready(function() {
     });
 });
         </script>
+
+<style>
+    .column.w-20 {
+    /* Example of a width setting, adjust as needed */
+    width: 100%;
+    /* border: solid 10px black; */
+
+    /* Ensure padding and margin do not affect icon size */
+    padding: 0;
+    /* margin: 0; */
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+}
+
+.pagination .page-item .page-link {
+    font-size: 14px; /* Adjust as needed */
+    width: 30px;     /* Adjust as needed */
+    height: 10px;    /* Adjust as needed */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+svg{
+    width: 20px;
+}
+
+.pagination-post{
+    margin-left: auto;
+}
+</style>
     @endsection

@@ -151,15 +151,22 @@ class ReportController extends Controller
 
     private function getTransactions($startOfMonth, $endOfMonth)
     {
-        $transactions = Transaction::with('item') // Eager load the related "items"
-            ->with('order')
-            ->whereBetween('created_at', [$startOfMonth, $endOfMonth])
-            ->get()
-            ->groupBy(function ($transaction) {
-                return $transaction->created_at->format('Y-m-d');
-            });
+        // Get paginated results
+        $paginatedTransactions = Transaction::with('item', 'order') // Eager load related "items" and "orders"
+        ->whereBetween('created_at', [$startOfMonth, $endOfMonth])
+        ->orderBy('created_at') // Ensure ordering for consistent grouping
+        ->paginate(6);
 
-        return $transactions;
+        // Group by date for the current page items
+        $groupedTransactions = $paginatedTransactions->getCollection()->groupBy(function ($transaction) {
+        return $transaction->created_at->format('Y-m-d');
+        });
+
+        // Create a new LengthAwarePaginator with grouped results
+        $paginatedTransactions->setCollection(collect($groupedTransactions));
+
+        return $paginatedTransactions;
+
     }
 
     private function getInMonthuom($startOfMonth, $endOfMonth)

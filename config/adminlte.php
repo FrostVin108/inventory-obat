@@ -317,11 +317,6 @@ return [
             'text' => 'search',
         ],
         [
-            'text' => 'blog',
-            'url' => 'admin/blog',
-            'can' => 'manage-blog',
-        ],
-        [
             'text' => 'How To Use',
             'url' => '/htu',
             'icon' => 'far fa-fw fas fa-question',

@@ -28,6 +28,8 @@
             </div>
             <br>
             <br>
+
+            
             <div id="search-results">
                 @foreach ($data as $order)
                     <div class="department-container">
