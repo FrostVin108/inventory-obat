@@ -6,8 +6,6 @@
 
 @section('content')
 
-<link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap4.min.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js"></script>
@@ -50,17 +48,6 @@
 </div>
 
 <style>
-    .table-bordered th, .table-bordered td {
-    box-shadow: none;
-}
-
-.dataTables_length {
-    margin-bottom: 20px;
-}
-
-.dataTables_length label {
-    font-weight: normal;
-}
 
 .dataTables_length select {
     width: 70px !important;
@@ -68,25 +55,6 @@
     padding: 5px !important;
     border: 1px solid #ccc !important;
     border-radius: 4px !important;
-}
-
-.dt-button {
-    background-color: #337ab7 !important;
-    color: #ffffff !important;
-    border: none !important;
-    border-radius: 4px !important;
-    padding: 5px 10px !important;
-    font-size: 12px !important;
-    cursor: pointer !important;
-    box-shadow: none !important; /* Add this to remove the thick black shadow */
-}
-
-
-.dt-button:hover {
-    background-color: #ffffff;
-    cursor: pointer !important;
-    box-shadow: none !important; 
-    border: none !important; /* Add this to remove the border */
 }
 
 </style>
