@@ -14,23 +14,27 @@ use Carbon\Carbon;
 class ReportController extends Controller
 {
 
-    public function getmonthly($month)
+    public function getmonthly($month , Request $request)
     {
+        // Calculate the start and end of the month
         $year = date('Y');
         $firstDayOfMonth = date('Y-m-01', mktime(0, 0, 0, $month, 1, $year));
         $lastDayOfMonth = date('Y-m-t', mktime(0, 0, 0, $month, 1, $year));
-
-        $year = date('Y');
+    
         $startOfMonth = $year . '-' . $month . '-01';
         $endOfMonth = $year . '-' . $month . '-' . date('t', strtotime($startOfMonth));
-
+    
+        // Get search query from request
+        $search = $request->input('search');
+    
+        // Retrieve data and apply search
         $inuomData = $this->getInMonthuom($startOfMonth, $endOfMonth);
         $inuom = $inuomData['inuom'];
         $totalIn = $inuomData['totalIn'];
         $totalOut = $inuomData['totalOut'];
-
+    
         session()->put('month', $month);
-
+    
         $data = $this->getItemsData($startOfMonth, $endOfMonth);
         $labels = $this->getTransactionLabels($startOfMonth, $endOfMonth);
         $inQuantities = $this->getInQuantities($startOfMonth, $endOfMonth);
@@ -38,9 +42,15 @@ class ReportController extends Controller
         $stockin = $this->getStockIn($startOfMonth, $endOfMonth);
         $stockout = $this->getStockOut($startOfMonth, $endOfMonth);
         $balance = $this->getBalance($startOfMonth, $endOfMonth);
-        $transactions = $this->getTransactions($startOfMonth, $endOfMonth);
-
-        return view('report/report', compact('data', 'labels', 'inQuantities', 'outQuantities', 'stockin', 'stockout', 'balance', 'transactions', 'firstDayOfMonth', 'lastDayOfMonth', 'inuom', 'totalIn', 'totalOut'));
+    
+        // Apply search to transactions
+        $transactions = $this->getTransactions($startOfMonth, $endOfMonth, $search);
+    
+        return view('report/report', compact(
+            'data', 'labels', 'inQuantities', 'outQuantities', 'stockin', 
+            'stockout', 'balance', 'transactions', 'firstDayOfMonth', 
+            'lastDayOfMonth', 'inuom', 'totalIn', 'totalOut', 'search', 'month'
+        ));
     }
 
 
@@ -149,24 +159,35 @@ class ReportController extends Controller
         return $balances;
     }
 
-    private function getTransactions($startOfMonth, $endOfMonth)
+    private function getTransactions($startOfMonth, $endOfMonth, $search = null)
     {
+        // Build query
+        $query = Transaction::with('item', 'order')
+            ->whereBetween('created_at', [$startOfMonth, $endOfMonth]);
+    
+        // Apply search filter
+        if ($search) {
+            $query->whereHas('item', function ($q) use ($search) {
+                $q->where('description', 'like', "%$search%");
+            })
+            ->orWhereHas('order', function ($q) use ($search) {
+                $q->where('department', 'like', "%$search%");
+            });
+        }
+    
         // Get paginated results
-        $paginatedTransactions = Transaction::with('item', 'order') // Eager load related "items" and "orders"
-        ->whereBetween('created_at', [$startOfMonth, $endOfMonth])
-        ->orderBy('created_at') // Ensure ordering for consistent grouping
-        ->paginate(6);
-
+        $paginatedTransactions = $query->orderBy('created_at')
+            ->paginate(8);
+    
         // Group by date for the current page items
         $groupedTransactions = $paginatedTransactions->getCollection()->groupBy(function ($transaction) {
-        return $transaction->created_at->format('Y-m-d');
+            return $transaction->created_at->format('Y-m-d');
         });
-
-        // Create a new LengthAwarePaginator with grouped results
+    
+        // Add the grouped transactions back to the paginator
         $paginatedTransactions->setCollection(collect($groupedTransactions));
-
+    
         return $paginatedTransactions;
-
     }
 
     private function getInMonthuom($startOfMonth, $endOfMonth)

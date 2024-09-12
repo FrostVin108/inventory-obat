@@ -291,13 +291,26 @@
         {{-- table click --}}
         <div class="card">
             <div class="card-body">
-                <h3>List Item Per day </h3>
 
-                <div class="column w-20 pagination-post">
-                    {{ $transactions ->links() }} 
+                <h3>List Item Per Day</h3>
+            
+                <!-- Pagination Links -->
+
+                
+                <div class=" search-position">
+
+                    <form method="GET" action="{{ route('report.monthly', ['month' => $month]) }}" class="input-button">
+                        
+
+                        <input type="text" name="search" value="{{ request('search') }}" placeholder="Search items" class="form-control input-search" >
+                        <div>
+                            <button type="submit" class="btn btn-primary">Search</button>
+                        </div>
+                    </form>
                 </div>
-                <br>
-                <br>
+            
+                
+                
 
 
                 @foreach ($transactions as $date => $transactionGroup)
@@ -382,30 +395,51 @@ $(document).ready(function() {
         window.location.href = url;
     });
 });
+
+$(window).scrollTop(localStorage.getItem('scrollPosition') || 0);
+
+$(window).on('scroll', function() {
+    localStorage.setItem('scrollPosition', $(window).scrollTop());
+});
         </script>
 
 <style>
-    .column.w-20 {
-    /* Example of a width setting, adjust as needed */
-    width: 100%;
-    /* border: solid 10px black; */
-
-    /* Ensure padding and margin do not affect icon size */
-    padding: 0;
-    /* margin: 0; */
-}
-
+ /* Custom pagination styles */
 .pagination {
-    display: flex;
     justify-content: center;
+    font-size: 21px
 }
 
-.pagination .page-item .page-link {
-    font-size: 14px; /* Adjust as needed */
-    width: 30px;     /* Adjust as needed */
-    height: 10px;    /* Adjust as needed */
+.page-item.active .page-link {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: white;
+}
+
+.page-link {
+    border-radius: 0.375rem;
+}
+
+.page-link {
+    padding: 0.5rem 1rem;
+    margin: 0 0.125rem;
+    border: 1px solid #ddd;
+    color: #007bff;
+    text-decoration: none;
+}
+
+.page-item.disabled .page-link {
+    color: #6c757d;
+    pointer-events: none;
+    background-color: #fff;
+    border-color: #ddd;
+}
+
+
+
+
+.pagination.post{
     display: flex;
-    align-items: center;
     justify-content: center;
 }
 
@@ -413,8 +447,25 @@ svg{
     width: 20px;
 }
 
-.pagination-post{
-    margin-left: auto;
+.search-position{
+    /* border: solid 3px black; */
+    display: flex;
+    width: 98%
 }
+
+.input-search{
+    width: 100%
+
+}
+
+.input-button{
+    display: flex;
+    align-content: center;
+    margin-left: auto;
+    gap: 5px;
+    width: 22%;
+}
+
+
 </style>
     @endsection
