@@ -180,24 +180,27 @@ class InventoryController extends Controller
 
 
 
-    public function userin(){
-        $transactions = Transaction::whereMonth('created_at', date('m'))
-        ->whereYear('created_at', date('Y'))
-        ->get();
-    
+    public function userin(Request $request, $month)
+    {
+        session(['month' => $month]);
+
+        $transactions = Transaction::whereMonth('created_at', $month)
+            ->whereYear('created_at', date('Y'))
+            ->get();
+
         $transactionsByOrderId = $transactions->groupBy('order_id');
-    
+
         $data = [];
-    
+
         foreach ($transactionsByOrderId as $orderId => $transactions) {
             $order = Order::find($orderId);
-    
+
             $inTransactions = [];
             $outTransactions = [];
-    
+
             foreach ($transactions as $transaction) {
                 $item = Item::find($transaction->item_id);
-    
+
                 if ($transaction->transaction_type == 'IN') {
                     $inTransactions[] = [
                         'item_description' => $item->description, // Retrieve item description from Item model
@@ -212,7 +215,7 @@ class InventoryController extends Controller
                     ];
                 }
             }
-    
+
             $data[] = [
                 'department' => $order->department,
                 'in_transactions' => $inTransactions,
@@ -220,8 +223,7 @@ class InventoryController extends Controller
             ];
         }
 
-    return view('report/reportuser', compact('data'));
+        return view('report/reportuser', compact('data'));
     }
-
 //$transactions->first()->item->name,
 }

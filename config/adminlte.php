@@ -380,8 +380,8 @@ return [
                 ],
                 [
                     'icon' => '	fa fa-minus-square',
-                    'text' => 'Total In and Out Per User',
-                    'url' => '/report/userin',
+                    'text' => 'User Report On ' . date('F'),
+                    'url' => '/report/userin/' . date('n'),
                 ],
             ],
         ],
