@@ -61,6 +61,7 @@
 @endsection
 
 @push('js')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js"></script>
 <script>
@@ -75,7 +76,13 @@
                 { data: 'order.department', name: 'order.department' },
                 { data: 'transaction_type', name: 'transaction_type' },
                 { data: 'qty', name: 'qty' },
-                { data: 'created_at', name: 'created_at' }
+                {
+                    data: 'created_at',
+                    name: 'created_at',
+                    render: function(data, type, row) {
+                        return moment(data).format('YYYY-MM-DD HH:mm:ss');
+                    }
+                }
             ]
         });
     });
