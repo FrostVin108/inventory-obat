@@ -212,7 +212,7 @@
       </div>
       <br>
 
-      <div class="card">
+
         <div class="card-body">
              <h3>Table for IN transactions</h3> 
              <table class="table table-hover">
