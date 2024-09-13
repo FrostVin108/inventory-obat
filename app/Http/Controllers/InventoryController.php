@@ -16,7 +16,8 @@ class InventoryController extends Controller
 {
     public function invobat()
     {
-        $obatitem = Item::with("UOM");
+        $obatitem = Item::with("UOM")
+        ->get();
 
         // $posts = Post::paginate(10); // Paginate by 10 items per page
     

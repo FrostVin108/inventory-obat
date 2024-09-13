@@ -7,6 +7,12 @@
 @section('content')
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <!-- CDNJS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+
+<!-- jsDelivr -->
+<script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
 
     <div class="card">
         <div class="card-body" style="padding: 47px;">
@@ -15,6 +21,9 @@
                     <input type="text" id="search-input" placeholder="Search..." class="form-control" style="width: 44%">
                     <button id="search-btn" class="btn btn-success" >Search</button>
                     <button id="clear-btn" class="btn btn-warning">Clear</button>
+                    
+                    <button id="combine-btn" class="btn btn-info">Combine</button>
+                    <button id="uncombine-btn" class="btn btn-danger">Uncombine</button>
                 </div>
 
                 <div class="col-md-6 input-group" style="gap: 5px;">
@@ -42,13 +51,31 @@
                         <table class="table table-striped table-bordered table-hover">
                             <thead>
                                 <tr>
-                                    <th>Item Description</th>
+                                    <th>Item Description  </th>
                                     <th>Transaction Type</th>
                                     <th>Quantity</th>
-                                    <th>Date Added</th>
+                                    <th>Date Range</th>
                                 </tr>
                             </thead>
                             <tbody class="table-body">
+                                @foreach ($order['in_transactions'] as $transaction)
+                                    <tr>
+                                        <td>{{ $transaction['item_description'] }}</td>
+                                        <td>IN</td>
+                                        <td>{{ $transaction['qty'] }}</td>
+                                        <td>{{ date('Y-m-d H:i:s', strtotime($transaction['created_at'])) }}</td>
+                                    </tr>
+                                @endforeach
+                                @foreach ($order['out_transactions'] as $transaction)
+                                    <tr>
+                                        <td>{{ $transaction['item_description'] }}</td>
+                                        <td>OUT</td>
+                                        <td>{{ $transaction['qty'] }}</td>
+                                        <td>{{ date('Y-m-d H:i:s', strtotime($transaction['created_at'])) }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                            <tbody class="original-table-body" style="display: none;">
                                 @foreach ($order['in_transactions'] as $transaction)
                                     <tr>
                                         <td>{{ $transaction['item_description'] }}</td>
@@ -143,6 +170,86 @@
                             chart.data.datasets[0].data = itemDescriptions.map(item => inQuantities[item] || 0);
                             chart.data.datasets[1].data = itemDescriptions.map(item => outQuantities[item] || 0);
                             chart.update();
+                        </script>
+                        <script>
+              $('#combine-btn').on('click', function() {
+    $('.department-container').each(function() {
+        var inQuantities = {};
+        var outQuantities = {};
+        var inDates = {};
+        var outDates = {};
+
+        $(this).find('.table-body tr').each(function() {
+            var itemDesc = $(this).find('td:first').text();
+            var transactionType = $(this).find('td:nth-child(2)').text();
+            var qty = parseInt($(this).find('td:nth-child(3)').text());
+            var date = $(this).find('td:nth-child(4)').text();
+
+            if (transactionType === 'IN') {
+                if (inQuantities[itemDesc]) {
+                    inQuantities[itemDesc] += qty;
+                } else {
+                    inQuantities[itemDesc] = qty;
+                }
+                if (inDates[itemDesc]) {
+                    inDates[itemDesc].push(date);
+                } else {
+                    inDates[itemDesc] = [date];
+                }
+            } else {
+                if (outQuantities[itemDesc]) {
+                    outQuantities[itemDesc] += qty;
+                } else {
+                    outQuantities[itemDesc] = qty;
+                }
+                if (outDates[itemDesc]) {
+                    outDates[itemDesc].push(date);
+                } else {
+                    outDates[itemDesc] = [date];
+                }
+            }
+        });
+
+        var combinedHtml = '';
+        for (var item in inQuantities) {
+            var inDateRange = getMinMaxDate(inDates[item]);
+            combinedHtml += '<tr><td>' + item + '</td><td>IN</td><td>' + inQuantities[item] + '</td><td>' + inDateRange + '</td></tr>';
+        }
+        for (var item in outQuantities) {
+            var outDateRange = getMinMaxDate(outDates[item]);
+            combinedHtml += '<tr><td>' + item + '</td><td>OUT</td><td>' + outQuantities[item] + '</td><td>' + outDateRange + '</td></tr>';
+        }
+
+        $(this).find('.table-body').html(combinedHtml);
+    });
+});
+
+function getMinMaxDate(dates) {
+    var minDate = null;
+    var maxDate = null;
+
+    dates.forEach(function(date) {
+        var parsedDate = moment(date, 'YYYY-MM-DD HH:mm:ss');
+
+        if (minDate === null || parsedDate.isBefore(minDate)) {
+            minDate = parsedDate;
+        }
+
+        if (maxDate === null || parsedDate.isAfter(maxDate)) {
+            maxDate = parsedDate;
+        }
+    });
+
+    return minDate.format('YYYY-MM-DD') + ' - ' + maxDate.format('YYYY-MM-DD');
+}
+
+
+                        $('#uncombine-btn').on('click', function() {
+                            $('.department-container').each(function() {
+                                var originalHtml = $(this).find('.original-table-body').html();
+                                $(this).find('.table-body').html(originalHtml);
+                            });
+                        });
                         </script>
                     </div>
                     <br>
