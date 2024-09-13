@@ -49,7 +49,7 @@
 
                 <div class="form-group" >
                     <label for="exampleInputEmail1">Insert Item Quantity</label>
-                    <input type="number" class="form-control @error('qty') is-invalid @enderror" placeholder="Enter Item Quantity" name="qty" value="{{ old('qty', $stock->qty) }}" >
+                    <input type="number" class="form-control @error('qty') is-invalid @enderror" placeholder="Enter Item Quantity" name="qty" value="{{ old('qty', $stock->qty) }}" readonly>
                 </div>
                   @error('qty')
                 <div class="alert alert-danger mt-2">
