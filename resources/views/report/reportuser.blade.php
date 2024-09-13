@@ -9,19 +9,22 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <!-- CDNJS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 
-<!-- jsDelivr -->
-<script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
+    <!-- jsDelivr -->
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
 
     <div class="card">
+        <button id="back-to-top" title="Back to Top">
+            <i class="fas fa-arrow-up"></i>
+          </button>
         <div class="card-body" style="padding: 47px;">
             <div class="d-flex input-group">
                 <div class="col-md-6 search-post">
                     <input type="text" id="search-input" placeholder="Search..." class="form-control" style="width: 44%">
-                    <button id="search-btn" class="btn btn-success" >Search</button>
+                    <button id="search-btn" class="btn btn-success">Search</button>
                     <button id="clear-btn" class="btn btn-warning">Clear</button>
-                    
+
                     <button id="combine-btn" class="btn btn-info">Combine</button>
                     <button id="uncombine-btn" class="btn btn-danger">Uncombine</button>
                 </div>
@@ -29,16 +32,17 @@
                 <div class="col-md-6 input-group" style="gap: 5px;">
                     <select id="month" class="form-control-border ml-auto">
                         @for ($i = 1; $i <= 12; $i++)
-                            <option value="{{ $i }}" {{ (session('month') == $i) ? 'selected' : '' }}>{{ date('F', mktime(0, 0, 0, $i, 1)) }}</option>
+                            <option value="{{ $i }}" {{ session('month') == $i ? 'selected' : '' }}>
+                                {{ date('F', mktime(0, 0, 0, $i, 1)) }}</option>
                         @endfor
                     </select>
-                    <button class="btn btn-primary btn-sm"  id="change-month"><i class="fas fa-sync"></i> Change</button>
+                    <button class="btn btn-primary btn-sm" id="change-month"><i class="fas fa-sync"></i> Change</button>
                 </div>
             </div>
             <br>
             <br>
 
-            
+
             <div id="search-results">
                 @foreach ($data as $order)
                     <div class="department-container">
@@ -51,7 +55,7 @@
                         <table class="table table-striped table-bordered table-hover">
                             <thead>
                                 <tr>
-                                    <th>Item Description  </th>
+                                    <th>Item Description </th>
                                     <th>Transaction Type</th>
                                     <th>Quantity</th>
                                     <th>Date Range</th>
@@ -172,84 +176,86 @@
                             chart.update();
                         </script>
                         <script>
-              $('#combine-btn').on('click', function() {
-    $('.department-container').each(function() {
-        var inQuantities = {};
-        var outQuantities = {};
-        var inDates = {};
-        var outDates = {};
+                            $('#combine-btn').on('click', function() {
+                                $('.department-container').each(function() {
+                                    var inQuantities = {};
+                                    var outQuantities = {};
+                                    var inDates = {};
+                                    var outDates = {};
 
-        $(this).find('.table-body tr').each(function() {
-            var itemDesc = $(this).find('td:first').text();
-            var transactionType = $(this).find('td:nth-child(2)').text();
-            var qty = parseInt($(this).find('td:nth-child(3)').text());
-            var date = $(this).find('td:nth-child(4)').text();
+                                    $(this).find('.table-body tr').each(function() {
+                                        var itemDesc = $(this).find('td:first').text();
+                                        var transactionType = $(this).find('td:nth-child(2)').text();
+                                        var qty = parseInt($(this).find('td:nth-child(3)').text());
+                                        var date = $(this).find('td:nth-child(4)').text();
 
-            if (transactionType === 'IN') {
-                if (inQuantities[itemDesc]) {
-                    inQuantities[itemDesc] += qty;
-                } else {
-                    inQuantities[itemDesc] = qty;
-                }
-                if (inDates[itemDesc]) {
-                    inDates[itemDesc].push(date);
-                } else {
-                    inDates[itemDesc] = [date];
-                }
-            } else {
-                if (outQuantities[itemDesc]) {
-                    outQuantities[itemDesc] += qty;
-                } else {
-                    outQuantities[itemDesc] = qty;
-                }
-                if (outDates[itemDesc]) {
-                    outDates[itemDesc].push(date);
-                } else {
-                    outDates[itemDesc] = [date];
-                }
-            }
-        });
+                                        if (transactionType === 'IN') {
+                                            if (inQuantities[itemDesc]) {
+                                                inQuantities[itemDesc] += qty;
+                                            } else {
+                                                inQuantities[itemDesc] = qty;
+                                            }
+                                            if (inDates[itemDesc]) {
+                                                inDates[itemDesc].push(date);
+                                            } else {
+                                                inDates[itemDesc] = [date];
+                                            }
+                                        } else {
+                                            if (outQuantities[itemDesc]) {
+                                                outQuantities[itemDesc] += qty;
+                                            } else {
+                                                outQuantities[itemDesc] = qty;
+                                            }
+                                            if (outDates[itemDesc]) {
+                                                outDates[itemDesc].push(date);
+                                            } else {
+                                                outDates[itemDesc] = [date];
+                                            }
+                                        }
+                                    });
 
-        var combinedHtml = '';
-        for (var item in inQuantities) {
-            var inDateRange = getMinMaxDate(inDates[item]);
-            combinedHtml += '<tr><td>' + item + '</td><td>IN</td><td>' + inQuantities[item] + '</td><td>' + inDateRange + '</td></tr>';
-        }
-        for (var item in outQuantities) {
-            var outDateRange = getMinMaxDate(outDates[item]);
-            combinedHtml += '<tr><td>' + item + '</td><td>OUT</td><td>' + outQuantities[item] + '</td><td>' + outDateRange + '</td></tr>';
-        }
+                                    var combinedHtml = '';
+                                    for (var item in inQuantities) {
+                                        var inDateRange = getMinMaxDate(inDates[item]);
+                                        combinedHtml += '<tr><td>' + item + '</td><td>IN</td><td>' + inQuantities[item] +
+                                            '</td><td>' + inDateRange + '</td></tr>';
+                                    }
+                                    for (var item in outQuantities) {
+                                        var outDateRange = getMinMaxDate(outDates[item]);
+                                        combinedHtml += '<tr><td>' + item + '</td><td>OUT</td><td>' + outQuantities[item] +
+                                            '</td><td>' + outDateRange + '</td></tr>';
+                                    }
 
-        $(this).find('.table-body').html(combinedHtml);
-    });
-});
-
-function getMinMaxDate(dates) {
-    var minDate = null;
-    var maxDate = null;
-
-    dates.forEach(function(date) {
-        var parsedDate = moment(date, 'YYYY-MM-DD HH:mm:ss');
-
-        if (minDate === null || parsedDate.isBefore(minDate)) {
-            minDate = parsedDate;
-        }
-
-        if (maxDate === null || parsedDate.isAfter(maxDate)) {
-            maxDate = parsedDate;
-        }
-    });
-
-    return minDate.format('YYYY-MM-DD') + ' - ' + maxDate.format('YYYY-MM-DD');
-}
-
-
-                        $('#uncombine-btn').on('click', function() {
-                            $('.department-container').each(function() {
-                                var originalHtml = $(this).find('.original-table-body').html();
-                                $(this).find('.table-body').html(originalHtml);
+                                    $(this).find('.table-body').html(combinedHtml);
+                                });
                             });
-                        });
+
+                            function getMinMaxDate(dates) {
+                                var minDate = null;
+                                var maxDate = null;
+
+                                dates.forEach(function(date) {
+                                    var parsedDate = moment(date, 'YYYY-MM-DD HH:mm:ss');
+
+                                    if (minDate === null || parsedDate.isBefore(minDate)) {
+                                        minDate = parsedDate;
+                                    }
+
+                                    if (maxDate === null || parsedDate.isAfter(maxDate)) {
+                                        maxDate = parsedDate;
+                                    }
+                                });
+
+                                return minDate.format('YYYY-MM-DD') + ' - ' + maxDate.format('YYYY-MM-DD');
+                            }
+
+
+                            $('#uncombine-btn').on('click', function() {
+                                $('.department-container').each(function() {
+                                    var originalHtml = $(this).find('.original-table-body').html();
+                                    $(this).find('.table-body').html(originalHtml);
+                                });
+                            });
                         </script>
                     </div>
                     <br>
@@ -259,10 +265,26 @@ function getMinMaxDate(dates) {
     </div>
 
     <style>
-        .search-post{
+        .search-post {
             display: flex;
             flex-direction: row;
             gap: 3px;
+        }
+
+        #back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #back-to-top:hover {
+            background-color: #555;
         }
     </style>
 
@@ -306,14 +328,22 @@ function getMinMaxDate(dates) {
         });
     </script>
 
-<script>
-    $(document).ready(function() {
-        $('#change-month').on('click', function() {
-            var month = $('#month').val();
-            var url = '{{ route('report.user.in', ':month') }}'.replace(':month', month);
-            window.location.href = url;
+    <script>
+        $(document).ready(function() {
+            $('#change-month').on('click', function() {
+                var month = $('#month').val();
+                var url = '{{ route('report.user.in', ':month') }}'.replace(':month', month);
+                window.location.href = url;
+            });
         });
-    });
-</script>
+
+        $(document).ready(function() {
+            $('#back-to-top').on('click', function() {
+                $('html, body').animate({
+                    scrollTop: 0
+                }, 'slow');
+            });
+        });
+    </script>
 
 @endsection
