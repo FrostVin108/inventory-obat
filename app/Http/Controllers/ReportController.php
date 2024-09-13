@@ -10,9 +10,37 @@ use App\Models\Transaction;
 use App\Models\UOM;
 use App\Models\User;
 use Carbon\Carbon;
+use Yajra\DataTables\Facades\Datatables;
 
 class ReportController extends Controller
 {
+    public function getItemsData($startOfMonth, $endOfMonth)
+    {
+        $transactions = Transaction::whereBetween('created_at', [$startOfMonth, $endOfMonth])
+            ->get()
+            ->groupBy('item_id');
+
+            $data = collect(); // Initialize an empty collection
+            foreach ($transactions as $item_id => $transactions) {
+                if ($transactions->first()->item !== null) {
+                    $item = Item::find($item_id);
+                    $data->push([
+                        'item' => $transactions->first()->item->description,
+                        'in' => $transactions->where('transaction_type', 'IN')->sum('qty'),
+                        'out' => $transactions->where('transaction_type', 'OUT')->sum('qty'),
+                        'balance' => $transactions->where('transaction_type', 'IN')->sum('qty') - $transactions->where('transaction_type', 'OUT')->sum('qty')
+                    ]);
+                }
+            }
+            
+            
+            return Datatables::of($data)
+                ->escapeColumns()
+                ->make(true);
+        }
+    
+
+
 
     public function getmonthly($month , Request $request)
     {
@@ -35,7 +63,7 @@ class ReportController extends Controller
     
         session()->put('month', $month);
     
-        $data = $this->getItemsData($startOfMonth, $endOfMonth);
+        // $data = $this->getItemsData($startOfMonth, $endOfMonth);
         $labels = $this->getTransactionLabels($startOfMonth, $endOfMonth);
         $inQuantities = $this->getInQuantities($startOfMonth, $endOfMonth);
         $outQuantities = $this->getOutQuantities($startOfMonth, $endOfMonth);
@@ -47,34 +75,12 @@ class ReportController extends Controller
         $transactions = $this->getTransactions($startOfMonth, $endOfMonth, $search);
     
         return view('report/report', compact(
-            'data', 'labels', 'inQuantities', 'outQuantities', 'stockin', 
+             'labels', 'inQuantities', 'outQuantities', 'stockin', 
             'stockout', 'balance', 'transactions', 'firstDayOfMonth', 
             'lastDayOfMonth', 'inuom', 'totalIn', 'totalOut', 'search', 'month'
         ));
     }
 
-
-    private function getItemsData($startOfMonth, $endOfMonth)
-    {
-        $transactions = Transaction::whereBetween('created_at', [$startOfMonth, $endOfMonth])
-            ->get()
-            ->groupBy('item_id');
-
-        $data = [];
-        foreach ($transactions as $item_id => $transactions) {
-            if ($transactions->first()->item !== null) {
-                $item = Item::find($item_id);
-                $data[] = [
-                    'item' => $transactions->first()->item->description,
-                    'in' => $transactions->where('transaction_type', 'IN')->sum('qty'),
-                    'out' => $transactions->where('transaction_type', 'OUT')->sum('qty'),
-                    'balance' => $transactions->where('transaction_type', 'IN')->sum('qty') - $transactions->where('transaction_type', 'OUT')->sum('qty')
-                ];
-            }
-        }
-
-        return $data;
-    }
 
     private function getTransactionLabels($startOfMonth, $endOfMonth)
     {

@@ -63,6 +63,12 @@
                                 <!-- /.chart-responsive -->
                             </div>
                             <!-- /.col -->
+<div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js"></script>
+</div>
+
                             <div class="col-md-4">
                                 <p class="text-center">
                                     <strong>{{ $firstDayOfMonth }} - {{ $lastDayOfMonth }} | Monthly Item Overview</strong>
@@ -70,7 +76,7 @@
 
 
                                 <!-- all month items -->
-                                <table class="table table-hover">
+                                <table class="table table-hover" id="item-overview">
                                     <thead>
                                         <tr>
                                             <th scope="col">Item Name</th>
@@ -80,18 +86,32 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($data as $item)
+                                        {{-- @foreach ($data as $item)
                                             <tr>
                                                 <td>{{ $item['item'] }}</td>
                                                 <td>{{ $item['in'] }}</td>
                                                 <td>{{ $item['out'] }}</td>
                                                 <td>{{ $item['balance'] }}</td>
                                             </tr>
-                                        @endforeach
+                                        @endforeach --}}
                                     </tbody>
                                 </table>
 
-
+                                <script>
+                                    $(document).ready(function() {
+                                        $('#item-overview').DataTable({
+                                            processing: true,
+                                            serverSide: true,
+                                            ajax: '{{ route('reportitem.overview.data' ,['month' => date('m')]) }}',
+                                            columns: [
+                                                { data: 'item', name: 'item' },
+                                                { data: 'in', name: 'in' },
+                                                { data: 'out', name: 'out' },
+                                                { data: 'balance', name: 'balance' },
+                                            ]
+                                        });
+                                    });
+                                </script>
                             </div>
                             <!-- /.col -->
                         </div>
