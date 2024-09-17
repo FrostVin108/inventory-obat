@@ -370,12 +370,12 @@ return [
             'submenu' => [
                 [
                     'icon' => '	fas fa-poll',
-                    'text' => ' Report for ' . date('F'),
+                    'text' => ' Monthly Report' ,
                     'url' => 'report/monthly/' . date('n'),
                 ],
                 [
                     'icon' => '	fa fa-minus-square',
-                    'text' => 'User Report On ' . date('F'),
+                    'text' => ' User Report',
                     'url' => '/report/userin/' . date('n'),
                 ],
             ],

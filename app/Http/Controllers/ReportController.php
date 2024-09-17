@@ -11,6 +11,7 @@ use App\Models\UOM;
 use App\Models\User;
 use Carbon\Carbon;
 use Yajra\DataTables\Facades\Datatables;
+use Illuminate\Support\Facades\DB;
 
 class ReportController extends Controller
 {
@@ -63,19 +64,20 @@ class ReportController extends Controller
     private function getItemsData($startOfMonth, $endOfMonth)
     {
         $data = Transaction::whereBetween('created_at', [$startOfMonth, $endOfMonth])
-        ->selectRaw('item_id, SUM(CASE WHEN transaction_type = "IN" THEN qty ELSE 0 END) as in_qty, SUM(CASE WHEN transaction_type = "OUT" THEN qty ELSE 0 END) as out_qty')
+        ->select('item_id')
+        ->selectRaw('SUM(CASE WHEN transaction_type = "IN" THEN qty ELSE 0 END) as total_in')
+        ->selectRaw('SUM(CASE WHEN transaction_type = "OUT" THEN qty ELSE 0 END) as total_out')
+        ->selectRaw('(SUM(CASE WHEN transaction_type = "IN" THEN qty ELSE 0 END) - SUM(CASE WHEN transaction_type = "OUT" THEN qty ELSE 0 END)) as balance')
         ->groupBy('item_id')
-        ->paginate(10); // Paginate the data, 10 items per page
+        ->paginate(10);
 
     $data->transform(function ($item) {
         $item->item = Item::find($item->item_id)->description;
-        $item->balance = $item->in_qty - $item->out_qty;
         return $item;
     });
 
-        return $data;
+    return $data;
     }
-
     private function getTransactionLabels($startOfMonth, $endOfMonth)
     {
         $transactions = Transaction::whereBetween('created_at', [$startOfMonth, $endOfMonth])

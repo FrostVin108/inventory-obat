@@ -87,10 +87,10 @@
                                     <tbody>
                                         @foreach ($data as $item)
                                             <tr>
-                                                <td>{{ $item['item'] }}</td>
-                                                <td>{{ $item['in'] }}</td>
-                                                <td>{{ $item['out'] }}</td>
-                                                <td>{{ $item['balance'] }}</td>
+                                                <td>{{ $item->item }}</td>
+                                                <td>{{ $item->total_in }}</td>
+                                                <td>{{ $item->total_out }}</td>
+                                                <td>{{ $item->balance }}</td>
                                             </tr>
                                         @endforeach
                                     </tbody>
