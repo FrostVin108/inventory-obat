@@ -136,15 +136,17 @@ class ObatController extends Controller
 
             $this->validate($request, [
                 'item_id' => 'required',
-                'order_id' => 'required',
+                // 'order_id' => 'required',
                 'transaction_type' => 'required',
                 'qty' => 'required|numeric|min:0',
 
             ]);
 
+            $order_id = 6 ;
+
             Transaction::create([
                 'item_id' => $item->id,
-                'order_id' => $order->id,
+                'order_id' => $order_id,
                 'transaction_type' => $request->transaction_type,
                 'qty' => $request->qty,
                 // $item ->qty = Stock::find('qty'),
