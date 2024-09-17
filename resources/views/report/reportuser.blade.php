@@ -15,9 +15,26 @@
     <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
 
     <div class="card">
-        <button id="back-to-top" title="Back to Top">
-            <i class="fas fa-arrow-up"></i>
-          </button>
+            <button id="back-to-top" title="Back to Top" style="width:55px; height:55px; fontsize:30px;">
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            <button id="combine-btn" title="Combine The Same Data" style="width:55px; height:55px; fontsize:30px;"><i class="fas fa-object-group"></i></button>
+            <button id="uncombine-btn" title="Uncombine The Same Data" style="width:55px; height:55px; fontsize:30px; display: none;"><i class="fas fa-object-ungroup"></i></button>
+            
+            <script>
+                $('#combine-btn').on('click', function() {
+                    $(this).toggle();
+                    $('#uncombine-btn').toggle();
+                    // Combine data functionality here
+                });
+                
+                $('#uncombine-btn').on('click', function() {
+                    $(this).toggle();
+                    $('#combine-btn').toggle();
+                    // Uncombine data functionality here
+                });
+            </script>
+                
         <div class="card-body" style="padding: 47px;">
             <div class="d-flex input-group">
                 <div class="col-md-6 search-post">
@@ -25,8 +42,8 @@
                     <button id="search-btn" class="btn btn-success">Search</button>
                     <button id="clear-btn" class="btn btn-warning">Clear</button>
 
-                    <button id="combine-btn" class="btn btn-info">Combine</button>
-                    <button id="uncombine-btn" class="btn btn-danger">Uncombine</button>
+                    {{-- <button id="combine-btn" class="btn btn-info">Combine</button> --}}
+                    {{-- <button id="uncombine-btn" class="btn btn-danger">Uncombine</button> --}}
                 </div>
 
                 <div class="col-md-6 input-group" style="gap: 5px;">
@@ -286,6 +303,39 @@
         #back-to-top:hover {
             background-color: #555;
         }
+
+        #combine-btn {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: rgb(34, 178, 65);
+            color: white;
+        }
+
+        #combine-btn:hover{
+            background-color: rgb(63, 216, 43);
+        }
+
+        #uncombine-btn {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: rgb(178, 34, 34);
+            color: white;
+        }
+
+        #uncombine-btn:hover{
+            background-color: rgb(216, 43, 43);
+        }
+
     </style>
 
     <script>
