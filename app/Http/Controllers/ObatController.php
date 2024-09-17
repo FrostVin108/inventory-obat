@@ -142,7 +142,7 @@ class ObatController extends Controller
 
             ]);
 
-            $order_id = 6 ;
+            $order_id = 1 ;
 
             Transaction::create([
                 'item_id' => $item->id,

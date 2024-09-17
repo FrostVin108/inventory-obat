@@ -15,11 +15,11 @@ class DepartmentSeeder extends Seeder
     public function run(): void
     {
         DB::table('order')->insert([
+            ['department' => 'Compliance'],
             ['department' => 'Sewing'],
             ['department' => 'Packing'],
             ['department' => 'Cutting'],
             ['department' => 'Warehouse'],
-            ['department' => 'Mechanic'],
         ]);
     }
     
