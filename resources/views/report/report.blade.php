@@ -86,18 +86,18 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {{-- @foreach ($data as $item)
+                                        @foreach ($data as $item)
                                             <tr>
                                                 <td>{{ $item['item'] }}</td>
                                                 <td>{{ $item['in'] }}</td>
                                                 <td>{{ $item['out'] }}</td>
                                                 <td>{{ $item['balance'] }}</td>
                                             </tr>
-                                        @endforeach --}}
+                                        @endforeach
                                     </tbody>
                                 </table>
 
-                                <script>
+                                {{-- <script>
                                     $(document).ready(function() {
                                         $('#item-overview').DataTable({
                                             processing: true,
@@ -111,7 +111,7 @@
                                             ]
                                         });
                                     });
-                                </script>
+                                </script> --}}
                             </div>
                             <!-- /.col -->
                         </div>

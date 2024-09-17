@@ -14,30 +14,8 @@ use Yajra\DataTables\Facades\Datatables;
 
 class ReportController extends Controller
 {
-    public function getItemsData($startOfMonth, $endOfMonth)
-    {
-        $transactions = Transaction::whereBetween('created_at', [$startOfMonth, $endOfMonth])
-            ->get()
-            ->groupBy('item_id');
 
-            $data = collect(); // Initialize an empty collection
-            foreach ($transactions as $item_id => $transactions) {
-                if ($transactions->first()->item !== null) {
-                    $item = Item::find($item_id);
-                    $data->push([
-                        'item' => $transactions->first()->item->description,
-                        'in' => $transactions->where('transaction_type', 'IN')->sum('qty'),
-                        'out' => $transactions->where('transaction_type', 'OUT')->sum('qty'),
-                        'balance' => $transactions->where('transaction_type', 'IN')->sum('qty') - $transactions->where('transaction_type', 'OUT')->sum('qty')
-                    ]);
-                }
-            }
-            
-            
-            return Datatables::of($data)
-                ->escapeColumns()
-                ->make(true);
-        }
+
     
 
 
@@ -70,17 +48,39 @@ class ReportController extends Controller
         $stockin = $this->getStockIn($startOfMonth, $endOfMonth);
         $stockout = $this->getStockOut($startOfMonth, $endOfMonth);
         $balance = $this->getBalance($startOfMonth, $endOfMonth);
+        $data = $this->getItemsData($startOfMonth, $endOfMonth);
     
         // Apply search to transactions
         $transactions = $this->getTransactions($startOfMonth, $endOfMonth, $search);
     
         return view('report/report', compact(
              'labels', 'inQuantities', 'outQuantities', 'stockin', 
-            'stockout', 'balance', 'transactions', 'firstDayOfMonth', 
+            'stockout', 'balance', 'transactions', 'firstDayOfMonth', 'data',
             'lastDayOfMonth', 'inuom', 'totalIn', 'totalOut', 'search', 'month'
         ));
     }
 
+    private function getItemsData($startOfMonth, $endOfMonth)
+    {
+        $transactions = Transaction::whereBetween('created_at', [$startOfMonth, $endOfMonth])
+            ->get()
+            ->groupBy('item_id');
+
+        $data = [];
+        foreach ($transactions as $item_id => $transactions) {
+            if ($transactions->first()->item !== null) {
+                $item = Item::find($item_id);
+                $data[] = [
+                    'item' => $transactions->first()->item->description,
+                    'in' => $transactions->where('transaction_type', 'IN')->sum('qty'),
+                    'out' => $transactions->where('transaction_type', 'OUT')->sum('qty'),
+                    'balance' => $transactions->where('transaction_type', 'IN')->sum('qty') - $transactions->where('transaction_type', 'OUT')->sum('qty')
+                ];
+            }
+        }
+
+        return $data;
+    }
 
     private function getTransactionLabels($startOfMonth, $endOfMonth)
     {
