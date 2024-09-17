@@ -62,22 +62,16 @@ class ReportController extends Controller
 
     private function getItemsData($startOfMonth, $endOfMonth)
     {
-        $transactions = Transaction::whereBetween('created_at', [$startOfMonth, $endOfMonth])
-            ->get()
-            ->groupBy('item_id');
+        $data = Transaction::whereBetween('created_at', [$startOfMonth, $endOfMonth])
+        ->selectRaw('item_id, SUM(CASE WHEN transaction_type = "IN" THEN qty ELSE 0 END) as in_qty, SUM(CASE WHEN transaction_type = "OUT" THEN qty ELSE 0 END) as out_qty')
+        ->groupBy('item_id')
+        ->paginate(10); // Paginate the data, 10 items per page
 
-        $data = [];
-        foreach ($transactions as $item_id => $transactions) {
-            if ($transactions->first()->item !== null) {
-                $item = Item::find($item_id);
-                $data[] = [
-                    'item' => $transactions->first()->item->description,
-                    'in' => $transactions->where('transaction_type', 'IN')->sum('qty'),
-                    'out' => $transactions->where('transaction_type', 'OUT')->sum('qty'),
-                    'balance' => $transactions->where('transaction_type', 'IN')->sum('qty') - $transactions->where('transaction_type', 'OUT')->sum('qty')
-                ];
-            }
-        }
+    $data->transform(function ($item) {
+        $item->item = Item::find($item->item_id)->description;
+        $item->balance = $item->in_qty - $item->out_qty;
+        return $item;
+    });
 
         return $data;
     }

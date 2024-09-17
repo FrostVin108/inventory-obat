@@ -29,8 +29,7 @@
                                 <i class="fas fa-calendar-alt " style="font-size: 28px;"></i>
                                 <select id="month" class=".form-select-sm example">
                                     @for ($i = 1; $i <= 12; $i++)
-                                        <option value="{{ $i }}"
-                                            {{ session('month') == $i ? 'selected' : '' }}>
+                                        <option value="{{ $i }}" {{ session('month') == $i ? 'selected' : '' }}>
                                             {{ date('F', mktime(0, 0, 0, $i, 1)) }}</option>
                                     @endfor
                                 </select>
@@ -63,11 +62,11 @@
                                 <!-- /.chart-responsive -->
                             </div>
                             <!-- /.col -->
-<div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js"></script>
-</div>
+                            <div>
+                                <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+                                <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+                                <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js"></script>
+                            </div>
 
                             <div class="col-md-4">
                                 <p class="text-center">
@@ -96,6 +95,9 @@
                                         @endforeach
                                     </tbody>
                                 </table>
+
+                                {{-- Display pagination links --}}
+                                {{ $data->links() }}
 
                                 {{-- <script>
                                     $(document).ready(function() {

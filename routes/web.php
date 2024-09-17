@@ -121,7 +121,7 @@ Route::delete('/destroydepart/{id}', [DepartmentController::class, 'detroydepart
 
 
 
-Route::get('/report/monthlydata/{month}', [ReportController::class, 'getItemsData' ])->name('reportitem.overview.data');
+// Route::get('/report/monthlydata/{month}', [ReportController::class, 'getItemsData' ])->name('reportitem.overview.data');
 
 Route::get('report/monthly/{month}', [ReportController::class, 'getmonthly'])->name('report.monthly');
 
