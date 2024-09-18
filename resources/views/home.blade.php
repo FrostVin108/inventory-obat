@@ -28,7 +28,7 @@
                 <!-- small box -->
                 <div class="small-box bg-success">
                   <div class="inner">
-                    <h3>{{$totalin}}</h3>
+                    <h3>{{$totalIn}}</h3>
     
                     <p>Total Stock In</p>
                   </div>
@@ -43,7 +43,7 @@
                 <!-- small box -->
                 <div class="small-box bg-warning">
                   <div class="inner">
-                    <h3>{{$totalout}}</h3>
+                    <h3>{{$totalOut}}</h3>
     
                     <p>Total Stock Out</p>
                   </div>
@@ -139,7 +139,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse ($todaytransactions as $key => $trans)
+                    @forelse ($todayTransactions as $key => $trans)
                 
                 <tr>
                     <td>{{ $key +1 }}</td>

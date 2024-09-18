@@ -93,36 +93,7 @@ class SummaryController extends Controller
         return $todayTransactions;
     }
 
-    public function totalIn()
-    {
-        $today = Carbon::today();
-        $totalIn = Transaction::where('transaction_type', 'IN')
-            ->whereDate('created_at', $today)
-            ->sum('qty');
-        $totalOut = Transaction::where('transaction_type', 'OUT')
-            ->whereDate('created_at', $today)
-            ->sum('qty');
-        $total = Stock::sum('qty');
-        $balance = $this->getBalance();
-        $labels = $this->getTransactionLabels();
-        $inQuantities = $this->getInQuantities();
-        $outQuantities = $this->getOutQuantities();
-        $todayTransactions = $this->todaysData();
-        return view('home', compact('totalIn', 'totalOut', 'total', 'balance', 'labels', 'inQuantities', 'outQuantities', 'todayTransactions'));
-    }
 
-    public function getSuppliesQty()
-    {
-        $stocks = Stock::with('item')->get();
-        $data = [];
-        foreach ($stocks as $stock) {
-            $data[] = [
-                'label' => $stock->item->description,
-                'qty' => $stock->qty
-            ];
-        }
-        return response()->json($data);
-    }
 
     public function userIn(Request $request, $month)
     {
