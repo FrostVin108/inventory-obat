@@ -62,224 +62,111 @@
 
             <div id="search-results">
                 @foreach ($data as $order)
-                    <div class="department-container">
-                        <h2>Department: {{ $order['department'] }}</h2>
-
-                        <canvas id="department-chart-{{ $order['department'] }}" width="70" height="20"></canvas>
-                        <br>
-                        <br>
-
-                        <table class="table table-striped table-bordered table-hover">
-                            <thead>
-                                <tr>
-                                    <th>Item Description </th>
-                                    <th>Transaction Type</th>
-                                    <th>Quantity</th>
-                                    <th>Date Range</th>
-                                </tr>
-                            </thead>
-                            <tbody class="table-body">
-                                @foreach ($order['in_transactions'] as $transaction)
-                                    <tr>
-                                        <td>{{ $transaction['item_description'] }}</td>
-                                        <td>IN</td>
-                                        <td>{{ $transaction['qty'] }}</td>
-                                        <td>{{ date('Y-m-d H:i:s', strtotime($transaction['created_at'])) }}</td>
-                                    </tr>
-                                @endforeach
-                                @foreach ($order['out_transactions'] as $transaction)
-                                    <tr>
-                                        <td>{{ $transaction['item_description'] }}</td>
-                                        <td>OUT</td>
-                                        <td>{{ $transaction['qty'] }}</td>
-                                        <td>{{ date('Y-m-d H:i:s', strtotime($transaction['created_at'])) }}</td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                            <tbody class="original-table-body" style="display: none;">
-                                @foreach ($order['in_transactions'] as $transaction)
-                                    <tr>
-                                        <td>{{ $transaction['item_description'] }}</td>
-                                        <td>IN</td>
-                                        <td>{{ $transaction['qty'] }}</td>
-                                        <td>{{ date('Y-m-d H:i:s', strtotime($transaction['created_at'])) }}</td>
-                                    </tr>
-                                @endforeach
-                                @foreach ($order['out_transactions'] as $transaction)
-                                    <tr>
-                                        <td>{{ $transaction['item_description'] }}</td>
-                                        <td>OUT</td>
-                                        <td>{{ $transaction['qty'] }}</td>
-                                        <td>{{ date('Y-m-d H:i:s', strtotime($transaction['created_at'])) }}</td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                        <table class="table table-striped table-bordered table-hover table-sm">
-                            <thead>
-                                <tr>
-                                    <th>Transaction Type</th>
-                                    <th>Count</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>IN</td>
-                                    <td>{{ count($order['in_transactions']) }}</td>
-                                </tr>
-                                <tr>
-                                    <td>OUT</td>
-                                    <td>{{ count($order['out_transactions']) }}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        {{-- okay for the report use i want to make so that the chart Showing -1 for the month we choose transation_type "out" and the transation_type "out" for current month we choose --}}
-                        <script>
-                            var ctx = document.getElementById('department-chart-{{ $order['department'] }}').getContext('2d');
-                            var chart = new Chart(ctx, {
-                                type: 'bar',
-                                data: {
-                                    labels: [],
-                                    datasets: [{
-                                        label: 'IN',
-                                        data: [],
-                                        backgroundColor: 'rgba(0, 123, 255, 0.5)',
-                                        borderColor: 'rgba(0, 123, 255, 1)',
-                                        borderWidth: 1
-                                    }, {
-                                        label: 'OUT',
-                                        data: [],
-                                        backgroundColor: 'rgba(255, 99, 132, 0.5)',
-                                        borderColor: 'rgba(255, 99, 132, 1)',
-                                        borderWidth: 1
-                                    }]
-                                },
-                                options: {
-                                    scales: {
-                                        y: {
-                                            beginAtZero: true
-                                        }
-                                    }
-                                }
-                            });
-
-                            var inItemDescriptions = [];
-                            var outItemDescriptions = [];
-                            var inQuantities = {};
-                            var outQuantities = {};
-
-                            @foreach ($order['in_transactions'] as $transaction)
-                                inItemDescriptions.push('{{ $transaction['item_description'] }}');
-                                if (inQuantities['{{ $transaction['item_description'] }}']) {
-                                    inQuantities['{{ $transaction['item_description'] }}'] += {{ $transaction['qty'] }};
-                                } else {
-                                    inQuantities['{{ $transaction['item_description'] }}'] = {{ $transaction['qty'] }};
-                                }
-                            @endforeach
-
-                            @foreach ($order['out_transactions'] as $transaction)
-                                outItemDescriptions.push('{{ $transaction['item_description'] }}');
-                                if (outQuantities['{{ $transaction['item_description'] }}']) {
-                                    outQuantities['{{ $transaction['item_description'] }}'] += {{ $transaction['qty'] }};
-                                } else {
-                                    outQuantities['{{ $transaction['item_description'] }}'] = {{ $transaction['qty'] }};
-                                }
-                            @endforeach
-
-                            var itemDescriptions = [...new Set([...inItemDescriptions, ...outItemDescriptions])];
-                            chart.data.labels = itemDescriptions;
-                            chart.data.datasets[0].data = itemDescriptions.map(item => inQuantities[item] || 0);
-                            chart.data.datasets[1].data = itemDescriptions.map(item => outQuantities[item] || 0);
-                            chart.update();
-                        </script>
-
-
-
-                        <script>
-                            $('#combine-btn').on('click', function() {
-                                $('.department-container').each(function() {
-                                    var inQuantities = {};
-                                    var outQuantities = {};
-                                    var inDates = {};
-                                    var outDates = {};
-
-                                    $(this).find('.table-body tr').each(function() {
-                                        var itemDesc = $(this).find('td:first').text();
-                                        var transactionType = $(this).find('td:nth-child(2)').text();
-                                        var qty = parseInt($(this).find('td:nth-child(3)').text());
-                                        var date = $(this).find('td:nth-child(4)').text();
-
-                                        if (transactionType === 'IN') {
-                                            if (inQuantities[itemDesc]) {
-                                                inQuantities[itemDesc] += qty;
-                                            } else {
-                                                inQuantities[itemDesc] = qty;
-                                            }
-                                            if (inDates[itemDesc]) {
-                                                inDates[itemDesc].push(date);
-                                            } else {
-                                                inDates[itemDesc] = [date];
-                                            }
-                                        } else {
-                                            if (outQuantities[itemDesc]) {
-                                                outQuantities[itemDesc] += qty;
-                                            } else {
-                                                outQuantities[itemDesc] = qty;
-                                            }
-                                            if (outDates[itemDesc]) {
-                                                outDates[itemDesc].push(date);
-                                            } else {
-                                                outDates[itemDesc] = [date];
-                                            }
-                                        }
-                                    });
-
-                                    var combinedHtml = '';
-                                    for (var item in inQuantities) {
-                                        var inDateRange = getMinMaxDate(inDates[item]);
-                                        combinedHtml += '<tr><td>' + item + '</td><td>IN</td><td>' + inQuantities[item] +
-                                            '</td><td>' + inDateRange + '</td></tr>';
-                                    }
-                                    for (var item in outQuantities) {
-                                        var outDateRange = getMinMaxDate(outDates[item]);
-                                        combinedHtml += '<tr><td>' + item + '</td><td>OUT</td><td>' + outQuantities[item] +
-                                            '</td><td>' + outDateRange + '</td></tr>';
-                                    }
-
-                                    $(this).find('.table-body').html(combinedHtml);
-                                });
-                            });
-
-                            function getMinMaxDate(dates) {
-                                var minDate = null;
-                                var maxDate = null;
-
-                                dates.forEach(function(date) {
-                                    var parsedDate = moment(date, 'YYYY-MM-DD HH:mm:ss');
-
-                                    if (minDate === null || parsedDate.isBefore(minDate)) {
-                                        minDate = parsedDate;
-                                    }
-
-                                    if (maxDate === null || parsedDate.isAfter(maxDate)) {
-                                        maxDate = parsedDate;
-                                    }
-                                });
-
-                                return minDate.format('YYYY-MM-DD') + ' - ' + maxDate.format('YYYY-MM-DD');
-                            }
-
-
-                            $('#uncombine-btn').on('click', function() {
-                                $('.department-container').each(function() {
-                                    var originalHtml = $(this).find('.original-table-body').html();
-                                    $(this).find('.table-body').html(originalHtml);
-                                });
-                            });
-                        </script>
-                    </div>
+                <div class="department-container">
+                    <h2>Department: {{ $order['department'] }}</h2>
+            
+                    <canvas id="department-chart-{{ $order['department'] }}" width="400" height="200"></canvas>
                     <br>
-                @endforeach
+                    <br>
+            
+                    <table class="table table-striped table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>Item ID</th>
+                                <th>Item Description</th>
+                                <th>Transaction Type</th>
+                                <th>Quantity</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @php
+                                $currentMonthTransactions = [];
+                                foreach ($order['out_transactions'] as $transaction) {
+                                    if (date('m', strtotime($transaction['created_at'])) == date('m')) {
+                                        $currentMonthTransactions[] = $transaction;
+                                    }
+                                }
+                            @endphp
+                            @foreach ($currentMonthTransactions as $key => $transaction)
+                                <tr>
+                                    <td>{{ $key + 1 }}</td>
+                                    <td>{{ $transaction['item_description'] }}</td>
+                                    <td>{{ $transaction['transaction_type'] }}</td>
+                                    <td>{{ $transaction['qty'] }}</td>
+                                    <td>{{ date('Y-m-d H:i:s', strtotime($transaction['created_at'])) }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+            
+                    @php
+                        $itemDescriptions = [];
+                        foreach ($order['out_transactions'] as $transaction) {
+                            $itemDescriptions[$transaction['item_description']][] = $transaction['qty'];
+                        }
+                    @endphp
+            
+            <script>
+                var ctx = document.getElementById('department-chart-{{ $order['department'] }}').getContext('2d');
+                var chart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: [
+                            @foreach ($itemDescriptions as $item => $quantities)
+                                '{{ $item }}',
+                            @endforeach
+                        ],
+                        datasets: [{
+                            label: 'Current Month',
+                            data: [
+                                @foreach ($itemDescriptions as $item => $quantities)
+                                    @php
+                                        $currentMonthQty = 0;
+                                        foreach ($order['out_transactions'] as $transaction) {
+                                            if (date('m', strtotime($transaction['created_at'])) == date('m') && $transaction['transaction_type'] == 'OUT' && $transaction['item_description'] == $item) {
+                                                $currentMonthQty += $transaction['qty'];
+                                            }
+                                        }
+                                    @endphp
+                                    {{ $currentMonthQty }},
+                                @endforeach
+                            ],
+                            backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        }, {
+                            label: 'Previous Month',
+                            data: [
+                                @foreach ($itemDescriptions as $item => $quantities)
+                                    @php
+                                        $previousMonthQty = 0;
+                                        $previousMonth = date('m', strtotime('-1 month'));
+                                        foreach ($order['out_transactions'] as $transaction) {
+                                            if (date('m', strtotime($transaction['created_at'])) == $previousMonth && $transaction['transaction_type'] == 'OUT' && $transaction['item_description'] == $item) {
+                                                $previousMonthQty += $transaction['qty'];
+                                            }
+                                        }
+                                    @endphp
+                                    {{ $previousMonthQty }},
+                                @endforeach
+                            ],
+                            backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                            borderColor: 'rgba(255, 99, 132, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            </script>
+                </div>
+            @endforeach
             </div>
         </div>
     </div>

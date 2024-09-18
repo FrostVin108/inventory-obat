@@ -5,6 +5,7 @@ use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\ObatController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\SummaryController;
 use App\Models\uom;
 use App\Models\Order;
 use App\Models\stock;
@@ -125,4 +126,4 @@ Route::delete('/destroydepart/{id}', [DepartmentController::class, 'detroydepart
 
 Route::get('report/monthly/{month}', [ReportController::class, 'getmonthly'])->name('report.monthly');
 
-Route::get('/report/userin/{month}', [InventoryController::class, 'userin'])->name('report.user.in');
+Route::get('/report/userin/{month}', [SummaryController::class, 'userin'])->name('report.user.in');
