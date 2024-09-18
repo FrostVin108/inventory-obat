@@ -133,7 +133,7 @@
                                 </tr>
                             </tbody>
                         </table>
-                        okay for the report use i want to make so that the chart Showing -1 for the month we choose transation_type "out" and the transation_type "out" for current month we choose
+                        {{-- okay for the report use i want to make so that the chart Showing -1 for the month we choose transation_type "out" and the transation_type "out" for current month we choose --}}
                         <script>
                             var ctx = document.getElementById('department-chart-{{ $order['department'] }}').getContext('2d');
                             var chart = new Chart(ctx, {
@@ -192,6 +192,9 @@
                             chart.data.datasets[1].data = itemDescriptions.map(item => outQuantities[item] || 0);
                             chart.update();
                         </script>
+
+
+
                         <script>
                             $('#combine-btn').on('click', function() {
                                 $('.department-container').each(function() {
