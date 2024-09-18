@@ -316,17 +316,17 @@ $previousMonthOut = DB::table('Transactions')
             <!-- Pagination Links -->
 
 
-            <div class=" search-position">
+        
 
                 <div class="search-position">
                     <form method="GET" action="{{ route('report.monthly', ['month' => $month]) }}" class="input-button">
-                        <input type="text" name="search" value="{{ request('search') }}" placeholder="Search items (e.g., item name or date: YYYY-MM-DD)" class="form-control input-search">
+                        <input type="text" name="search" value="{{ request('search') }}" placeholder="Search by date (e.g., YYYY-MM-DD or 'yesterday', 'today', etc.)" class="form-control input-search">
                         <div>
                             <button type="submit" class="btn btn-primary">Search</button>
                         </div>
                     </form>
                 </div>
-            </div>
+        
 
 
 

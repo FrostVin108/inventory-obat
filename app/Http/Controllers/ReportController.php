@@ -193,30 +193,54 @@ class ReportController extends Controller
         // }
 
         if ($search) {
-            $day = date('d', strtotime($search));
-            $query->where(function ($q) use ($search, $day) {
-                $q->whereDay('created_at', $day)
-                    ->orWhereHas('item', function ($q) use ($search) {
-                        $q->where('description', 'like', "%$search%");
-                    })
-                    ->orWhereHas('order', function ($q) use ($search) {
-                        $q->where('department', 'like', "%$search%");
-                    });
-            });
+            $dates = [];
+    
+            // Try to parse the search query as a date range
+            if (preg_match('/(\d{4}-\d{2}-\d{2})\s*-\s*(\d{4}-\d{2}-\d{2})/', $search, $matches)) {
+                $startDate = Carbon::parse($matches[1]);
+                $endDate = Carbon::parse($matches[2]);
+                $dates = [$startDate, $endDate];
+            } elseif (preg_match('/(\d{4}-\d{2}-\d{2})/', $search, $matches)) {
+                $date = Carbon::parse($matches[1]);
+                $dates = [$date, $date];
+            } elseif (in_array(strtolower($search), ['yesterday', 'today', 'tomorrow'])) {
+                $date = Carbon::now();
+                if (strtolower($search) == 'yesterday') {
+                    $date->subDay();
+                } elseif (strtolower($search) == 'tomorrow') {
+                    $date->addDay();
+                }
+                $dates = [$date, $date];
+            }
+    
+            if ($dates) {
+                $query->whereBetween('created_at', $dates);
+            } else {
+                $day = date('d', strtotime($search));
+                $query->where(function ($q) use ($search, $day) {
+                    $q->orwhereDate('created_at', $day)
+                        ->orWhereHas('item', function ($q) use ($search) {
+                            $q->where('description', 'like', "%$search%");
+                        })
+                        ->orWhereHas('order', function ($q) use ($search) {
+                            $q->where('department', 'like', "%$search%");
+                        });
+                });
+            }
         }
-        
+    
         // Get paginated results
         $paginatedTransactions = $query->orderBy('created_at')
             ->paginate(8);
-        
+    
         // Group by date for the current page items
         $groupedTransactions = $paginatedTransactions->getCollection()->groupBy(function ($transaction) {
             return $transaction->created_at->format('Y-m-d');
         });
-        
+    
         // Add the grouped transactions back to the paginator
         $paginatedTransactions->setCollection(collect($groupedTransactions));
-        
+    
         return $paginatedTransactions;
     }
 
