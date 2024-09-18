@@ -337,10 +337,10 @@ $previousMonthOut = DB::table('Transactions')
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <th scope="col">Item Name</th>
-                            <th scope="col">Order By</th>
-                            <th scope="col">Transaction Type</th>
-                            <th scope="col">Quantity</th>
+                            <th scope="col" style="width: 25%">Item Name</th>
+                            <th scope="col" style="width: 20%;">Order By</th>
+                            <th scope="col" style="width: 16%;">Transaction Type</th>
+                            <th scope="col" style="width: 10%;">Quantity</th>
                         </tr>
                     </thead>
                     <tbody>
