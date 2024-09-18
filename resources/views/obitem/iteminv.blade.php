@@ -8,12 +8,12 @@
 @section('content')
 <div class="card">
     <div class="card-body">
-        <table id="example2" class="table table-bordered table-hover">
-            <div class="form-control" style="border: none;">
-                <a href="citem" class="btn btn-success" > <i class="fas fa-plus-square"></i> Create</a>
-                <a href="{{route('ob.home')}}" class="btn btn-info"> <i class="	fas fa-reply"></i> Go Back</a>
-            </div>
-            <br>
+        <div class="form-control mb-4" style="border: none;padding:0px;">
+            <a href="citem" class="btn btn-success" > <i class="fas fa-plus-square"></i> Create</a>
+            <a href="{{route('ob.home')}}" class="btn btn-info"> <i class="	fas fa-reply"></i> Go Back</a>
+        </div>
+        <table id="example2" class="table table-bordered table-hover ">
+        
             <thead>
             <tr>
                 <th scope="col">id</th>
@@ -32,28 +32,26 @@
                     <td>{{ $obi->item_code }}</td>
                     <td>{{ $obi->description }}</td>
                     <td>{{ $obi->Uom->unit_of_measurement}}</td>
-                        <td>{{ $obi->stock->qty }}</td>
-                        <td>
-                        <form method="POST" onsubmit="return confirm('Apakah Anda Yakin?');" action="{{ route('ob.itemdel', $obi->id) }}">
-                            <a href="{{ route('ob.edititem', $obi->id) }}" class="btn btn-sm btn-primary"><i class="far fa-edit"></i> Edit</a>
-                            @csrf
-                            @method('delete')
-                            <button type="submit" class="btn btn-sm btn-danger"><i class="	fas fa-trash"></i> Delete</button>    
-                        </form>
-                    </td>
-                </tr>
-
-                <ul>
-
-
-            </tbody>
+                    <td>{{ $obi->stock->qty }}</td>
+                    <td>
+                    <form method="POST" onsubmit="return confirm('Apakah Anda Yakin?');" action="{{ route('ob.itemdel', $obi->id) }}">
+                        <a href="{{ route('ob.edititem', $obi->id) }}" class="btn btn-sm btn-primary"><i class="far fa-edit"></i> Edit</a>
+                        @csrf
+                        @method('delete')
+                        <button type="submit" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i> Delete</button>    
+                    </form>
+                </td>
+            </tr>
             @empty
-            <div class="alert alert-danger">
-                Data Belum Terisi. 
-            </div>
+            <tr>
+                <td colspan="6">
+                    <div class="alert alert-danger">
+                        Data Belum Terisi. 
+                    </div>
+                </td>
+            </tr>
             @endforelse 
-            
-            
+            </tbody>
         </table>
     </div>
 </div>
