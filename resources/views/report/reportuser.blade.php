@@ -65,7 +65,7 @@
                 <div class="department-container">
                     <h2>Department: {{ $order['department'] }}</h2>
             
-                    <canvas id="department-chart-{{ $order['department'] }}" width="400" height="200"></canvas>
+                    <canvas id="department-chart-{{ $order['department'] }}" style="width: 100%; height: 400px;"></canvas>
                     <br>
                     <br>
             
@@ -166,6 +166,8 @@
                 });
             </script>
                 </div>
+                <br>
+                <br>
             @endforeach
             </div>
         </div>
