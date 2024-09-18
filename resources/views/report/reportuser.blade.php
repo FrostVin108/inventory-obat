@@ -217,45 +217,47 @@
         }
     </style>
 
-    <script>
-        $(document).ready(function() {
-            $('#search-btn').on('click', function() {
-                var searchTerm = $('#search-input').val().toLowerCase();
-                $('.department-container').each(function() {
-                    var department = $(this).find('h2').text().toLowerCase();
-                    var found = false;
-                    if (department.indexOf(searchTerm) !== -1) {
+<script>
+    $(document).ready(function() {
+        $('#search-btn').on('click', function() {
+            var searchTerm = $('#search-input').val().toLowerCase();
+            $('.department-container').each(function() {
+                var found = false;
+                $(this).find('table tbody tr').each(function() {
+                    var dateCell = $(this).find('td:eq(4)').text(); // assuming the date column is the 5th column
+                    var datePart = dateCell.split(' ')[0]; // extract the date part (e.g., "2022-01-01")
+                    var department = $(this).closest('.department-container').find('h2').text(); // get the department name
+                    var itemDesc = $(this).find('td:eq(1)').text(); // assuming the item description column is the 2nd column
+
+                    if (datePart.toLowerCase().indexOf(searchTerm) !== -1 ||
+                        department.toLowerCase().indexOf(searchTerm) !== -1 ||
+                        itemDesc.toLowerCase().indexOf(searchTerm) !== -1) {
                         found = true;
-                        $(this).find('.table-body tr').show();
-                    } else {
-                        $(this).find('.table-body tr').each(function() {
-                            var itemDesc = $(this).find('td:first').text().toLowerCase();
-                            var transactionType = $(this).find('td:nth-child(2)').text()
-                                .toLowerCase();
-                            if (itemDesc.indexOf(searchTerm) !== -1 || transactionType
-                                .indexOf(searchTerm) !== -1) {
-                                found = true;
-                                $(this).show();
-                            } else {
-                                $(this).hide();
-                            }
-                        });
-                    }
-                    if (found) {
                         $(this).show();
                     } else {
                         $(this).hide();
                     }
                 });
-            });
-
-            $('#clear-btn').on('click', function() {
-                $('#search-input').val('');
-                $('.department-container').show();
-                $('.table-body tr').show();
+                if (found) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
             });
         });
-    </script>
+
+        $('#clear-btn').on('click', function() {
+            $('#search-input').val('');
+            $('.department-container').each(function() {
+                $(this).show(); // show all department containers
+                $(this).find('table tbody tr').show(); // show all table rows
+                $(this).find('table').replaceWith($(this).data('original-table-data')); // restore original table data
+            });
+            $('#combine-btn').show(); // show combine button
+            $('#uncombine-btn').hide(); // hide uncombine button
+        });
+    });
+</script>
 
     <script>
         $(document).ready(function() {
