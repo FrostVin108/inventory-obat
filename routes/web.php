@@ -6,11 +6,11 @@ use App\Http\Controllers\ObatController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\SummaryController;
-use App\Models\uom;
+use App\Models\UOM;
 use App\Models\Order;
-use App\Models\stock;
-use App\Models\item;
-use App\Models\transaction;
+use App\Models\Stock;
+use App\Models\Item;
+use App\Models\Transaction;
 use Illuminate\Support\Facades\Route;
 
 /*
