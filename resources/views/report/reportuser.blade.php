@@ -72,7 +72,7 @@
                                 @php
                                     $currentMonthTransactions = [];
                                     foreach ($order['out_transactions'] as $transaction) {
-                                        if (date('m', strtotime($transaction['created_at'])) == date('m')) {
+                                        if (date('m', strtotime($transaction['created_at']))) {
                                             $currentMonthTransactions[] = $transaction;
                                         }
                                     }

@@ -98,15 +98,19 @@ class SummaryController extends Controller
     public function userIn(Request $request, $month)
     {
         session(['month' => $month]);
+        // dd(session('month'));
         $currentMonthTransactions = Transaction::whereMonth('created_at', $month)
             ->whereYear('created_at', date('Y'))
             ->where('transaction_type', 'OUT')
             ->get();
-        $previousMonthTransactions = Transaction::whereMonth('created_at', date('m', strtotime('-1 month')))
+        $previousMonthTransactions = Transaction::whereMonth('created_at', date($month, strtotime('-1 month')))
             ->whereYear('created_at', date('Y'))
             ->where('transaction_type', 'OUT')
             ->get();
-        $transactionsByOrderId = $currentMonthTransactions->merge($previousMonthTransactions)->groupBy('order_id');
+            $transactionsByOrderId = $currentMonthTransactions->merge($previousMonthTransactions)->groupBy('order_id');
+            
+            // $transactionsByOrderId = $currentMonthTransactions->groupBy('order_id');        
+
         $data = [];
         foreach ($transactionsByOrderId as $orderId => $transactions) {
             $order = Order::find($orderId);
