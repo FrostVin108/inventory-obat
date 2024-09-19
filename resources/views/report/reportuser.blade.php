@@ -96,64 +96,45 @@
                             }
                         @endphp
 
-                        <script>
-                            var ctx = document.getElementById('department-chart-{{ $order['department'] }}').getContext('2d');
-                            var chart = new Chart(ctx, {
-                                type: 'bar',
-                                data: {
-                                    labels: [
-                                        @foreach ($itemDescriptions as $item => $quantities)
-                                            '{{ $item }}',
-                                        @endforeach
-                                    ],
-                                    datasets: [{
-                                        label: 'Current Month',
-                                        data: [
-                                            @foreach ($itemDescriptions as $item => $quantities)
-                                                @php
-                                                    $currentMonthQty = 0;
-                                                    foreach ($order['out_transactions'] as $transaction) {
-                                                        if (date('m', strtotime($transaction['created_at'])) == date('m') && $transaction['transaction_type'] == 'OUT' && $transaction['item_description'] == $item) {
-                                                            $currentMonthQty += $transaction['qty'];
-                                                        }
-                                                    }
-                                                @endphp
-                                                {{ $currentMonthQty }},
-                                            @endforeach
-                                        ],
-                                        backgroundColor: 'rgba(54, 162, 235, 0.5)',
-                                        borderColor: 'rgba(54, 162, 235, 1)',
-                                        borderWidth: 1
-                                    }, {
-                                        label: 'Previous Month',
-                                        data: [
-                                            @foreach ($itemDescriptions as $item => $quantities)
-                                                @php
-                                                    $previousMonthQty = 0;
-                                                    $previousMonth = date('m', strtotime('-1 month'));
-                                                    foreach ($order['out_transactions'] as $transaction) {
-                                                        if (date('m', strtotime($transaction['created_at'])) == $previousMonth && $transaction['transaction_type'] == 'OUT' && $transaction['item_description'] == $item) {
-                                                            $previousMonthQty += $transaction['qty'];
-                                                        }
-                                                    }
-                                                @endphp
-                                                {{ $previousMonthQty }},
-                                            @endforeach
-                                        ],
-                                        backgroundColor: 'rgba(255, 99, 132, 0.5)',
-                                        borderColor: 'rgba(255, 99, 132, 1)',
-                                        borderWidth: 1
-                                    }]
-                                },
-                                options: {
-                                    scales: {
-                                        y: {
-                                            beginAtZero: true
-                                        }
-                                    }
+<script>
+    var ctx = document.getElementById('department-chart-{{ $order['department'] }}').getContext('2d');
+    var chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: [
+                @foreach ($itemDescriptions as $item => $quantities)
+                    '{{ $item }}',
+                @endforeach
+            ],
+            datasets: [{
+                label: '{{ date('F', mktime(0, 0, 0, session('month'), 1)) }}', // Update label to show selected month
+                data: [
+                    @foreach ($itemDescriptions as $item => $quantities)
+                        @php
+                            $selectedMonthQty = 0;
+                            foreach ($order['out_transactions'] as $transaction) {
+                                if (date('m', strtotime($transaction['created_at'])) == session('month') && $transaction['transaction_type'] == 'OUT' && $transaction['item_description'] == $item) {
+                                    $selectedMonthQty += $transaction['qty'];
                                 }
-                            });
-                        </script>
+                            }
+                        @endphp
+                        {{ $selectedMonthQty }},
+                    @endforeach
+                ],
+                backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }, ]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
                     </div>
                     <br>
                 @endforeach
