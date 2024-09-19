@@ -179,52 +179,20 @@ class ReportController extends Controller
         // Build query
         $query = Transaction::with('item', 'order')
             ->whereBetween('created_at', [$startOfMonth, $endOfMonth]);
-        
-        // Apply search filter
-        // if ($search) {
-        //     $query->orWhereDate('created_at', date('d', strtotime($search)))
-        //     ->orWhereHas('item', function ($q) use ($search) {
-        //         $q->where('description', 'like', "%$search%");
-        //     })
-        //     ->orWhereHas('order', function ($q) use ($search) {
-        //         $q->where('department', 'like', "%$search%");
-        //     });
-            
-        // }
-
+    
         if ($search) {
-            $dates = [];
-    
-            // Try to parse the search query as a date range
-            if (preg_match('/(\d{4}-\d{2}-\d{2})\s*-\s*(\d{4}-\d{2}-\d{2})/', $search, $matches)) {
-                $startDate = Carbon::parse($matches[1]);
-                $endDate = Carbon::parse($matches[2]);
-                $dates = [$startDate, $endDate];
-            } elseif (preg_match('/(\d{4}-\d{2}-\d{2})/', $search, $matches)) {
+            if (preg_match('/(\d{4}-\d{2}-\d{2})/', $search, $matches)) {
                 $date = Carbon::parse($matches[1]);
-                $dates = [$date, $date];
-            } elseif (in_array(strtolower($search), ['yesterday', 'today', 'tomorrow'])) {
-                $date = Carbon::now();
-                if (strtolower($search) == 'yesterday') {
-                    $date->subDay();
-                } elseif (strtolower($search) == 'tomorrow') {
-                    $date->addDay();
-                }
-                $dates = [$date, $date];
-            }
-    
-            if ($dates) {
-                $query->whereBetween('created_at', $dates);
+                $query->whereDate('created_at', $date);
             } else {
-                $day = date('d', strtotime($search));
-                $query->where(function ($q) use ($search, $day) {
-                    $q->orwhereDate('created_at', $day)
-                        ->orWhereHas('item', function ($q) use ($search) {
-                            $q->where('description', 'like', "%$search%");
-                        })
-                        ->orWhereHas('order', function ($q) use ($search) {
-                            $q->where('department', 'like', "%$search%");
-                        });
+                // Keep the existing search logic for other search queries
+                $query->where(function ($q) use ($search) {
+                    $q->whereHas('item', function ($q) use ($search) {
+                        $q->where('description', 'like', "%$search%");
+                    })
+                    ->orWhereHas('order', function ($q) use ($search) {
+                        $q->where('department', 'like', "%$search%");
+                    });
                 });
             }
         }

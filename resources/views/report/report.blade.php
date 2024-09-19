@@ -318,14 +318,15 @@ $previousMonthOut = DB::table('transactions')
 
         
 
-                <div class="search-position">
-                    <form method="GET" action="{{ route('report.monthly', ['month' => $month]) }}" class="input-button">
-                        <input type="text" name="search" value="{{ request('search') }}" placeholder="Search by date (e.g., YYYY-MM-DD or 'yesterday', 'today', etc.)" class="form-control input-search">
-                        <div>
-                            <button type="submit" class="btn btn-primary">Search</button>
-                        </div>
-                    </form>
-                </div>
+<!-- Search bar for month's daily log -->
+<div class="search-position">
+    <form method="GET" action="{{ route('report.monthly', ['month' => $month]) }}" class="input-button">
+        <input type="text" name="search" value="{{ request('search') }}" placeholder="Search by date, item name, or department" class="form-control input-search" style="width: 60%">
+        <div>
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+    </form>
+</div>
         
 
 
