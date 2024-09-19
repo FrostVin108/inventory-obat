@@ -163,26 +163,26 @@
                                                 }
 
                                                 // retrieve previous month's "in" and "out" transactions
-$previousMonthIn = DB::table('Transactions')
+$previousMonthIn = DB::table('transactions')
     ->whereMonth('created_at', $previousMonth)
     ->whereYear('created_at', $previousYear)
     ->where('transaction_type', 'in')
     ->sum('qty');
 
-$previousMonthOut = DB::table('Transactions')
+$previousMonthOut = DB::table('transactions')
     ->whereMonth('created_at', $previousMonth)
     ->whereYear('created_at', $previousYear)
     ->where('transaction_type', 'out')
     ->sum('qty');
 
 // retrieve current month's "in" and "out" transactions
-                                                $currentMonthIn = DB::table('Transactions')
+                                                $currentMonthIn = DB::table('transactions')
                                                     ->whereMonth('created_at', $selectedMonth)
                                                     ->whereYear('created_at', $currentYear)
                                                     ->where('transaction_type', 'in')
                                                     ->sum('qty');
 
-                                                $currentMonthOut = DB::table('Transactions')
+                                                $currentMonthOut = DB::table('transactions')
                                                     ->whereMonth('created_at', $selectedMonth)
                                                     ->whereYear('created_at', $currentYear)
                                                     ->where('transaction_type', 'out')

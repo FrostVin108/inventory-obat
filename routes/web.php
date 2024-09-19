@@ -37,7 +37,7 @@ Route::post('/stockin',[ObatController::class, 'itemstockin'])->name('ob.cstocki
 
 
 Route::get('/stockout', function () {
-    $item = item::get();
+    $item = Item::get();
     $order = Order::get();
     return view('transaction/stockout', compact('item', 'order'));
 })->name('ob.stockout');
