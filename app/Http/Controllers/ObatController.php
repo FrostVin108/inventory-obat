@@ -127,9 +127,9 @@ class ObatController extends Controller
     public function itemstockin(Request $request)
     {
         // logic stock in
-        $item = item::find($request->item_id);
+        $item = Item::find($request->item_id);
         $order = Order::find($request->order_id);
-        $stock = stock::where('item_id', $item->id)->first();
+        $stock = Stock::where('item_id', $item->id)->first();
         if ($stock) {
             $stock->qty += $request->qty;
             $stock->save();
@@ -156,7 +156,7 @@ class ObatController extends Controller
             return redirect()->route('ob.home')->with('success', 'Stock in berhasil');
 
         } else {
-            stock::create([
+            Stock::create([
                 'item_id' => $item->id,
                 'qty' => $request->qty,
                 'transaction_type' => "IN",
@@ -173,8 +173,8 @@ class ObatController extends Controller
 
         // logic stock out
         $order = Order::find($request->order_id);
-        $item = item::find($request->item_id);
-        $stock = stock::where('item_id', $item->id)->first();
+        $item = Item::find($request->item_id);
+        $stock = Stock::where('item_id', $item->id)->first();
         if ($stock) {
             if ($stock->qty >= $request->qty) {
                 $stock->qty -= $request->qty;
@@ -205,7 +205,7 @@ class ObatController extends Controller
 
             }
         } else {
-            stock::create([
+            Stock::create([
                 'item_id' => $item->id,
                 'qty' => $request->qty,
                 'transaction_type' => "out",
