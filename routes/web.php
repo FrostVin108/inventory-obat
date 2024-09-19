@@ -28,7 +28,7 @@ Route::get('/', [InventoryController::class, 'totalin'])->name('ob.home');
 
 
 Route::get('/stockin', function () {
-    $item = item::get();
+    $item = Item::get();
     $order = Order::get();
     return view('transaction/stockin', compact('item', 'order'));
 })->name('ob.stockin');
@@ -49,7 +49,7 @@ Route::post('home', [PageController::class, 'createitem','createstock'])->name('
 
 
 Route::get('/citem', function () {
-    $uom = uom::get(); 
+    $uom = UOM::get(); 
     return view('obitem/citem', compact('uom'));
 })->name('create.item');
 
