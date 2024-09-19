@@ -175,42 +175,49 @@ class ReportController extends Controller
     }
 
     private function getTransactions($startOfMonth, $endOfMonth, $search = null)
-    {
-        // Build query
-        $query = Transaction::with('item', 'order')
-            ->whereBetween('created_at', [$startOfMonth, $endOfMonth]);
-    
-        if ($search) {
-            if (preg_match('/(\d{4}-\d{2}-\d{2})/', $search, $matches)) {
-                $date = Carbon::parse($matches[1]);
-                $query->whereDate('created_at', $date);
-            } else {
-                // Keep the existing search logic for other search queries
-                $query->where(function ($q) use ($search) {
-                    $q->whereHas('item', function ($q) use ($search) {
-                        $q->where('description', 'like', "%$search%");
-                    })
-                    ->orWhereHas('order', function ($q) use ($search) {
-                        $q->where('department', 'like', "%$search%");
-                    });
+{
+    // Build query
+    $query = Transaction::with('item', 'order')
+        ->whereBetween('created_at', [$startOfMonth, $endOfMonth]);
+
+    if ($search) {
+        if (preg_match('/(\d{4}-\d{2}-\d{2})/', $search, $matches)) {
+            $date = Carbon::parse($matches[1]);
+            $query->whereDate('created_at', $date);
+        } elseif (preg_match('/(\d{2}-\d{2})/', $search, $matches)) {
+            list($month, $day) = explode('-', $matches[1]);
+            $query->whereMonth('created_at', $month)
+                ->whereDay('created_at', $day);
+        } elseif (preg_match('/(\d{2})/', $search, $matches)) {
+            $day = $matches[1];
+            $query->whereDay('created_at', $day);
+        } else {
+            // Keep the existing search logic for other search queries
+            $query->where(function ($q) use ($search) {
+                $q->whereHas('item', function ($q) use ($search) {
+                    $q->where('description', 'like', "%$search%");
+                })
+                ->orWhereHas('order', function ($q) use ($search) {
+                    $q->where('department', 'like', "%$search%");
                 });
-            }
+            });
         }
-    
-        // Get paginated results
-        $paginatedTransactions = $query->orderBy('created_at')
-            ->paginate(8);
-    
-        // Group by date for the current page items
-        $groupedTransactions = $paginatedTransactions->getCollection()->groupBy(function ($transaction) {
-            return $transaction->created_at->format('Y-m-d');
-        });
-    
-        // Add the grouped transactions back to the paginator
-        $paginatedTransactions->setCollection(collect($groupedTransactions));
-    
-        return $paginatedTransactions;
     }
+
+    // Get paginated results
+    $paginatedTransactions = $query->orderBy('created_at')
+        ->paginate(8);
+
+    // Group by date for the current page items
+    $groupedTransactions = $paginatedTransactions->getCollection()->groupBy(function ($transaction) {
+        return $transaction->created_at->format('Y-m-d');
+    });
+
+    // Add the grouped transactions back to the paginator
+    $paginatedTransactions->setCollection(collect($groupedTransactions));
+
+    return $paginatedTransactions;
+}
 
     private function getInMonthuom($startOfMonth, $endOfMonth)
     {
