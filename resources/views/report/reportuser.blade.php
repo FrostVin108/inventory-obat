@@ -19,6 +19,7 @@
             <i class="fas fa-arrow-up"></i>
         </button>
 
+        {{-- <button id="convert-to-excel-btn" title="Convert to Excel" style="width:55px; height:55px; fontsize:30px;"><i class="fas fa-file-excel"></i></button> --}}
 
         <button id="combine-btn" title="Combine The Same Data" style="width:55px; height:55px; fontsize:30px;"><i
                 class="fas fa-object-group"></i></button>
@@ -52,6 +53,8 @@
                         });
                     });
                 </script>
+
+                
 
                 <div class="col-md-6 input-group" style="gap: 5px;">
                     <select id="month" class="form-control-border ml-auto">
@@ -432,4 +435,41 @@
         });
     </script>
 
+<script>
+    $(document).ready(function() {
+        $('#convert-to-excel-btn').on('click', function() {
+    var csvData = [];
+
+    $('.department-container').each(function() {
+        var departmentName = $(this).find('h2').text();
+        csvData.push('"' + departmentName + '"'); // add department name as header
+
+        var headers = [];
+        $(this).find('table thead tr th').each(function() {
+            headers.push($(this).text());
+        });
+        csvData.push(headers.join('\t')); // add headers with tabs
+
+        csvData.push(''); // add a blank line
+
+        $(this).find('table tbody tr').each(function() {
+            var columns = [];
+            $(this).find('td').each(function() {
+                columns.push($(this).text());
+            });
+            csvData.push(columns.join('\t'));
+        });
+
+        csvData.push(''); // add a blank line between departments
+    });
+
+    var csvString = csvData.join('\n');
+    var blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
+    var link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'report.csv';
+    link.click();
+});
+});
+</script>
 @endsection
