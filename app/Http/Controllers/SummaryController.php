@@ -12,7 +12,7 @@ use App\Models\UOM;
 use App\Models\User;
 use Carbon\Carbon;
 use DateTime;
-use Barryvdh\DomPDF\Facade\Pdf;
+use Barryvdh\DomPDF\Facade\PDF;
 
 class SummaryController extends Controller
 {

@@ -202,7 +202,11 @@ $previousMonthOut = DB::table('transactions')
                                             @endphp
 
                                             <!-- display the balance -->
-                                            <h5>{{ $newBalance }}</h5>
+                                            @if ( $newBalance > 0)
+                                            <h5 class="text-danger"><i class="	fas fa-caret-up"></i> {{ $newBalance }}</h5>
+                                        @else
+                                            <h5 class="text-danger"><i class="fas fa-caret-down"></i> {{ $newBalance }}</h5>
+                                        @endif
                                         </span>
                                         <h5 class="description-text ">Balance</h5>
                                         <span class="text-sm">({{ $firstDayOfMonth }} - {{ $lastDayOfMonth }})</span>
