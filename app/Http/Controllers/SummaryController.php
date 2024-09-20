@@ -90,101 +90,20 @@ class SummaryController extends Controller
             ->where('transaction_type', 'OUT')
             ->get();
 
-            $date = new DateTime();
-            $date->setDate(date('Y'), $month, 1);
-            $date->modify('first day of previous month');
-            $previousMonth = $date->format('m');
-            $previousYear = $date->format('Y');
-
-        $previousMonthTransactions = Transaction::whereMonth('created_at', $previousMonth)
-        ->whereYear('created_at', $previousYear)
-        ->where('transaction_type', 'OUT')
-        ->get();
-
-
-        $transactionsByOrderId = $currentMonthTransactions->merge($previousMonthTransactions)->groupBy('order_id');
-
-        $data = [];
-    foreach ($transactionsByOrderId as $orderId => $transactions) {
-        $order = Order::find($orderId);
-        $outTransactions = [];
-        foreach ($transactions as $transaction) {
-            $item = Item::find($transaction->item_id);
-            $outTransactions[] = [
-                'item_id' => $transaction->item_id,
-                'item_description' => $item->description,
-                'qty' => $transaction->qty,
-                'created_at' => $transaction->created_at,
-                'transaction_type' => $transaction->transaction_type,
-            ];
-        }
-        $data[] = [
-            'department' => $order->department,
-            'out_transactions' => $outTransactions,
-        ];
-    }
-
-    return $data;
-}
-
-    public function userPrint( $month)
-        {
-    // Get the data for the selected month
-    $data = $this->userInDataPrint(request(), $month);
-
-    // Create a new PDF instance
-    $pdf = Pdf::loadView('/report/reportuserprint', compact('data', 'month'));
-    
-    // Return the PDF response
-    return $pdf->stream('report-' . $month . '.pdf');
-
-        }
-    
-
-
-
-
-
-    public function userIn(Request $request, $month)
-    {
-        session(['month' => $month]);
-        $currentMonthTransactions = Transaction::whereMonth('created_at', $month)
-            ->whereYear('created_at', date('Y'))
-            ->where('transaction_type', 'OUT')
-            ->get();
-    
         $date = new DateTime();
         $date->setDate(date('Y'), $month, 1);
         $date->modify('first day of previous month');
         $previousMonth = $date->format('m');
         $previousYear = $date->format('Y');
-    
+
         $previousMonthTransactions = Transaction::whereMonth('created_at', $previousMonth)
             ->whereYear('created_at', $previousYear)
             ->where('transaction_type', 'OUT')
             ->get();
-    
-        $currentMonthData = [];
-        $previousMonthData = [];
-    
-        $transactionsByOrderId = $currentMonthTransactions->merge($previousMonthTransactions)->groupBy('order_id');
-            
-        // $transactionsByOrderId = $currentMonthTransactions->groupBy('order_id');        
 
-    $data = [];
-    foreach ($transactionsByOrderId as $orderId => $transactions) {
-        $order = Order::find($orderId);
-        $outTransactions = [];
-        foreach ($transactions as $transaction) {
-            $item = Item::find($transaction->item_id);
-            $outTransactions[] = [
-                'item_id' => $transaction->item_id,
-                'item_description' => $item->description,
-                'qty' => $transaction->qty,
-                'created_at' => $transaction->created_at,
-                'transaction_type' => $transaction->transaction_type,
-            ];
-        }
+
+        $transactionsByOrderId = $currentMonthTransactions->merge($previousMonthTransactions)->groupBy('order_id');
+
         $data = [];
         foreach ($transactionsByOrderId as $orderId => $transactions) {
             $order = Order::find($orderId);
@@ -204,7 +123,75 @@ class SummaryController extends Controller
                 'out_transactions' => $outTransactions,
             ];
         }
-    
+
+        return $data;
+    }
+
+    public function userPrint($month)
+    {
+        // Get the data for the selected month
+        $data = $this->userInDataPrint(request(), $month);
+
+        // Create a new PDF instance
+        $pdf = Pdf::loadView('/report/reportuserprint', compact('data', 'month'));
+
+        // Return the PDF response
+        return $pdf->stream('report-' . $month . '.pdf');
+
+    }
+
+
+
+
+
+
+    public function userIn(Request $request, $month)
+    {
+        session(['month' => $month]);
+        $currentMonthTransactions = Transaction::whereMonth('created_at', $month)
+            ->whereYear('created_at', date('Y'))
+            ->where('transaction_type', 'OUT')
+            ->get();
+
+        $date = new DateTime();
+        $date->setDate(date('Y'), $month, 1);
+        $date->modify('first day of previous month');
+        $previousMonth = $date->format('m');
+        $previousYear = $date->format('Y');
+
+        $previousMonthTransactions = Transaction::whereMonth('created_at', $previousMonth)
+            ->whereYear('created_at', $previousYear)
+            ->where('transaction_type', 'OUT')
+            ->get();
+
+        $currentMonthData = [];
+        $previousMonthData = [];
+
+        $transactionsByOrderId = $currentMonthTransactions->merge($previousMonthTransactions)->groupBy('order_id');
+
+        // $transactionsByOrderId = $currentMonthTransactions->groupBy('order_id');        
+
+
+        $data = [];
+        foreach ($transactionsByOrderId as $orderId => $transactions) {
+            $order = Order::find($orderId);
+            $outTransactions = [];
+            foreach ($transactions as $transaction) {
+                $item = Item::find($transaction->item_id);
+                $outTransactions[] = [
+                    'item_id' => $transaction->item_id,
+                    'item_description' => $item->description,
+                    'qty' => $transaction->qty,
+                    'created_at' => $transaction->created_at,
+                    'transaction_type' => $transaction->transaction_type,
+                ];
+            }
+            $data[] = [
+                'department' => $order->department,
+                'out_transactions' => $outTransactions,
+            ];
+        }
+
         foreach ($previousMonthTransactions as $transaction) {
             $item = Item::find($transaction->item_id);
             $previousMonthData[] = [
@@ -215,8 +202,8 @@ class SummaryController extends Controller
                 'transaction_type' => $transaction->transaction_type,
             ];
         }
-    
+
+
         return view('report/reportuser', compact('currentMonthData', 'previousMonthData', 'data'));
     }
-}
 }
