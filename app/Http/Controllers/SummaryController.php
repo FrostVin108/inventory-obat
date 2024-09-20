@@ -12,7 +12,8 @@ use App\Models\UOM;
 use App\Models\User;
 use Carbon\Carbon;
 use DateTime;
-use Barryvdh\DomPDF\Facade\PDF;
+// use Barryvdh\DomPDF\PDF;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class SummaryController extends Controller
 {
@@ -132,7 +133,7 @@ class SummaryController extends Controller
     $data = $this->userInDataPrint(request(), $month);
 
     // Create a new PDF instance
-    $pdf = PDF::loadView('/report/reportuserprint', compact('data', 'month'));
+    $pdf = Pdf::loadView('/report/reportuserprint', compact('data', 'month'));
     
     // Return the PDF response
     return $pdf->stream('report-' . $month . '.pdf');
