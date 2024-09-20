@@ -18,10 +18,18 @@
         <button id="back-to-top" title="Back to Top" style="width:55px; height:55px; fontsize:30px;">
             <i class="fas fa-arrow-up"></i>
         </button>
+
+
         <button id="combine-btn" title="Combine The Same Data" style="width:55px; height:55px; fontsize:30px;"><i
                 class="fas fa-object-group"></i></button>
+
+
         <button id="uncombine-btn" title="Uncombine The Same Data"
             style="width:55px; height:55px; fontsize:30px; display: none;"><i class="fas fa-object-ungroup"></i></button>
+
+            
+        <button id="generate-pdf-btn" title="Convert pdf" 
+            style="width:55px; height:55px; fontsize:30px;"><i class="far fa-file-pdf"></i></button>
 
         <div class="card-body" style="padding: 47px;">
             <div class="d-flex input-group">
@@ -29,10 +37,21 @@
                     <input type="text" id="search-input" placeholder="Search..." class="form-control" style="width: 44%">
                     <button id="search-btn" class="btn btn-success">Search</button>
                     <button id="clear-btn" class="btn btn-warning">Clear</button>
+                    
 
                     {{-- <button id="combine-btn" class="btn btn-info">Combine</button> --}}
                     {{-- <button id="uncombine-btn" class="btn btn-danger">Uncombine</button> --}}
                 </div>
+
+
+                <script>
+                    $(document).ready(function() {
+                        $('#generate-pdf-btn').on('click', function() {
+                            var month = '<?php echo session('month') ?>';
+                            window.location.href = '{{ route('user.report.print', ':month') }}'.replace(':month', month);
+                        });
+                    });
+                </script>
 
                 <div class="col-md-6 input-group" style="gap: 5px;">
                     <select id="month" class="form-control-border ml-auto">
@@ -259,6 +278,22 @@
 
         #uncombine-btn:hover {
             background-color: rgb(216, 43, 43);
+        }
+
+        #generate-pdf-btn{
+            position: fixed;
+            bottom: 20px;
+            right: 80px;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: rgb(178, 152, 34);
+            color: white;
+        }
+
+        #generate-pdf-btn:hover{
+            background-color: rgb(216, 152, 43);
         }
     </style>
 

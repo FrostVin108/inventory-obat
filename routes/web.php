@@ -128,4 +128,4 @@ Route::get('report/monthly/{month}', [ReportController::class, 'getmonthly'])->n
 
 Route::get('/report/userin/{month}', [SummaryController::class, 'userin'])->name('report.user.in');
 
-Route::get('/report/print', [SummaryController::class, 'print'])->name('print.report');
+Route::get('/report/pdf/{month}', [SummaryController::class, 'userPrint'])->name('user.report.print');
