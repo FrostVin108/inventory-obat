@@ -11,6 +11,7 @@ use App\Models\Transaction;
 use App\Models\UOM;
 use App\Models\User;
 use Carbon\Carbon;
+use DateTime;
 
 class SummaryController extends Controller
 {
@@ -98,19 +99,43 @@ class SummaryController extends Controller
     public function userIn(Request $request, $month)
     {
         session(['month' => $month]);
-        // dd(session('month'));
         $currentMonthTransactions = Transaction::whereMonth('created_at', $month)
             ->whereYear('created_at', date('Y'))
             ->where('transaction_type', 'OUT')
             ->get();
-        $previousMonthTransactions = Transaction::whereMonth('created_at', date($month, strtotime('-1 month')))
-            ->whereYear('created_at', date('Y'))
+    
+        $date = new DateTime();
+        $date->setDate(date('Y'), $month, 1);
+        $date->modify('first day of previous month');
+        $previousMonth = $date->format('m');
+        $previousYear = $date->format('Y');
+    
+        $previousMonthTransactions = Transaction::whereMonth('created_at', $previousMonth)
+            ->whereYear('created_at', $previousYear)
             ->where('transaction_type', 'OUT')
             ->get();
-            $transactionsByOrderId = $currentMonthTransactions->merge($previousMonthTransactions)->groupBy('order_id');
+    
+        $currentMonthData = [];
+        $previousMonthData = [];
+    
+        $transactionsByOrderId = $currentMonthTransactions->merge($previousMonthTransactions)->groupBy('order_id');
             
-            // $transactionsByOrderId = $currentMonthTransactions->groupBy('order_id');        
+        // $transactionsByOrderId = $currentMonthTransactions->groupBy('order_id');        
 
+    $data = [];
+    foreach ($transactionsByOrderId as $orderId => $transactions) {
+        $order = Order::find($orderId);
+        $outTransactions = [];
+        foreach ($transactions as $transaction) {
+            $item = Item::find($transaction->item_id);
+            $outTransactions[] = [
+                'item_id' => $transaction->item_id,
+                'item_description' => $item->description,
+                'qty' => $transaction->qty,
+                'created_at' => $transaction->created_at,
+                'transaction_type' => $transaction->transaction_type,
+            ];
+        }
         $data = [];
         foreach ($transactionsByOrderId as $orderId => $transactions) {
             $order = Order::find($orderId);
@@ -130,6 +155,19 @@ class SummaryController extends Controller
                 'out_transactions' => $outTransactions,
             ];
         }
-        return view('report/reportuser', compact('data'));
+    
+        foreach ($previousMonthTransactions as $transaction) {
+            $item = Item::find($transaction->item_id);
+            $previousMonthData[] = [
+                'item_id' => $transaction->item_id,
+                'item_description' => $item->description,
+                'qty' => $transaction->qty,
+                'created_at' => $transaction->created_at,
+                'transaction_type' => $transaction->transaction_type,
+            ];
+        }
+    
+        return view('report/reportuser', compact('currentMonthData', 'previousMonthData', 'data'));
     }
+}
 }
