@@ -12,6 +12,7 @@ use App\Models\UOM;
 use App\Models\User;
 use Carbon\Carbon;
 use DateTime;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class SummaryController extends Controller
 {
@@ -80,19 +81,91 @@ class SummaryController extends Controller
         return $outQuantities;
     }
 
-    private function todaysData()
+    private function monthsData()
     {
-        $today = Carbon::today();
-        $todayTransactions = Transaction::whereDate('created_at', $today)
-            ->get();
-        foreach ($todayTransactions as $trans) {
-            $trans->item = Item::where('id', $trans->item_id)->first();
-        }
-        foreach ($todayTransactions as $trans) {
-            $trans->order = Order::where('id', $trans->order_id)->first();
-        }
-        return $todayTransactions;
+        
     }
+
+    public function print( $month)
+    {
+        session(['month' => $month]);
+        $currentMonthTransactions = Transaction::whereMonth('created_at', $month)
+            ->whereYear('created_at', date('Y'))
+            ->where('transaction_type', 'OUT')
+            ->get();
+    
+        $date = new DateTime();
+        $date->setDate(date('Y'), $month, 1);
+        $date->modify('first day of previous month');
+        $previousMonth = $date->format('m');
+        $previousYear = $date->format('Y');
+    
+        $previousMonthTransactions = Transaction::whereMonth('created_at', $previousMonth)
+            ->whereYear('created_at', $previousYear)
+            ->where('transaction_type', 'OUT')
+            ->get();
+    
+        $currentMonthData = [];
+        $previousMonthData = [];
+    
+        $transactionsByOrderId = $currentMonthTransactions->merge($previousMonthTransactions)->groupBy('order_id');
+            
+        // $transactionsByOrderId = $currentMonthTransactions->groupBy('order_id');        
+
+    $data = [];
+    foreach ($transactionsByOrderId as $orderId => $transactions) {
+        $order = Order::find($orderId);
+        $outTransactions = [];
+        foreach ($transactions as $transaction) {
+            $item = Item::find($transaction->item_id);
+            $outTransactions[] = [
+                'item_id' => $transaction->item_id,
+                'item_description' => $item->description,
+                'qty' => $transaction->qty,
+                'created_at' => $transaction->created_at,
+                'transaction_type' => $transaction->transaction_type,
+            ];
+        }
+        $data = [];
+        foreach ($transactionsByOrderId as $orderId => $transactions) {
+            $order = Order::find($orderId);
+            $outTransactions = [];
+            foreach ($transactions as $transaction) {
+                $item = Item::find($transaction->item_id);
+                $outTransactions[] = [
+                    'item_id' => $transaction->item_id,
+                    'item_description' => $item->description,
+                    'qty' => $transaction->qty,
+                    'created_at' => $transaction->created_at,
+                    'transaction_type' => $transaction->transaction_type,
+                ];
+            }
+            $data[] = [
+                'department' => $order->department,
+                'out_transactions' => $outTransactions,
+            ];
+        }
+    
+        foreach ($previousMonthTransactions as $transaction) {
+            $item = Item::find($transaction->item_id);
+            $previousMonthData[] = [
+                'item_id' => $transaction->item_id,
+                'item_description' => $item->description,
+                'qty' => $transaction->qty,
+                'created_at' => $transaction->created_at,
+                'transaction_type' => $transaction->transaction_type,
+            ];
+        }
+    
+
+
+    $filename = 'Medicine User Report.pdf';
+            $pdf = PDF::loadview('report.report_print', compact('data'))->setPaper('a4', 'potrait');
+            return $pdf->stream($filename);
+    }
+}
+
+
 
 
 
