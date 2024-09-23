@@ -14,7 +14,7 @@
                     @csrf
                     @method('post')
                         <div class="form-group" >
-                            <label for="exampleInputEmail1">Choose Item Code</label>
+                            <label for="exampleInputEmail1">Choose Item</label>
                             <select name="item_id" class="form-control @error('item_id') is-invalid @enderror">
                                 @foreach ($item as $ic)
                                     <option value="{{$ic->id}}">{{$ic->item_code}} | {{$ic->description}}</option>

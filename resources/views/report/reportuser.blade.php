@@ -35,9 +35,9 @@
         <div class="card-body" style="padding: 47px;">
             <div class="d-flex input-group">
                 <div class="col-md-6 search-post">
-                    <input type="text" id="search-input" placeholder="Search..." class="form-control" style="width: 44%">
-                    <button id="search-btn" class="btn btn-success">Search</button>
-                    <button id="clear-btn" class="btn btn-warning">Clear</button>
+                    <input type="text" name="search" id="search-input" placeholder="Search..."class="form-control input-search" style="width: 44%">
+                    <button id="search-btn" class="btn btn-success"><i class="fas fa-search"></i> Search</button>
+                    <button id="clear-btn" class="btn btn-warning"> <i class="	fas fa-undo"></i></button>
                     
 
                     {{-- <button id="combine-btn" class="btn btn-info">Combine</button> --}}
