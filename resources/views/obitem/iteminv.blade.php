@@ -6,12 +6,26 @@
 @stop
 
 @section('content')
+<script>
+    setTimeout(function() {
+        document.getElementById("error-alert").classList.add("fade-out");
+        setTimeout(function() {
+            document.getElementById("error-alert").remove();
+        }, 500);
+    }, 4500);
+</script>
+
 <div class="card">
     <div class="card-body">
         <div class="form-control mb-4" style="border: none;padding:0px;">
             <a href="citem" class="btn btn-success" > <i class="fas fa-plus-square"></i> Create</a>
             <a href="{{route('ob.home')}}" class="btn btn-info"> <i class="	fas fa-reply"></i> Go Back</a>
         </div>
+        @if(session('error'))
+        <div class="alert alert-danger" id="error-alert">
+            {{ session('error') }}
+        </div>
+    @endif
         <table id="example2" class="table table-bordered table-hover ">
         
             <thead>
@@ -64,6 +78,20 @@
         gap: 10px;
     }
     
+</style>
+<style>
+    .fade-out {
+        animation: fadeOut 1s;
+    }
+
+    @keyframes fadeOut {
+        0% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;
+        }
+    }
 </style>
 
 @stop

@@ -76,12 +76,16 @@ Route::get('/uomedit/{id}', [ObatController::class, 'edituom'])->name('ob.edituo
 Route::post('/uomupdate/{id}', [ObatController::class, 'updateuom'])->name('ob.updateuom');
 
 
+
 //Update, Edit, Delete : item
 Route::delete('itemdestroy/{id}', [ObatController::class, 'destroyitem'])->name('ob.itemdel');
 
 Route::get('/itemedit/{id}', [ObatController::class, 'edititem'])->name('ob.edititem');
 
 Route::put('/itemupdate/{id}', [ObatController::class, 'updateitem'])->name('ob.updateitem');
+
+
+
 
 Route::get('/tes', function () {
     return view('tes');
