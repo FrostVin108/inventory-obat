@@ -6,6 +6,7 @@ use App\Http\Controllers\ObatController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\SummaryController;
+use App\Http\Controllers\HomeController;
 use App\Models\UOM;
 use App\Models\Order;
 use App\Models\Stock;
@@ -134,7 +135,13 @@ Route::get('/report/userin/{month}', [SummaryController::class, 'userin'])->name
 
 Route::get('/report/pdf/{month}', [SummaryController::class, 'userPrint'])->name('user.report.print');
 
+Route::get('/users', [HomeController::class, 'users'])->name('users');
 
+Route::get('/add/user', [HomeController::class, 'create'])->name('add.user');
+
+Route::post('/add/create/user', [HomeController::class, 'createAdd'])->name('add.create.user');
+
+// Route::delete('/deleteusers/{id}'. [HomeController::class, 'destroyuser'])->name('destroy.user');
 
 
 
