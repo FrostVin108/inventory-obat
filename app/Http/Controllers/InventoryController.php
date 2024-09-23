@@ -22,7 +22,7 @@ class InventoryController extends Controller
         // $posts = Post::paginate(10); // Paginate by 10 items per page
     
         foreach ($obatitem as $item) {
-            $item->stock = Stock::where('item_id', $item->id)->first();
+            $item->stock = optional(Stock::where('item_id', $item->id)->first())->qty ?? 0;
         }
         // dd($stock);
         return view('obitem/iteminv', compact('obatitem'));
