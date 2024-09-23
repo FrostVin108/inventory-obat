@@ -27,9 +27,9 @@ class PageController extends Controller
     {
         $this->validate($request, [
             'description'=> 'required',
-            'item_code' => 'required|min:14',
+            'item_code' => 'required|min:14|max:20',
             'unit_of_measurement_id'=> 'required',
-            'qty'=> 'required|min_digits:1',
+            'qty'=> 'required|max_digits:5|min_digits:1',
            
         ]);
 

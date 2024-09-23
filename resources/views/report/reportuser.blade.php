@@ -290,6 +290,7 @@
                     $(this).hide();
                 }
             });
+            $("#search-input").focus();
         });
 
         $('#clear-btn').on('click', function() {

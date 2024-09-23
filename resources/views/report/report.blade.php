@@ -514,4 +514,8 @@ $previousMonthOut = DB::table('transactions')
             width: 22%;
         }
     </style>
+
+    <script>
+        $(".input-search").focus();
+    </script>
 @endsection

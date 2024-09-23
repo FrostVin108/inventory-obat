@@ -68,10 +68,17 @@ class ObatController extends Controller
         $obatitem = Item::findOrFail($id);
     
         // Check if the item is being used in other tables
-        if (Transaction::where('item_id', $id)->count() > 0 || Stock::where('item_id', $id)->count() > 0) {
+        if (Transaction::where('item_id', $id)->count() > 0) {
             return redirect()->route('wh.iteminv')->with('error', 'You Cant Delete The Item You Trying to Delete!, Because That Item Is under Use for Other Data!');
         }
     
+        // Delete the item's stock
+        $stock = Stock::where('item_id', $id)->first();
+        if ($stock) {
+            $stock->delete();
+        }
+    
+        // Delete the item
         $obatitem->delete();
     
         return redirect()->route('wh.iteminv');
