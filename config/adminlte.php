@@ -326,7 +326,7 @@ return [
         ['header' => 'Menu'],
         [
             'text' => 'Home',
-            'url' => '/',
+            'url' => '/home',
             'icon' => 'fas fa-fw fa-home',
         ],
         [

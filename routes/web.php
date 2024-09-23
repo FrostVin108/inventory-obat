@@ -24,7 +24,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [InventoryController::class, 'totalin'])->name('ob.home');
+Route::get('/home', [InventoryController::class, 'totalin'])->name('ob.home');
 
 
 Route::get('/stockin', function () {
@@ -133,3 +133,15 @@ Route::get('report/monthly/{month}', [ReportController::class, 'getmonthly'])->n
 Route::get('/report/userin/{month}', [SummaryController::class, 'userin'])->name('report.user.in');
 
 Route::get('/report/pdf/{month}', [SummaryController::class, 'userPrint'])->name('user.report.print');
+
+
+
+
+
+
+
+
+
+Auth::routes();
+
+// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
