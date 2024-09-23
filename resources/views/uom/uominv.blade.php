@@ -12,7 +12,12 @@
 
         <br>
         <br>
-        <table class="table table-bordered">
+        @if(session('error'))
+        <div class="alert alert-danger" id="error-alert">
+            {{ session('error') }}
+        </div>
+    @endif
+        <table class="table table-bordered table-hover">
             
             <thead>
             <tr>
@@ -49,4 +54,26 @@
             
     </div>
 </div>
+<script>
+    setTimeout(function() {
+        document.getElementById("error-alert").classList.add("fade-out");
+        setTimeout(function() {
+            document.getElementById("error-alert").remove();
+        }, 500);
+    }, 4500);
+</script>
+<style>
+    .fade-out {
+        animation: fadeOut 1s;
+    }
+
+    @keyframes fadeOut {
+        0% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;
+        }
+    }
+</style>
 @stop

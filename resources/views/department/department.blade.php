@@ -8,6 +8,11 @@
 <div class="card">
     <div class="card-body">
         <a href="{{route('depart.create')}}" class="btn btn-link" style="font-size: 20px;"><i class="fas fa-user-plus"></i> Add More Department</a>
+        @if(session('error'))
+        <div class="alert alert-danger" id="error-alert">
+            {{ session('error') }}
+        </div>
+    @endif
 
         <table class="table table-hover">
             <thead>
@@ -45,4 +50,26 @@
         </table>
     </div>
 </div>
+<script>
+    setTimeout(function() {
+        document.getElementById("error-alert").classList.add("fade-out");
+        setTimeout(function() {
+            document.getElementById("error-alert").remove();
+        }, 500);
+    }, 4500);
+</script>
+<style>
+    .fade-out {
+        animation: fadeOut 1s;
+    }
+
+    @keyframes fadeOut {
+        0% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;
+        }
+    }
+</style>
 @endsection

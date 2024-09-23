@@ -16,9 +16,13 @@ class ObatController extends Controller
     public function destroyuom($id)
     {
         $obatuom = UOM::findOrFail($id);
-        // dd($obatuom);
+    
+        if (Item::where('unit_of_measurement_id', $id)->count() > 0) {
+            return redirect()->route('wh.uominv')->with('error', 'Sorry You cant delete The Data,It Is under Use for Other Data!');
+        }
+    
         $obatuom->delete();
-
+    
         return redirect()->route('wh.uominv');
     }
 

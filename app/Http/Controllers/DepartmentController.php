@@ -35,11 +35,17 @@ class DepartmentController extends Controller
 
     public function detroydepart($id)
     {
-       $users = Order::findOrFail($id);
-        // dd($obatuom);
-       $users->delete();
-
-       return redirect()->route('department.list');
+        $users = Order::findOrFail($id);
+    
+        if (Transaction::whereHas('item', function ($query) use ($id) {
+            $query->where('order_id', $id);
+        })->count() > 0) {
+            return redirect()->route('department.list')->with('error', 'Sorry You cant delete The Order ,It Is under Use for Other Data!');
+        }
+    
+        $users->delete();
+    
+        return redirect()->route('department.list');
     }
 
     public function editdepart(Request $request, $id){
