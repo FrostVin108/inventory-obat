@@ -158,20 +158,25 @@ public function usersdata()
 
     public function profileupdate(Request $request, $id)
     {
-        $user = User::findOrFail($id);
+        $user = Auth::user();
     
-        $validator = Validator::make($request->all(), [
+        $request->validate([
+            'password_old' => 'required',
             'password' => 'required|confirmed',
-            'password_confirmation' => 'required',
+            'password_confirmation' => 'required|same:password',
         ]);
     
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
+        if (!Hash::check($request->input('password_old'), $user->password)) {
+            return back()->withErrors(['password_old' => 'The Old Password Is not The same!']);
         }
     
-        $user->password = bcrypt($request->password);
+        if ($request->input('password') !== $request->input('password_confirmation')) {
+            return back()->withErrors(['password' => 'The new password and confirmation do not match.']);
+        }
+    
+        $user->password = bcrypt($request->input('password'));
         $user->save();
     
-        return redirect()->back()->with('success', 'Password changed successfully');
+        return back()->with('success', 'Password changed successfully!');
     }
 }

@@ -25,6 +25,16 @@
 <div class="card">
     <div class="card-body" style="margin: 40px; display: flex; justify-content: center">
         <div style=" display: flex; justify-content: center; flex-direction: column; text-align:center">
+            @if ($errors->any())
+    <div class="alert alert-danger">
+        
+            @foreach ($errors->all() as $error)
+                <label>{{ $error }}</label>
+            @endforeach
+        
+    </div>
+@endif
+
             <h2 >Profile</h2>
 
             <img src="{{asset('image/download-removebg-preview (6).png')}}" alt="">
@@ -62,6 +72,8 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+
+            
             <div class="modal-body">
                 <!-- Add your password change form here -->
                 <form action="{{ route('profile.change', Auth::id()) }}" method="post">
@@ -69,16 +81,16 @@
                     @method('PUT')
                     <div class="form-group">
                         <label for="old_password">Old Password</label>
-                        <input type="password" class="form-control" id="old_password" name="password" required>
+                        <input type="password" class="form-control" id="old_password" name="password_old" required>
                     </div>
                     <div class="form-group">
                         <label for="new_password">New Password</label>
-                        <input type="password" class="form-control" id="new_password" name="password_confirmation" required>
+                        <input type="password" class="form-control" id="new_password" name="password" required>
                     </div>
-                    {{-- <div class="form-group">
+                    <div class="form-group">
                         <label for="confirm_password">Confirm Password</label>
-                        <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
-                    </div> --}}
+                        <input type="password" class="form-control" id="confirm_password" name="password_confirmation" required>
+                    </div>
                     <button type="submit" class="btn btn-primary">Change Password</button>
                 </form>
             </div>
