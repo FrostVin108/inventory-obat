@@ -66,7 +66,7 @@
                     </div>
 
                     <button type="submit" class="btn btn-success"> <i class="fas fa-file-upload"></i> Sumbit</button>
-                    <a href="{{ route('ob.home') }}" class="btn btn-warning"> <i class="fas fa-reply"></i> Return</a>
+                    <a href="{{ route('home') }}" class="btn btn-warning"> <i class="fas fa-reply"></i> Return</a>
                 </form>   
     </div>
 </div>

@@ -19,7 +19,7 @@
     <div class="card-body">
         <div class="form-control mb-4" style="border: none;padding:0px;">
             <a href="citem" class="btn btn-success" > <i class="fas fa-plus-square"></i> Create</a>
-            <a href="{{route('ob.home')}}" class="btn btn-info"> <i class="	fas fa-reply"></i> Go Back</a>
+            <a href="{{route('home')}}" class="btn btn-info"> <i class="	fas fa-reply"></i> Go Back</a>
         </div>
         @if(session('error'))
         <div class="alert alert-danger" id="error-alert">

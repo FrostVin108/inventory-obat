@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\InventoryController;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Models\Item;
@@ -13,13 +14,16 @@ use App\Models\User;
 
 class HomeController extends Controller
 {
+    private $InventoryController;
+
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(InventoryController $InventoryController)
     {
+        $this->InventoryController = $InventoryController;
         $this->middleware('auth');
     }
 
@@ -30,7 +34,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+
+        $data = $this->InventoryController->totalIn();
+        return view('home', $data);
     }
 
     public function users(){

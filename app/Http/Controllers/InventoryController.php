@@ -88,7 +88,16 @@ class InventoryController extends Controller
         $inQuantities = $this->getInQuantities();
         $outQuantities = $this->getOutQuantities();
         $todayTransactions = $this->todaysData();
-        return view('home', compact('totalIn', 'totalOut', 'total', 'balance', 'labels', 'inQuantities', 'outQuantities', 'todayTransactions'));
+        return [
+            'totalIn' => $totalIn,
+            'totalOut' => $totalOut,
+            'total' => $total,
+            'balance' => $balance,
+            'labels' => $labels,
+            'inQuantities' => $inQuantities,
+            'outQuantities' => $outQuantities,
+            'todayTransactions' => $todayTransactions,
+        ];
     }
 
     public function getSuppliesQty()

@@ -24,136 +24,141 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Auth::routes();
 
-Route::get('/home', [InventoryController::class, 'totalin'])->name('ob.home');
+
+Route::get('/home', [InventoryController::class, 'totalin'])->name('ob.home')->middleware('auth');
 
 
 Route::get('/stockin', function () {
     $item = Item::get();
     $order = Order::get();
     return view('transaction/stockin', compact('item', 'order'));
-})->name('ob.stockin');
+})->name('ob.stockin')->middleware('auth');
 
-Route::post('/stockin',[ObatController::class, 'itemstockin'])->name('ob.cstockin');
+Route::post('/stockin',[ObatController::class, 'itemstockin'])->name('ob.cstockin')->middleware('auth');
 
 
 Route::get('/stockout', function () {
     $item = Item::get();
     $order = Order::get();
     return view('transaction/stockout', compact('item', 'order'));
-})->name('ob.stockout');
+})->name('ob.stockout')->middleware('auth');
 
-Route::post('/stockout', [ObatController::class, 'itemstockout'])->name('ob.cstockout');
+Route::post('/stockout', [ObatController::class, 'itemstockout'])->name('ob.cstockout')->middleware('auth');
 
 
-Route::post('home', [PageController::class, 'createitem','createstock'])->name('ob.create');
+Route::post('home', [PageController::class, 'createitem','createstock'])->name('ob.create')->middleware('auth');
 
 
 Route::get('/citem', function () {
     $uom = UOM::get(); 
     return view('obitem/citem', compact('uom'));
-})->name('create.item');
+})->name('create.item')->middleware('auth');
 
-Route::post('/citem', [PageController::class, 'createitem'])->name('ob.citem');
+Route::post('/citem', [PageController::class, 'createitem'])->name('ob.citem')->middleware('auth');
 
 Route::get('/uom', function () {
-    return view('uom/uom');
-})->name('create.uom');
+    return view('uom/uom')->middleware('auth');
+})->name('create.uom')->middleware('auth');
 
-Route::post('/uominv', [PageController::class, 'createuom'])->name('ob.cuom');
+Route::post('/uominv', [PageController::class, 'createuom'])->name('ob.cuom')->middleware('auth');
 
 
 //Wareghouse / wh
-Route::get('/iteminv', [InventoryController::class, 'invobat'])->name('wh.iteminv');
+Route::get('/iteminv', [InventoryController::class, 'invobat'])->name('wh.iteminv')->middleware('auth');
 
-Route::get('/uominv', [InventoryController::class,'invuom'])->name('wh.uominv');
-
+Route::get('/uominv', [InventoryController::class,'invuom'])
+    ->name('wh.uominv')
+    ->middleware('auth')->middleware('auth');
 
 //Update, Edit, Delete : UOM
-Route::delete('uomdestroy/{id}', [ObatController::class, 'destroyuom'])->name('ob.uomdel');
+Route::delete('uomdestroy/{id}', [ObatController::class, 'destroyuom'])->name('ob.uomdel')->middleware('auth');
 
-Route::get('/uomedit/{id}', [ObatController::class, 'edituom'])->name('ob.edituom');
+Route::get('/uomedit/{id}', [ObatController::class, 'edituom'])->name('ob.edituom')->middleware('auth');
 
-Route::post('/uomupdate/{id}', [ObatController::class, 'updateuom'])->name('ob.updateuom');
+Route::post('/uomupdate/{id}', [ObatController::class, 'updateuom'])->name('ob.updateuom')->middleware('auth');
 
 
 
 //Update, Edit, Delete : item
-Route::delete('itemdestroy/{id}', [ObatController::class, 'destroyitem'])->name('ob.itemdel');
+Route::delete('itemdestroy/{id}', [ObatController::class, 'destroyitem'])->name('ob.itemdel')->middleware('auth');
 
-Route::get('/itemedit/{id}', [ObatController::class, 'edititem'])->name('ob.edititem');
+Route::get('/itemedit/{id}', [ObatController::class, 'edititem'])->name('ob.edititem')->middleware('auth');
 
-Route::put('/itemupdate/{id}', [ObatController::class, 'updateitem'])->name('ob.updateitem');
+Route::put('/itemupdate/{id}', [ObatController::class, 'updateitem'])->name('ob.updateitem')->middleware('auth');
 
 
 
 
 Route::get('/tes', function () {
-    return view('tes');
+    return view('tes')->middleware('auth');
 });
 
 Route::get('/htu', function () {
-    return view('htu');
+    return view('htu')->middleware('auth');
 });
 
-Route::get('/translist', [InventoryController::class, 'transactionlistview'])->name('trans.list');
-Route::get('/translist2', [InventoryController::class, 'transactionlist'])->name('trans.list.data');
+Route::get('/translist', [InventoryController::class, 'transactionlistview'])->name('trans.list')->middleware('auth');
+Route::get('/translist2', [InventoryController::class, 'transactionlist'])->name('trans.list.data') ;
 
 
-Route::get('/getSuppliesQty', [InventoryController::class, 'getSuppliesQty'])->name('supliesqty');
+Route::get('/getSuppliesQty', [InventoryController::class, 'getSuppliesQty'])->name('supliesqty')->middleware('auth');
 
 
-Route::get('/report', [InventoryController::class, 'reportmonth'])->name('report');
+Route::get('/report', [InventoryController::class, 'reportmonth'])->name('report')->middleware('auth');
 
 Route::get('/department', function(){
-    return view('department/department');
-})->name('department');
+    return view('department/department')->middleware('auth');
+})->name('department')->middleware('auth');
 
 
 
-Route::get('/department', [DepartmentController::class, 'list'])->name('department.list');
+Route::get('/department', [DepartmentController::class, 'list'])->name('department.list')->middleware('auth');
 
 Route::get('/createdepartment', function(){
-    return view('department/departcreate');
-})->name('depart.create');
+    return view('department/departcreate')->middleware('auth');
+})->name('depart.create')->middleware('auth');
 
-Route::post('/departpost', [DepartmentController::class, 'createdepartment'])->name('depart.post');
+Route::post('/departpost', [DepartmentController::class, 'createdepartment'])->name('depart.post')->middleware('auth');
 
-Route::get('/editdepart/{id}', [DepartmentController::class, 'editdepart'])->name('depart.edit');
+Route::get('/editdepart/{id}', [DepartmentController::class, 'editdepart'])->name('depart.edit')->middleware('auth');
 
-Route::put('/updatedepart/{id}', [DepartmentController::class, 'updatedepart'])->name('depart.update');
+Route::put('/updatedepart/{id}', [DepartmentController::class, 'updatedepart'])->name('depart.update')->middleware('auth');
 
-Route::delete('/destroydepart/{id}', [DepartmentController::class, 'detroydepart'])->name('depart.delete');
-
-
-
-// Route::get('/report/monthlydata/{month}', [ReportController::class, 'getItemsData' ])->name('reportitem.overview.data');
-
-Route::get('report/monthly/{month}', [ReportController::class, 'getmonthly'])->name('report.monthly');
-
-Route::get('/report/userin/{month}', [SummaryController::class, 'userin'])->name('report.user.in');
-
-Route::get('/report/pdf/{month}', [SummaryController::class, 'userPrint'])->name('user.report.print');
+Route::delete('/destroydepart/{id}', [DepartmentController::class, 'detroydepart'])->name('depart.delete')->middleware('auth');
 
 
+
+// Route::get('/report/monthlydata/{month}', [ReportController::class, 'getItemsData' ])->name('reportitem.overview.data')->middleware('auth');
+
+Route::get('report/monthly/{month}', [ReportController::class, 'getmonthly'])->name('report.monthly')->middleware('auth');
+
+Route::get('/report/userin/{month}', [SummaryController::class, 'userin'])->name('report.user.in')->middleware('auth');
+
+Route::get('/report/pdf/{month}', [SummaryController::class, 'userPrint'])->name('user.report.print')->middleware('auth');
 
 
 
 
-Route::get('/users', [HomeController::class, 'users'])->name('users');
-
-Route::get('/add/user', [HomeController::class, 'create'])->name('user.add');
-
-Route::post('/add/create/user', [HomeController::class, 'createAdd'])->name('user.create.add');
-
-Route::delete('user/destroy/{id}', [HomeController::class, 'destroyuser'])->name('user.destroy');
-
-Route::get('/add/user/edit/{id}', [HomeController::class, 'edit'])->name('user.edit');
-
-Route::put('user/update/{id}', [HomeController::class, 'update'])->name('user.update');
 
 
+Route::get('/users', [HomeController::class, 'users'])->name('users')->middleware('auth');
 
-Auth::routes();
+Route::get('/add/user', [HomeController::class, 'create'])->name('user.add')->middleware('auth');
 
-Route::get('/home', [InventoryController::class, 'totalin'])->name('home');
+Route::post('/add/create/user', [HomeController::class, 'createAdd'])->name('user.create.add')->middleware('auth');
+
+Route::delete('user/destroy/{id}', [HomeController::class, 'destroyuser'])->name('user.destroy')->middleware('auth');
+
+Route::get('/add/user/edit/{id}', [HomeController::class, 'edit'])->name('user.edit')->middleware('auth');
+
+Route::put('user/update/{id}', [HomeController::class, 'update'])->name('user.update')->middleware('auth');
+
+
+
+// Route::get('/', function () {
+//     return redirect()->route('home')->middleware('auth');
+// })->name('root')->middleware('auth');
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware('auth');
