@@ -9,7 +9,7 @@
     <div class="card-body">
         <h2>All Registered users</h2>
         <br>
-        <a href="{{ route('add.user')}}"><h4>Add More Users</h4></a>
+        <a href="{{ route('user.add')}}"><h4>Add More Users</h4></a>
 
         <table class="table table-hover">
             <thead>
@@ -29,12 +29,12 @@
                         <td>{{ $usr->email }}</td>
                         <td>{{ $usr->password }}</td>
                         <td>
-                            {{-- action="{{ route('destroy.user', $usr->id)}}" {{ route('edit.user', $usr->id)}} --}}
-                            <form method="POST" class="action"  onsubmit="return confirm('Apakah Anda Yakin?');">
+                            
+                            <form method="POST" class="action"  onsubmit="return confirm('Apakah Anda Yakin?');" action="{{ route('user.destroy', $usr->id)}}">
                                 @csrf
                                 @method('delete')
                                 <button class="btn btn-danger">Delete</button>
-                                <a href="" class="btn btn-primary">Edit</a>
+                                <a href="{{ route('user.edit', $usr->id)}}" class="btn btn-primary">Edit</a>
                             </form>
                         </td>
                     </tr>

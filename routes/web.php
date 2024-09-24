@@ -135,20 +135,25 @@ Route::get('/report/userin/{month}', [SummaryController::class, 'userin'])->name
 
 Route::get('/report/pdf/{month}', [SummaryController::class, 'userPrint'])->name('user.report.print');
 
+
+
+
+
+
 Route::get('/users', [HomeController::class, 'users'])->name('users');
 
-Route::get('/add/user', [HomeController::class, 'create'])->name('add.user');
+Route::get('/add/user', [HomeController::class, 'create'])->name('user.add');
 
-Route::post('/add/create/user', [HomeController::class, 'createAdd'])->name('add.create.user');
+Route::post('/add/create/user', [HomeController::class, 'createAdd'])->name('user.create.add');
 
-// Route::delete('/deleteusers/{id}'. [HomeController::class, 'destroyuser'])->name('destroy.user');
+Route::delete('user/destroy/{id}', [HomeController::class, 'destroyuser'])->name('user.destroy');
 
+Route::get('/add/user/edit/{id}', [HomeController::class, 'edit'])->name('user.edit');
 
-
-
+Route::put('user/update/{id}', [HomeController::class, 'update'])->name('user.update');
 
 
 
 Auth::routes();
 
-// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [InventoryController::class, 'totalin'])->name('home');

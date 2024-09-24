@@ -10,19 +10,18 @@
         <h3>Create User</h3>
         <br>
 
-        <form method="POST" action="{{ route('user.create.add')}}" >
+        <form method="POST" action="{{ route('user.update', $useredit->id)}}" >
             @csrf
-            @method('post')
+            @method('put')
             <div class="form-group">
                 <label for="exampleInputEmail1">Add Users Name</label>
-                <input type="text" class="form-control" placeholder="add name" name="name">
+                <input type="text" class="form-control" placeholder="add name" name="name" value="{{ old('name', $useredit->name) }}">
 
                 <label for="exampleInputEmail1">Add Users Email</label>
-                <input type="email" class="form-control" placeholder="add email" name="email">
+                <input type="email" class="form-control" placeholder="add email" name="email" value="{{ old('name', $useredit->email) }}">
 
                 <label for="exampleInputEmail1">Add Users Password</label>
-                <input type="password" class="form-control" placeholder="add password" name="password">
-
+                <input type="password" class="form-control" placeholder="add password" name="password" autocomplete="new-password">
             </div>
 
             <button type="submit" class="btn btn-success"> <i class="fas fa-file-upload"></i> Submit</button>

@@ -28,10 +28,10 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    // public function index()
-    // {
-    //     return view('home');
-    // }
+    public function index()
+    {
+        return view('home');
+    }
 
     public function users(){
         $users = User::all();
@@ -40,7 +40,6 @@ class HomeController extends Controller
 
     public function create()
     {
-        
 
         return view('usercreate');
     }
@@ -73,11 +72,11 @@ class HomeController extends Controller
     {
 
         // get post by ID
-        $edituom = User::findOrFail($id);
+        $useredit = User::findOrFail($id);
         // dd ($obat);
 
         //render view with post
-        return view('uom/edituom', compact('edituom'));
+        return view('useredit', compact('useredit'));
     }
 
     /**
@@ -88,21 +87,28 @@ class HomeController extends Controller
      * @return RedirectResponse
      */
 
-    public function update(Request $request, $id): RedirectResponse
-    {
-
-        //validate form
-        $this->validate($request, [
-            'unit_of_measurement' => 'required',
-        ]);
-
-        //get post by ID
-        $post = User::findOrFail($id);
-        $post->update([
-            'unit_of_measurement' => $request->unit_of_measurement,
-        ]);
-        // dd($request);
-        return redirect()->route('wh.uominv');
-    }
+     public function update(Request $request, $id): RedirectResponse
+     {
+         //validate form
+         $this->validate($request, [
+             'name'=> 'required',
+             'email'=> 'required',
+         ]);
+     
+         //get post by ID
+         $post = User::findOrFail($id);
+     
+         $post->update([
+             'name'=> $request->name,
+             'email'=> $request->email,
+         ]);
+     
+         if ($request->filled('password')) {
+             $post->password = bcrypt($request->input('password'));
+             $post->save();
+         }
+     
+         return redirect()->route('users');
+     }
 
 }
