@@ -144,6 +144,7 @@ Route::get('/report/pdf/{month}', [SummaryController::class, 'userPrint'])->name
 
 
 Route::get('/users', [HomeController::class, 'users'])->name('users')->middleware('auth');
+Route::get('/usersdata', [HomeController::class, 'usersdata'])->name('users.data')->middleware('auth');
 
 Route::get('/add/user', [HomeController::class, 'create'])->name('user.add')->middleware('auth');
 

@@ -5,43 +5,71 @@
 @stop
 
 @section('content')
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js"></script>
 <div class="card">
     <div class="card-body">
         <h2>All Registered users</h2>
         <br>
         <a href="{{ route('user.add')}}"><h4>Add More Users</h4></a>
 
-        <table class="table table-hover">
+        <table class="table table-hover" id="users">
             <thead>
                 <tr>
-                    <th scope="col" style="width: 5%">No</th>
-                    <th scope="col" style="width: 15%">Name</th>
-                    <th scope="col" style="width: 25%">Email</th>
-                    <th scope="col" style="width: 40%">Password</th>
-                    <th scope="col" style="width: 20%">Action</th>
+                    <th scope="col" >No</th>
+                    <th scope="col" >Name</th>
+                    <th scope="col" >Email</th>
+                    <th scope="col" >Created At</th>
+                    <th scope="col" >Action</th>
                 </tr>
             </thead>
             <tbody>
-                    @foreach ( $users as $key => $usr )
-                    <tr>
-                        <td>{{ $key +1 }}</td>
-                        <td>{{ $usr->name }}</td>
-                        <td>{{ $usr->email }}</td>
-                        <td>{{ $usr->password }}</td>
-                        <td>
-                            
-                            <form method="POST" class="action"  onsubmit="return confirm('Apakah Anda Yakin?');" action="{{ route('user.destroy', $usr->id)}}">
-                                @csrf
-                                @method('delete')
-                                <button class="btn btn-danger">Delete</button>
-                                <a href="{{ route('user.edit', $usr->id)}}" class="btn btn-primary">Edit</a>
-                            </form>
-                        </td>
-                    </tr>
-                    @endforeach
             </tbody>
         </table>
         
     </div>
 </div>
+
+<style>
+
+    .dataTables_length select {
+        width: 70px !important;
+        height: 30px !important;
+        padding: 5px !important;
+        border: 1px solid #ccc !important;
+        border-radius: 4px !important;
+    }
+    
+</style>
+
+
 @stop
+
+@push('js')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js"></script>
+<script>
+ $(document).ready(function() {
+    $('#users').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: '{{ route('users.data') }}',
+        columns: [
+            { data: 'DT_RowIndex', name: 'DT_RowIndex', searchable: false, orderable: false },
+            { data: 'name', name: 'name' },
+            { data: 'email', name: 'email' },
+            // { data: 'created_at', name: 'created_at' },
+            {
+                data: 'created_at',
+                name: 'created_at',
+                render: function(data, type, row) {
+                    return moment(data).format('YYYY-MM-DD HH:mm:ss');
+                }
+            }
+        ]
+    });
+});
+</script>
+@endpush

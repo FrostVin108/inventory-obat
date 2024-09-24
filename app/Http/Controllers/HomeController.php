@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Yajra\DataTables\Datatables;
 use App\Http\Controllers\InventoryController;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -39,10 +40,16 @@ class HomeController extends Controller
         return view('home', $data);
     }
 
-    public function users(){
-        $users = User::all();
-        return view('user', compact('users'));
-    }
+
+
+
+
+
+
+
+
+
+
 
     public function create()
     {
@@ -117,4 +124,25 @@ class HomeController extends Controller
          return redirect()->route('users');
      }
 
+
+// In your controller
+public function usersdata()
+{
+    $users = User::get();
+
+    $data = Datatables::of($users)
+        ->addColumn('action', function ($user) {
+            $editRoute = route('user.edit', $user->id);
+            $deleteRoute = route('user.destroy', $user->id);
+            
+        })
+        ->make(true);
+
+    return $data;
+}
+
+     public function users(){
+        $users = User::get();
+        return view('user', compact('users'));
+    }
 }
