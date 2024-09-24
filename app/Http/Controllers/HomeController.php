@@ -12,6 +12,9 @@ use App\Models\Transaction;
 use App\Models\UOM;
 use App\Models\Order;
 use App\Models\User;
+use Auth;
+use Hash;
+use Illuminate\Support\Facades\Validator;
 
 class HomeController extends Controller
 {
@@ -144,5 +147,31 @@ public function usersdata()
      public function users(){
         $users = User::get();
         return view('user', compact('users'));
+    }
+
+    public function profile(Request $request, $id)
+    {
+        $profile = User::findOrFail($id); 
+
+        return view('profile', compact('profile'));
+    }
+
+    public function profileupdate(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+    
+        $validator = Validator::make($request->all(), [
+            'password' => 'required|confirmed',
+            'password_confirmation' => 'required',
+        ]);
+    
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+    
+        $user->password = bcrypt($request->password);
+        $user->save();
+    
+        return redirect()->back()->with('success', 'Password changed successfully');
     }
 }

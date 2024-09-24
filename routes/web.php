@@ -154,12 +154,17 @@ Route::delete('user/destroy/{id}', [HomeController::class, 'destroyuser'])->name
 
 Route::get('/add/user/edit/{id}', [HomeController::class, 'edit'])->name('user.edit')->middleware('auth');
 
-Route::put('user/update/{id}', [HomeController::class, 'update'])->name('user.update')->middleware('auth');
+Route::put('/user/update/{id}', [HomeController::class, 'update'])->name('user.update')->middleware('auth');
 
 
 
-// Route::get('/', function () {
-//     return redirect()->route('home')->middleware('auth');
-// })->name('root')->middleware('auth');
+
+Route::get('profile/{id}', [HomeController::class, 'profile'])->middleware('auth')->name('profile');
+
+Route::put('profile/update/{id}', [HomeController::class, 'profileupdate'])->name('profile.change');
+
+Route::get('/', function () {
+    return redirect()->route('home');
+})->name('root')->middleware('auth');
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware('auth');
