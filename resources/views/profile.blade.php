@@ -23,7 +23,8 @@
 
 
 <div class="card">
-    <div class="card-body" style="margin: 40px; display: flex; justify-content: center">
+    <a class="btn btn-dark button-costume" href="{{ URL::previous() }}"><i class="fas fa-sign-out-alt"></i></a>
+    <div class="card-body" style="margin: 10px auto; display: flex; justify-content: center; margin-bottom: 3vw;">
         <div style=" display: flex; justify-content: center; flex-direction: column; text-align:center">
             @if ($errors->any())
     <div class="alert alert-danger">
@@ -101,10 +102,18 @@
 <style>
     .card{
         margin-left: 16vw;
-        width: 50vw;
+        width: 40vw;
         display: flex;
         justify-content: center;
         
+    }
+
+    .button-costume{
+        height: 2vw;
+        margin-right: auto;
+        margin-top: 1vw;
+        margin-left: 1vw;
+        font-size: 17px
     }
 </style>
 @endsection
