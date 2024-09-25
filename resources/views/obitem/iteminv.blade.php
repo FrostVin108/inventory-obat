@@ -60,7 +60,7 @@
             <tr>
                 <td colspan="6">
                     <div class="alert alert-danger">
-                        Data Belum Terisi. 
+                        No Item Inserted. 
                     </div>
                 </td>
             </tr>

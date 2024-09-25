@@ -149,13 +149,16 @@
                     <td>{{ $trans->qty }}</td>
                 </tr>
                 
-                </tbody>
-
                 @empty
-            <div class="alert alert-danger">
-               Tidak Ada data Terisi.
-            </div>
-            @endforelse 
+                <tr>
+                    <td colspan="6">
+                        <div class="alert alert-danger">
+                            No Item Transaction Has Been Inputed Today. 
+                        </div>
+                    </td>
+                </tr>
+                @endforelse 
+
             </table>
         </div>
 
