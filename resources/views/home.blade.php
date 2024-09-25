@@ -166,37 +166,42 @@
 </div>
 <script>
     console.log('Chart data:', {!! json_encode($labels) !!}, {!! json_encode($inQuantities) !!}, {!! json_encode($outQuantities) !!});
-  
+
     const ctx = document.getElementById('stockChart').getContext('2d');
     const chart = new Chart(ctx, {
         type: 'line',
         data: {
             labels: {!! json_encode($labels) !!},
             datasets: [{
-                label: ' Total IN',
-                data: {!! json_encode($inQuantities) !!},
-                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                borderColor: 'rgba(255, 99, 132, 1)',
-                borderWidth: 1
-            },
-            {
-                label: 'Total OUT',
-                data: {!! json_encode($outQuantities) !!},
-                backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                borderColor: 'rgba(54, 162, 235, 1)',
-                borderWidth: 1
-            }]
+                    label: ' Total IN',
+                    data: {!! json_encode($inQuantities) !!},
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                },
+                {
+                    label: 'Total OUT',
+                    data: {!! json_encode($outQuantities) !!},
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }
+            ]
         },
         options: {
             scales: {
                 y: {
+                    type: 'linear',
+                    display: true,
+                    position: 'left',
                     beginAtZero: true
-                    
+
                 }
+
             }
         }
     });
-  </script>
+</script>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
 <script>

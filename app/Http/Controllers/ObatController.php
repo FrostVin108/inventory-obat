@@ -168,7 +168,7 @@ class ObatController extends Controller
 
             ]);
 
-            return redirect()->route('ob.home')->with('success', 'Stock in berhasil');
+            return redirect()->route('home')->with('success', 'Stock in berhasil');
 
         } else {
             Stock::create([
@@ -212,7 +212,7 @@ class ObatController extends Controller
 
                 ]);
 
-                return redirect()->route('ob.home')->with('success', 'Stock out berhasil');
+                return redirect()->route('home')->with('success', 'Stock out berhasil');
             } else {
 
                 \Session::flash('error', "Maaf Item Yang Anda Coba Hilangkan Sedang Terpakai Oleh Salah Satu Data Yang Ada");
@@ -227,7 +227,7 @@ class ObatController extends Controller
             ]);
         }
 
-        // return redirect()->route('ob.home')->with('success', 'Stock in berhasil');
+        // return redirect()->route('home')->with('success', 'Stock in berhasil');
     }
 
 
