@@ -56,19 +56,23 @@
         processing: true,
         serverSide: true,
         ajax: '{{ route('users.data') }}',
-        columns: [
-            { data: 'DT_RowIndex', name: 'DT_RowIndex', searchable: false, orderable: false },
-            { data: 'name', name: 'name' },
-            { data: 'email', name: 'email' },
-            // { data: 'created_at', name: 'created_at' },
-            {
-                data: 'created_at',
-                name: 'created_at',
-                render: function(data, type, row) {
-                    return moment(data).format('YYYY-MM-DD HH:mm:ss');
-                }
-            }
-        ]
+            columns: [
+                { data: null, searchable: false, orderable: false, 
+              render: function (data, type, row, meta) {
+                return meta.row + 1;
+              }
+            },
+                { data: 'name', name: 'name' },
+                { data: 'email', name: 'email' },
+                {
+                    data: 'created_at',
+                    name: 'created_at',
+                    render: function(data, type, row) {
+                        return moment(data).format('YYYY-MM-DD HH:mm:ss');
+                    }
+                },
+                { data: 'action', name: 'action', searchable: false, orderable: false }
+            ]
     });
 });
 </script>

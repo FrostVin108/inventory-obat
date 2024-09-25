@@ -149,7 +149,7 @@ Route::group(['middleware' => 'admin'], function(){
 
     Route::post('/add/create/user', [HomeController::class, 'createAdd'])->name('user.create.add')->middleware('auth');
 
-    Route::delete('user/destroy/{id}', [HomeController::class, 'destroyuser'])->name('user.destroy')->middleware('auth');
+    Route::delete('/user/destroy/{id}', [HomeController::class, 'destroyuser'])->name('user.destroy')->middleware('auth');
 
     Route::get('/add/user/edit/{id}', [HomeController::class, 'edit'])->name('user.edit')->middleware('auth');
 

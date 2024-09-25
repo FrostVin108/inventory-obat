@@ -164,10 +164,18 @@ public function usersdata()
     $users = User::get();
 
     $data = Datatables::of($users)
+        ->addColumn('DT_RowIndex', function ($user) {
+            return '';
+        })
         ->addColumn('action', function ($user) {
             $editRoute = route('user.edit', $user->id);
             $deleteRoute = route('user.destroy', $user->id);
-            
+            return '<form action="'.$deleteRoute.'" method="post" onsubmit="return confirm(\'Apakah Anda Yakin?\');">
+                        <a href="'.$editRoute.'" class="btn  btn-primary"><i class="far fa-edit"></i> Edit</a>
+                        '.csrf_field().'
+                        '. method_field('DELETE') .'
+                        <button type="submit" class="btn  btn-danger"><i class="fas fa-trash"></i> Delete</button>
+                    </form>';
         })
         ->make(true);
 
