@@ -38,13 +38,15 @@
                         </form>
                     </td>
                 </tr>
-                
+                @empty
+                <tr>
+                    <td colspan="6">
+                        <div class="alert alert-danger">
+                            No That Been Department Registered.
+                        </div>
+                    </td>
+                </tr>
             </tbody>
-            
-            @empty
-            <div class="alert alert-danger">
-               Belum ada Department Yang Terdaftar.
-            </div>
             @endforelse 
             
         </table>

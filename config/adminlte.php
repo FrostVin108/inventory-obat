@@ -316,13 +316,13 @@ return [
             'type' => 'sidebar-menu-search',
             'text' => 'search',
         ],
-        [
-            'text' => 'How To Use',
-            'url' => '/htu',
-            'icon' => 'far fa-fw fas fa-question',
-            // 'label' => 1,
-            // 'label_color' => 'success',
-        ],
+        // [
+        //     'text' => 'How To Use',
+        //     'url' => '/htu',
+        //     'icon' => 'far fa-fw fas fa-question',
+        //     // 'label' => 1,
+        //     // 'label_color' => 'success',
+        // ],
         ['header' => 'Menu'],
         [
             'text' => 'Home',

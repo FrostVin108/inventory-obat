@@ -40,12 +40,17 @@
                         </form>
                     </td>
                 </tr>
-            </tbody>
+                
 
-            @empty
-            <div class="alert alert-danger">
-                Data Belum Terisi. 
-            </div>
+                @empty
+                <tr>
+                <td colspan="6">
+                    <div class="alert alert-danger">
+                        Sorry UOM Data Not Avaible Yet. 
+                    </div>
+                </td>
+            </tr>
+            </tbody>
             @endforelse 
         </table>
           

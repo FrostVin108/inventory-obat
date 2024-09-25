@@ -85,35 +85,29 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($data as $item)
+                                        @forelse ($data as $item)
                                             <tr>
                                                 <td>{{ $item->item }}</td>
                                                 <td>{{ $item->total_in }}</td>
                                                 <td>{{ $item->total_out }}</td>
                                                 <td>{{ $item->balance }}</td>
                                             </tr>
-                                        @endforeach
-                                    </tbody>
+                                        </tbody>
+
+                                        @empty
+                                        <tr>
+                                            <td colspan="6">
+                                                <div class="alert alert-danger">
+                                                    Theres No Item Transaction yet for {{ date('F', mktime(0, 0, 0, session('month'), 1)) }}. 
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        @endforelse
                                 </table>
 
                                 {{-- Display pagination links --}}
                                 {{ $data->links() }}
 
-                                {{-- <script>
-                                    $(document).ready(function() {
-                                        $('#item-overview').DataTable({
-                                            processing: true,
-                                            serverSide: true,
-                                            ajax: '{{ route('reportitem.overview.data' ,['month' => date('m')]) }}',
-                                            columns: [
-                                                { data: 'item', name: 'item' },
-                                                { data: 'in', name: 'in' },
-                                                { data: 'out', name: 'out' },
-                                                { data: 'balance', name: 'balance' },
-                                            ]
-                                        });
-                                    });
-                                </script> --}}
                             </div>
                             <!-- /.col -->
                         </div>
@@ -163,19 +157,19 @@
                                                 }
 
                                                 // retrieve previous month's "in" and "out" transactions
-$previousMonthIn = DB::table('transactions')
-    ->whereMonth('created_at', $previousMonth)
-    ->whereYear('created_at', $previousYear)
-    ->where('transaction_type', 'in')
-    ->sum('qty');
+                                                $previousMonthIn = DB::table('transactions')
+                                                    ->whereMonth('created_at', $previousMonth)
+                                                    ->whereYear('created_at', $previousYear)
+                                                    ->where('transaction_type', 'in')
+                                                    ->sum('qty');
 
-$previousMonthOut = DB::table('transactions')
-    ->whereMonth('created_at', $previousMonth)
-    ->whereYear('created_at', $previousYear)
-    ->where('transaction_type', 'out')
-    ->sum('qty');
+                                                $previousMonthOut = DB::table('transactions')
+                                                    ->whereMonth('created_at', $previousMonth)
+                                                    ->whereYear('created_at', $previousYear)
+                                                    ->where('transaction_type', 'out')
+                                                    ->sum('qty');
 
-// retrieve current month's "in" and "out" transactions
+                                                // retrieve current month's "in" and "out" transactions
                                                 $currentMonthIn = DB::table('transactions')
                                                     ->whereMonth('created_at', $selectedMonth)
                                                     ->whereYear('created_at', $currentYear)
@@ -202,8 +196,10 @@ $previousMonthOut = DB::table('transactions')
                                             @endphp
 
                                             <!-- display the balance -->
-                                            @if ( $newBalance > 0)
+                                        @if ( $newBalance > 0)
                                             <h5 class="text-danger"><i class="	fas fa-caret-up"></i> {{ $newBalance }}</h5>
+                                        @elseif ( $newBalance == 0)
+                                            <h5><b>?</b></h5>
                                         @else
                                             <h5 class="text-danger"><i class="fas fa-caret-down"></i> {{ $newBalance }}</h5>
                                         @endif
@@ -220,11 +216,6 @@ $previousMonthOut = DB::table('transactions')
                         <!-- /.col -->
                     </div>
                     {{-- All Button --}}
-
-
-
-
-
                 </div>
             </div>
         </div>
@@ -244,7 +235,7 @@ $previousMonthOut = DB::table('transactions')
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($inuom as $key => $item)
+                    @forelse ($inuom as $key => $item)
                         @if (isset($item['in']) && $item['in'] > 0)
                             <tr>
                                 <td>{{ $key + 1 }}</td>
@@ -254,7 +245,18 @@ $previousMonthOut = DB::table('transactions')
                                 <td>{{ $item['created_at'] }}</td>
                             </tr>
                         @endif
-                    @endforeach
+
+                        @empty
+                        <tr>
+                            <td colspan="6">
+                                <div class="alert alert-danger">
+                                    Theres No Transaction In yet for {{ date('F', mktime(0, 0, 0, session('month'), 1)) }}. 
+                                </div>
+                            </td>
+                        </tr>
+
+
+                    @endforelse
                 </tbody>
                 <tfoot>
                     <tr>
@@ -278,18 +280,28 @@ $previousMonthOut = DB::table('transactions')
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($inuom as $key => $item)
+                    @forelse ($inuom as $key => $item)
                         @if (isset($item['out']) && $item['out'] > 0)
                             <tr>
                                 <td>{{ $key + 1 }}</td>
                                 <td>{{ $item['description'] }}</td>
-                                {{-- <td>{{ $item['department'] }}</td> --}}
+
                                 <td>{{ $item['uom'] }}</td>
                                 <td>{{ $item['out'] }}</td>
                                 <td>{{ $item['created_at'] }}</td>
                             </tr>
                         @endif
-                    @endforeach
+                        
+                        @empty
+                        <tr>
+                            <td colspan="6">
+                                <div class="alert alert-danger">
+                                    Theres No Transaction Out yet for {{ date('F', mktime(0, 0, 0, session('month'), 1)) }}. 
+                                </div>
+                            </td>
+                        </tr>
+
+                    @endforelse
                 </tbody>
                 <tfoot>
                     <tr>
@@ -302,9 +314,7 @@ $previousMonthOut = DB::table('transactions')
     </div>
 
     <br>
-    {{-- 
-        @foreach ($products as $product)
-        {{ $product->product_name}} --}}
+
 
 
 

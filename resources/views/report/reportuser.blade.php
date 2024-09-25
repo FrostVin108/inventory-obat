@@ -184,7 +184,7 @@
                     </div>
                     <br>
                     @empty
-                    <p class="bg-danger" style="font-size: 21px; padding: 5px 12px; border-radius:5px;">Sorry, But on {{ date('F', mktime(0, 0, 0, session('month'), 1)) }} Doesn't Have Any Transaction Log Found</p>
+                    <p class="bg-danger" style="font-size: 18px; padding: 15px 20px; border-radius:5px;">Sorry, But on {{ date('F', mktime(0, 0, 0, session('month'), 1)) }} Doesn't Have Any Transaction Log Found</p>
 
                 @endforelse
             </div>
