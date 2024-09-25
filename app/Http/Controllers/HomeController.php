@@ -56,12 +56,22 @@ class HomeController extends Controller
 
     public function create()
     {
+        if (!Auth::user()->email === 'AdminGhimli@gmail.com') {
+            return redirect()->route('home');
+        }
+
 
         return view('usercreate');
     }
 
     public function createAdd(Request $request)
     {
+        if (!Auth::user()->email === 'AdminGhimli@gmail.com') {
+            return redirect()->route('home');
+        }
+
+
+
         $this->validate($request, [
             'name'=> 'required',
             'email'=> 'required',
@@ -77,6 +87,11 @@ class HomeController extends Controller
 
     public function destroyuser($id)
     {
+        if (!Auth::user()->email === 'AdminGhimli@gmail.com') {
+            return redirect()->route('home');
+        }
+
+
         $usersdes = User::findOrFail($id);
     
         $usersdes->delete();
@@ -86,6 +101,11 @@ class HomeController extends Controller
 
     public function edit(Request $request, $id)
     {
+        if (!Auth::user()->email === 'AdminGhimli@gmail.com') {
+            return redirect()->route('home');
+        }
+
+
 
         // get post by ID
         $useredit = User::findOrFail($id);
@@ -105,6 +125,11 @@ class HomeController extends Controller
 
      public function update(Request $request, $id): RedirectResponse
      {
+        if (!Auth::user()->email === 'AdminGhimli@gmail.com') {
+            return redirect()->route('home');
+        }
+
+
          //validate form
          $this->validate($request, [
              'name'=> 'required',
@@ -131,6 +156,11 @@ class HomeController extends Controller
 // In your controller
 public function usersdata()
 {
+    if (!Auth::user()->email === 'AdminGhimli@gmail.com') {
+        return redirect()->route('home');
+    }
+
+
     $users = User::get();
 
     $data = Datatables::of($users)
@@ -145,6 +175,11 @@ public function usersdata()
 }
 
      public function users(){
+        if (!Auth::user()->email === 'AdminGhimli@gmail.com') {
+            return redirect()->route('home');
+        }
+
+
         $users = User::get();
         return view('user', compact('users'));
     }

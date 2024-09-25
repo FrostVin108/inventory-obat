@@ -141,21 +141,21 @@ Route::get('/report/pdf/{month}', [SummaryController::class, 'userPrint'])->name
 
 
 
+Route::group(['middleware' => 'admin'], function(){
+    Route::get('/users', [HomeController::class, 'users'])->name('users')->middleware('auth');
+    Route::get('/usersdata', [HomeController::class, 'usersdata'])->name('users.data')->middleware('auth');
 
+    Route::get('/add/user', [HomeController::class, 'create'])->name('user.add')->middleware('auth');
 
-Route::get('/users', [HomeController::class, 'users'])->name('users')->middleware('auth');
-Route::get('/usersdata', [HomeController::class, 'usersdata'])->name('users.data')->middleware('auth');
+    Route::post('/add/create/user', [HomeController::class, 'createAdd'])->name('user.create.add')->middleware('auth');
 
-Route::get('/add/user', [HomeController::class, 'create'])->name('user.add')->middleware('auth');
+    Route::delete('user/destroy/{id}', [HomeController::class, 'destroyuser'])->name('user.destroy')->middleware('auth');
 
-Route::post('/add/create/user', [HomeController::class, 'createAdd'])->name('user.create.add')->middleware('auth');
+    Route::get('/add/user/edit/{id}', [HomeController::class, 'edit'])->name('user.edit')->middleware('auth');
 
-Route::delete('user/destroy/{id}', [HomeController::class, 'destroyuser'])->name('user.destroy')->middleware('auth');
+    Route::put('/user/update/{id}', [HomeController::class, 'update'])->name('user.update')->middleware('auth');
 
-Route::get('/add/user/edit/{id}', [HomeController::class, 'edit'])->name('user.edit')->middleware('auth');
-
-Route::put('/user/update/{id}', [HomeController::class, 'update'])->name('user.update')->middleware('auth');
-
+});
 
 
 
