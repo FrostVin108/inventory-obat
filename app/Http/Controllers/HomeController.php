@@ -170,16 +170,39 @@ public function usersdata()
         ->addColumn('action', function ($user) {
             $editRoute = route('user.edit', $user->id);
             $deleteRoute = route('user.destroy', $user->id);
-            return '<form action="'.$deleteRoute.'" method="post" onsubmit="return confirm(\'Apakah Anda Yakin?\');">
-                        <a href="'.$editRoute.'" class="btn  btn-primary"><i class="far fa-edit"></i> Edit</a>
-                        '.csrf_field().'
-                        '. method_field('DELETE') .'
-                        <button type="submit" class="btn  btn-danger"><i class="fas fa-trash"></i> Delete</button>
-                    </form>';
+            $resetpassword = route('user.reset.password', $user->id);
+            return '
+            <div class="btn-group" >
+            <a href="'.$editRoute.'" class="btn  btn-primary"><i class="far fa-edit"></i> Edit</a>
+            <form action="'. $resetpassword .'" method="post" onsubmit="return confirm(\'Are you sure?\');">
+            '.csrf_field().'
+            <button type="submit" class="btn btn-warning"><i class="	fas fa-redo"></i> Reset Password</button>
+            </form>
+            <form action="'.$deleteRoute.'" method="post" onsubmit="return confirm(\'Apakah Anda Yakin?\');">
+                '.csrf_field().'
+                '. method_field('DELETE') .'
+                <button type="submit" class="btn  btn-danger"><i class="fas fa-trash"></i> Delete</button>
+            </form>
+            </div>
+            ';
+                    
         })
         ->make(true);
 
     return $data;
+}
+
+public function resetPassword($id)
+{
+    if (!Auth::user()->email === 'AdminGhimli@gmail.com') {
+        return redirect()->route('home');
+    }
+
+    $user = User::findOrFail($id);
+    $user->password = bcrypt('123456789');
+    $user->save();
+
+    return redirect()->route('users')->with('success', 'Password reset successfully!');
 }
 
      public function users(){

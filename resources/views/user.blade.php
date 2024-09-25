@@ -76,4 +76,11 @@
     });
 });
 </script>
+
+<style>
+    .btn {
+    margin-right: 5px;
+    float: left;
+}
+</style>
 @endpush

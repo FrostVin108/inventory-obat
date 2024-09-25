@@ -155,6 +155,8 @@ Route::group(['middleware' => 'admin'], function(){
 
     Route::put('/user/update/{id}', [HomeController::class, 'update'])->name('user.update')->middleware('auth');
 
+    Route::post('/users/reset-password/{id}', [HomeController::class, 'resetPassword'])->name('user.reset.password')->middleware('auth');
+
 });
 
 
