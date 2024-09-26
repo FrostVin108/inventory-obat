@@ -339,6 +339,23 @@
                 }, 'slow');
             });
         });
+
+        $(document).ready(function() {
+            // Hide the buttons when the page loads
+            $('#combine-btn,  #generate-pdf-btn, #generate-excel-btn').hide();
+            
+            // Show the buttons when the "Back to Top" button is hovered
+            $('#back-to-top').hover(function() {
+                $('#combine-btn,  #generate-pdf-btn, #generate-excel-btn').fadeIn();
+            }, function() {
+                setTimeout(function() {
+                    $('#combine-btn,  #generate-pdf-btn, #generate-excel-btn').fadeOut();
+                }, 4000);
+            });
+        });
+
+        
+
     </script>
 
     <script>

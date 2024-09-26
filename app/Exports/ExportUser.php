@@ -60,6 +60,7 @@ class ExportUser implements FromCollection {
                 $data[] = ['', '', '', 'Total', $totalQuantity, '']; // add total row
                 $data[] = ['', '', '', 'Total Items', $totalItems, '']; // add total items row
                 $data[] = ['']; // add empty row for spacing
+                $data[] = ['']; // add empty row for spacing
             }
         }
     
