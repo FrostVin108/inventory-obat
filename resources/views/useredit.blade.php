@@ -17,11 +17,20 @@
                 <label for="exampleInputEmail1">Add Users Name</label>
                 <input type="text" class="form-control" placeholder="add name" name="name" value="{{ old('name', $useredit->name) }}">
 
+                <label for="exampleInputEmail1">Add Users Role</label>
+                <select name="role" class="form-control">
+                    <option value="{{ old('name', $useredit->role) }}">{{ old('name', $useredit->role) }}</option>
+                    <br>
+                    <option value="user">User</option>
+                    <option value="admin">Admin</option>
+                </select>
+
+
                 <label for="exampleInputEmail1">Add Users Email</label>
                 <input type="email" class="form-control" placeholder="add email" name="email" value="{{ old('name', $useredit->email) }}">
 
-                <label for="exampleInputEmail1">Add Users Password</label>
-                <input type="password" class="form-control" placeholder="add password" name="password" autocomplete="new-password">
+                {{-- <label for="exampleInputEmail1" >Add Users Password</label>
+                <input type="password" class="form-control" placeholder="add password" name="password" autocomplete="new-password" value="{{ old('name', $useredit->password) }}"> --}}
             </div>
 
             <button type="submit" class="btn btn-success"> <i class="fas fa-file-upload"></i> Submit</button>

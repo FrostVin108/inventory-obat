@@ -11,7 +11,7 @@ class AdminMiddleware
 {
     public function handle(Request $request, Closure $next)
     {
-        if (!Auth::check() || Auth::user()->email !== 'AdminGhimli@gmail.com') {
+        if (!Auth::check() || Auth::user()->role !== 'ADMIN') {
             return redirect()->route('home');
         }
 

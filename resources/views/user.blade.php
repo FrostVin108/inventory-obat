@@ -20,6 +20,7 @@
                     <th scope="col" >No</th>
                     <th scope="col" >Name</th>
                     <th scope="col" >Email</th>
+                    <th scope="col" >Role</th>
                     <th scope="col" >Created At</th>
                     <th scope="col" >Action</th>
                 </tr>
@@ -64,6 +65,7 @@
             },
                 { data: 'name', name: 'name' },
                 { data: 'email', name: 'email' },
+                { data: 'role', name: 'role' },
                 {
                     data: 'created_at',
                     name: 'created_at',

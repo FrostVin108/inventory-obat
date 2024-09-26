@@ -56,7 +56,7 @@ class HomeController extends Controller
 
     public function create()
     {
-        if (!Auth::user()->email === 'AdminGhimli@gmail.com') {
+        if (!Auth::user()->role === 'ADMIN') {
             return redirect()->route('home');
         }
 
@@ -66,7 +66,7 @@ class HomeController extends Controller
 
     public function createAdd(Request $request)
     {
-        if (!Auth::user()->email === 'AdminGhimli@gmail.com') {
+        if (!Auth::user()->role === 'ADMIN') {
             return redirect()->route('home');
         }
 
@@ -74,11 +74,13 @@ class HomeController extends Controller
 
         $this->validate($request, [
             'name'=> 'required',
+            'role' => 'required',
             'email'=> 'required',
             'password'=> 'required',
         ]);
         User::create([
             'name'=> $request->name,
+            'role'=> $request->role,
             'email'=> $request->email,
             'password'=> $request->password,
         ]);
@@ -87,7 +89,7 @@ class HomeController extends Controller
 
     public function destroyuser($id)
     {
-        if (!Auth::user()->email === 'AdminGhimli@gmail.com') {
+        if (!Auth::user()->role === 'ADMIN') {
             return redirect()->route('home');
         }
 
@@ -101,7 +103,7 @@ class HomeController extends Controller
 
     public function edit(Request $request, $id)
     {
-        if (!Auth::user()->email === 'AdminGhimli@gmail.com') {
+        if (!Auth::user()->role === 'ADMIN') {
             return redirect()->route('home');
         }
 
@@ -125,7 +127,7 @@ class HomeController extends Controller
 
      public function update(Request $request, $id): RedirectResponse
      {
-        if (!Auth::user()->email === 'AdminGhimli@gmail.com') {
+        if (!Auth::user()->role === 'ADMIN') {
             return redirect()->route('home');
         }
 
@@ -133,6 +135,7 @@ class HomeController extends Controller
          //validate form
          $this->validate($request, [
              'name'=> 'required',
+             'role'=> 'required',
              'email'=> 'required',
          ]);
      
@@ -141,13 +144,14 @@ class HomeController extends Controller
      
          $post->update([
              'name'=> $request->name,
+             'role'=> $request->role,
              'email'=> $request->email,
          ]);
      
-         if ($request->filled('password')) {
-             $post->password = bcrypt($request->input('password'));
-             $post->save();
-         }
+        //  if ($request->filled('password')) {
+        //      $post->password = bcrypt($request->input('password'));
+        //      $post->save();
+        //  }
      
          return redirect()->route('users');
      }
@@ -156,7 +160,7 @@ class HomeController extends Controller
 // In your controller
 public function usersdata()
 {
-    if (!Auth::user()->email === 'AdminGhimli@gmail.com') {
+    if (!Auth::user()->role === 'ADMIN') {
         return redirect()->route('home');
     }
 
@@ -194,7 +198,7 @@ public function usersdata()
 
 public function resetPassword($id)
 {
-    if (!Auth::user()->email === 'AdminGhimli@gmail.com') {
+    if (!Auth::user()->role === 'ADMIN') {
         return redirect()->route('home');
     }
 
@@ -206,7 +210,7 @@ public function resetPassword($id)
 }
 
      public function users(){
-        if (!Auth::user()->email === 'AdminGhimli@gmail.com') {
+        if (!Auth::user()->role === 'ADMIN') {
             return redirect()->route('home');
         }
 

@@ -17,6 +17,12 @@
                 <label for="exampleInputEmail1">Add Users Name</label>
                 <input type="text" class="form-control" placeholder="add name" name="name">
 
+                <label for="exampleInputEmail1">Add Users Role</label>
+                <select name="role" class="form-control">
+                    <option value="user">User</option>
+                    <option value="admin">Admin</option>
+                </select>
+
                 <label for="exampleInputEmail1">Add Users Email</label>
                 <input type="email" class="form-control" placeholder="add email" name="email">
 
