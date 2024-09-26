@@ -70,6 +70,7 @@ Route::post('/uominv', [PageController::class, 'createuom'])->name('ob.cuom')->m
 
 //Wareghouse / wh
 Route::get('/iteminv', [InventoryController::class, 'invobat'])->name('wh.iteminv')->middleware('auth');
+Route::get('/iteminvdata', [InventoryController::class, 'invobatdata'])->name('wh.iteminv.data')->middleware('auth');
 
 Route::get('/uominv', [InventoryController::class,'invuom'])
     ->name('wh.uominv')

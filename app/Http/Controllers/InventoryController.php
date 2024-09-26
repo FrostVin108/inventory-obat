@@ -16,10 +16,16 @@ class InventoryController extends Controller
 {
     public function invobat()
     {
-        $obatitem = Item::with("UOM")
-        ->get();
+        $obatitem = Item::get();
+        
+        
+        return view('obitem/iteminv', compact('obatitem'));
+    }
 
-        // $posts = Post::paginate(10); // Paginate by 10 items per page
+    public function invobatdata()
+    {
+        $obatitem = Item::with("UOM")
+            ->get();
     
         foreach ($obatitem as $item) {
             $item->stock = Stock::where('item_id', $item->id)->first();
@@ -27,11 +33,29 @@ class InventoryController extends Controller
                 $item->stock = (object) ['qty' => 0]; // Set a default value
             }
         }
-        // dd($stock);
-        return view('obitem/iteminv', compact('obatitem'));
-
-        
-
+    
+        return Datatables::of($obatitem)
+            ->addColumn('action', function ($obatitem) {
+                $editRoute = route('ob.edititem', $obatitem->id);
+                $deleteRoute = route('ob.itemdel', $obatitem->id);
+                return '
+                
+                <form action="'.$deleteRoute.'" method="post" onsubmit="return confirm(\'Apakah Anda Yakin?\');">
+                <a href="'.$editRoute.'" class="btn  btn-primary"><i class="far fa-edit"></i> Edit</a> 
+                '.csrf_field().'
+                '. method_field('DELETE') .'
+                <button type="submit" class="btn  btn-danger"><i class="fas fa-trash"></i> Delete</button>
+                </form>
+                ';
+            })
+            ->addColumn('stock_qty', function ($row) {
+                return $row->stock->qty ?? 0;
+            })
+            ->addColumn('uom', function ($row) {
+                return $row->UOM->unit_of_measurement ?? '';
+            })
+            ->rawColumns(['action'])
+            ->make(true);
     }
 
     public function invuom()

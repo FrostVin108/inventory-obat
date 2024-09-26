@@ -6,6 +6,10 @@
 @stop
 
 @section('content')
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js"></script>
+
 <script>
     setTimeout(function() {
         document.getElementById("error-alert").classList.add("fade-out");
@@ -26,11 +30,11 @@
             {{ session('error') }}
         </div>
     @endif
-        <table id="example2" class="table table-bordered table-hover ">
+        <table id="iteminv" class="table table-bordered table-hover ">
         
             <thead>
             <tr>
-                <th scope="col">id</th>
+                <th scope="col">No</th>
                 <th scope="col">Item Code</th>
                 <th scope="col">Description</th>
                 <th scope="col">UOM</th>
@@ -39,7 +43,7 @@
             </tr>
             </thead>
             <tbody>
-                @forelse ($obatitem as $key => $obi )
+                {{-- @forelse ($obatitem as $key => $obi )
                 
                 <tr>
                     <td>{{ $key +1 }}</td>
@@ -55,16 +59,16 @@
                         <button type="submit" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i> Delete</button>    
                     </form>
                 </td>
-            </tr>
-            @empty
-            <tr>
+                </tr>
+                @empty
+                <tr>
                 <td colspan="6">
                     <div class="alert alert-danger">
                         No Item Inserted. 
                     </div>
                 </td>
-            </tr>
-            @endforelse 
+                </tr>
+                @endforelse  --}}
             </tbody>
         </table>
     </div>
@@ -94,4 +98,29 @@
     }
 </style>
 
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#iteminv').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: '{{ route('wh.iteminv.data') }}',
+        columns: [
+                { data: null, searchable: false, orderable: false, 
+              render: function (data, type, row, meta) {
+                return meta.row + 1;
+              }
+            },
+            { data: 'item_code', name: 'item_code' },
+            { data: 'description', name: 'description' },
+            { data: 'uom', name: 'uom' },
+            { data: 'stock.qty', name: 'stock.qty' },
+            { data: 'action', name: 'action', orderable: false, searchable: false }
+        ]
+    });
+});
+</script>
 @stop
