@@ -14,6 +14,9 @@ use App\Models\Item;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\Route;
 
+
+
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -59,7 +62,7 @@ Route::get('/citem', function () {
 Route::post('/citem', [PageController::class, 'createitem'])->name('ob.citem')->middleware('auth');
 
 Route::get('/uom', function () {
-    return view('uom/uom')->middleware('auth');
+    return view('uom/uom');
 })->name('create.uom')->middleware('auth');
 
 Route::post('/uominv', [PageController::class, 'createuom'])->name('ob.cuom')->middleware('auth');
@@ -70,7 +73,7 @@ Route::get('/iteminv', [InventoryController::class, 'invobat'])->name('wh.itemin
 
 Route::get('/uominv', [InventoryController::class,'invuom'])
     ->name('wh.uominv')
-    ->middleware('auth')->middleware('auth');
+    ->middleware('auth');
 
 //Update, Edit, Delete : UOM
 Route::delete('uomdestroy/{id}', [ObatController::class, 'destroyuom'])->name('ob.uomdel')->middleware('auth');
@@ -109,7 +112,7 @@ Route::get('/getSuppliesQty', [InventoryController::class, 'getSuppliesQty'])->n
 Route::get('/report', [InventoryController::class, 'reportmonth'])->name('report')->middleware('auth');
 
 Route::get('/department', function(){
-    return view('department/department')->middleware('auth');
+    return view('department/department');
 })->name('department')->middleware('auth');
 
 
@@ -117,7 +120,7 @@ Route::get('/department', function(){
 Route::get('/department', [DepartmentController::class, 'list'])->name('department.list')->middleware('auth');
 
 Route::get('/createdepartment', function(){
-    return view('department/departcreate')->middleware('auth');
+    return view('department/departcreate');
 })->name('depart.create')->middleware('auth');
 
 Route::post('/departpost', [DepartmentController::class, 'createdepartment'])->name('depart.post')->middleware('auth');
@@ -170,3 +173,13 @@ Route::get('/', function () {
 })->name('root')->middleware('auth');
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware('auth');
+
+
+
+
+
+
+
+    use App\Http\Controllers\UserController; 
+Route::resource('student', UserController::class);
+Route::get('student_export',[UserController::class, 'get_student_data'])->name('export.excel.report');

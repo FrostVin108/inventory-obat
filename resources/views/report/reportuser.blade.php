@@ -19,7 +19,8 @@
             <i class="fas fa-arrow-up"></i>
         </button>
 
-        {{-- <button id="convert-to-excel-btn" title="Convert to Excel" style="width:55px; height:55px; fontsize:30px;"><i class="fas fa-file-excel"></i></button> --}}
+        <a href="{{ route('export.excel.report') }}"><button id="generate-excel-btn" title="Convert to Excel" style="width:55px; height:55px; fontsize:30px;"  ><i
+            class="fas fa-file-excel"></i></button></a> 
 
         <button id="combine-btn" title="Combine The Same Data" style="width:55px; height:55px; fontsize:30px;"><i
                 class="fas fa-object-group"></i></button>
@@ -260,6 +261,22 @@
 
         #generate-pdf-btn:hover{
             background-color: rgb(216, 152, 43);
+        }
+
+        #generate-excel-btn{
+            position: fixed;
+            bottom: 80px;
+            right: 80px;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: rgb(34, 178, 36);
+            color: white;
+        }
+
+        #generate-excel-btn:hover{
+            background-color: rgb(34, 152, 43);
         }
     </style>
 
