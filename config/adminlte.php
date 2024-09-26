@@ -335,9 +335,21 @@ return [
             'icon' => 'far fa-fw fas fa-capsules',
         ],
         [
-            'text' => ' UOM',
-            'url' => '/uominv',
-            'icon' => 'far fa-fw fas fa-box',
+            'text' => 'Report',
+            'icon' => '	fas fa-file-alt',
+            'url' => '/report',
+            'submenu' => [
+                [
+                    'icon' => '	fas fa-poll',
+                    'text' => ' Monthly Report' ,
+                    'url' => 'report/monthly/' . date('n'),
+                ],
+                [
+                    'icon' => '	fa fa-minus-square',
+                    'text' => ' User Report',
+                    'url' => '/report/userin/' . date('n'),
+                ],
+            ],
         ],
         [
             'text' => ' Stock',
@@ -362,29 +374,26 @@ return [
         ],
 
 
-        ['header' => 'labels'],
+        ['header' => 'Side Input'],
         [
-            'text' => 'Report',
-            'icon' => '	fas fa-file-alt',
-            'url' => '/report',
-            'submenu' => [
-                [
-                    'icon' => '	fas fa-poll',
-                    'text' => ' Monthly Report' ,
-                    'url' => 'report/monthly/' . date('n'),
-                ],
-                [
-                    'icon' => '	fa fa-minus-square',
-                    'text' => ' User Report',
-                    'url' => '/report/userin/' . date('n'),
-                ],
-            ],
+            'text' => ' UOM',
+            'url' => '/uominv',
+            'icon' => 'far fa-fw fas fa-box',
         ],
         [
             'text' => 'department',
             'icon' => 'fas fa-users',
             'url' => '/department',
         ],
+
+        ['header'=> 'Users Management', 'can' => 'view-users-management',],
+        [
+            'text' => 'User',
+            'icon' => 'fas fa-users',
+            'url' => '/users',
+            'can' => 'view-users-management',
+        ],
+
         // [
         //     'text' => 'information',
         //     'icon_color' => 'cyan',
