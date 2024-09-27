@@ -55,6 +55,7 @@ class ExportUser implements FromCollection {
                         $transaction->qty,
                         $transaction->created_at,
                     ];
+                    $rowNum++;  
                 }
     
                 $data[] = ['', '', '', 'Total', $totalQuantity, '']; // add total row
