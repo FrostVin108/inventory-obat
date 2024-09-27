@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content_header')
-    <h1>Registered User</h1> 
+    <br>
 @stop
 
 @section('content')
