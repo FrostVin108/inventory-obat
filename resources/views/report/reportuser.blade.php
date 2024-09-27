@@ -15,9 +15,11 @@
     <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
 
     <div class="card">
-        <button id="back-to-top" title="Back to Top" style="width:55px; height:55px; fontsize:30px;">
-            <i class="fas fa-arrow-up"></i>
-        </button>
+        <div id="ghostframe" style="width:105px; height:105px; fontsize:30px;">
+            <button id="back-to-top" title="Back to Top" style="width:55px; height:55px; fontsize:30px;">
+                <i class="fas fa-arrow-up"></i>
+            </button>
+        </div>
 
         <a href="{{ route('export.excel.report') }}"><button id="generate-excel-btn" title="Convert to Excel" style="width:55px; height:55px; fontsize:30px;"  ><i
             class="fas fa-file-excel"></i></button></a> 
@@ -199,6 +201,13 @@
             gap: 3px;
         }
 
+        #ghostframe{
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            /* border: solid 2px; */
+        }
+
         #back-to-top {
             position: fixed;
             bottom: 20px;
@@ -217,7 +226,7 @@
 
         #combine-btn {
             position: fixed;
-            bottom: 80px;
+            bottom: 85px;
             right: 20px;
             border: none;
             padding: 10px 20px;
@@ -233,7 +242,7 @@
 
         #uncombine-btn {
             position: fixed;
-            bottom: 80px;
+            bottom: 85px;
             right: 20px;
             border: none;
             padding: 10px 20px;
@@ -250,7 +259,7 @@
         #generate-pdf-btn{
             position: fixed;
             bottom: 20px;
-            right: 80px;
+            right: 85px;
             border: none;
             padding: 10px 20px;
             border-radius: 5px;
@@ -336,24 +345,41 @@
             $('#back-to-top').on('click', function() {
                 $('html, body').animate({
                     scrollTop: 0
-                }, 'slow');
+                }, 'fast');
             });
         });
 
         $(document).ready(function() {
-            // Hide the buttons when the page loads
-            $('#combine-btn,  #generate-pdf-btn, #generate-excel-btn').hide();
-            
-            // Show the buttons when the "Back to Top" button is hovered
-            $('#back-to-top').hover(function() {
-                $('#combine-btn,  #generate-pdf-btn, #generate-excel-btn').fadeIn();
-            }, function() {
-                setTimeout(function() {
-                    $('#combine-btn,  #generate-pdf-btn, #generate-excel-btn').fadeOut();
-                }, 4000);
-            });
-        });
+    // Hide the buttons when the page loads
+    $('#combine-btn, #generate-pdf-btn, #generate-excel-btn').hide();
 
+    var timeoutId;
+
+    // Show the buttons when the "Back to Top" button is hovered
+    $('#ghostframe').on('mouseover', function() {
+        $('#combine-btn, #generate-pdf-btn, #generate-excel-btn').fadeIn ();
+        clearTimeout(timeoutId);
+    });
+
+    // Hide the buttons when you move your mouse out of the ghostframe
+    $('#ghostframe').on('mouseout', function() {
+        timeoutId = setTimeout(function() {
+            $('#combine-btn, #generate-pdf-btn, #generate-excel-btn').fadeOut();
+        }, 1000);
+    });
+
+    // Keep the buttons visible when you hover over them
+    $('#combine-btn, #generate-pdf-btn, #generate-excel-btn').on('mouseover', function() {
+        clearTimeout(timeoutId);
+    });
+
+    // Hide the buttons when you move your mouse out of them
+    $('#combine-btn, #generate-pdf-btn, #generate-excel-btn').on('mouseout', function() {
+        timeoutId = setTimeout(function() {
+            $('#combine-btn, #generate-pdf-btn, #generate-excel-btn').fadeOut();
+        }, 1000);
+    });
+});
         
 
     </script>

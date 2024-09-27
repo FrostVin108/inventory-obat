@@ -24,6 +24,7 @@
 
 <div class="card">
     <a class="btn btn-dark button-costume" href="{{ URL::previous() }}"><i class="fas fa-sign-out-alt"></i></a>
+
     <div class="card-body" style="margin: 10px auto; display: flex; justify-content: center; margin-bottom: 3vw;">
         <div style=" display: flex; justify-content: center; flex-direction: column; text-align:center">
             @if ($errors->any())
@@ -109,7 +110,7 @@
     }
 
     .button-costume{
-        height: 2vw;
+        height: auto;
         margin-right: auto;
         margin-top: 1vw;
         margin-left: 1vw;
