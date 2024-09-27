@@ -35,6 +35,9 @@ Route::get('/home', [InventoryController::class, 'totalin'])->name('ob.home')->m
 
 Route::get('/stockin', function () {
     $item = Item::get();
+    
+    $item = Item::with('stock')->get();
+
     $order = Order::get();
     return view('transaction/stockin', compact('item', 'order'));
 })->name('ob.stockin')->middleware('auth');
@@ -44,6 +47,9 @@ Route::post('/stockin',[ObatController::class, 'itemstockin'])->name('ob.cstocki
 
 Route::get('/stockout', function () {
     $item = Item::get();
+
+    $item = Item::with('stock')->get();
+
     $order = Order::get();
     return view('transaction/stockout', compact('item', 'order'));
 })->name('ob.stockout')->middleware('auth');

@@ -25,5 +25,8 @@ class Item extends Model
         return $this->belongsTo(UOM::class, 'unit_of_measurement_id', 'id');
     }
 
-
+    public function stock()
+{
+    return $this->hasOne(Stock::class, 'item_id');
+}
 }

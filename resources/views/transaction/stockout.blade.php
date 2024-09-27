@@ -21,7 +21,7 @@
                         <label for="exampleInputEmail1">Choose Item</label>
                         <select name="item_id" class="form-control @error('item_code') is-invalid @enderror">
                             @foreach ($item as $ic)
-                                <option value="{{$ic->id}}">{{$ic->item_code}} | {{$ic->description}}</option>
+                                <option value="{{$ic->id}}">{{$ic->item_code}} | {{$ic->description}} | qty: {{$ic->stock->qty}}</option>
                             @endforeach
                     </select>
                     </div>

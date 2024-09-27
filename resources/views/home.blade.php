@@ -95,7 +95,7 @@
 
 <div class="column d-flex" style="gap: 13px">
 
-    <div class="card" style="width: 60%; height: 100%">
+    <div class="card" style="width: 60%; height: 30vw">
             <div class="row-md-7">
                 <p class="text-center">
                   <strong> Report Period: {{ date('M 1, Y') }} - {{ date('M t, Y') }}</strong>
@@ -110,9 +110,9 @@
         
     </div>
     
-    <div class="card" style="width: 40%; height: 100%">
+    <div class="card" style="width: 40%; height: 30vw">
         <div class="row-md-7">
-            <canvas id="chart" width="70%" height="63.9%" ></canvas>
+            <canvas id="chart" width="70%" height="63%" ></canvas>
 
         </div>
     </div>
@@ -122,8 +122,8 @@
 
 
 
-<div class="card shadow p-3 mb-5 bg-white rounded" style="width: 50%; height: 100%">
-        <h4><i class="fas "></i> Today's Market Summary</h4>
+<div class="card shadow p-3 mb-5 bg-white rounded" style="width: 55%; height: 100%">
+        <h4><i class="fas "></i> Today's Summary</h4>
 
         <br>
                 

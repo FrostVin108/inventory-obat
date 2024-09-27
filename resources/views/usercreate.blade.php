@@ -15,19 +15,39 @@
             @method('post')
             <div class="form-group">
                 <label for="exampleInputEmail1">Add Users Name</label>
-                <input type="text" class="form-control" placeholder="add name" name="name">
+                <input type="text" class="form-control @error('name') is-invalid @enderror" placeholder="add name" name="name">
+                @error('name')
+                <div class="alert alert-danger mt-2">
+                        {{ $message }}
+                </div>
+                @enderror
 
                 <label for="exampleInputEmail1">Add Users Role</label>
-                <select name="role" class="form-control">
+                <select name="role" class="form-control @error('role') is-invalid @enderror">
                     <option value="user">User</option>
                     <option value="admin">Admin</option>
                 </select>
+                @error('role')
+                <div class="alert alert-danger mt-2">
+                        {{ $message }}
+                </div>
+                @enderror
 
                 <label for="exampleInputEmail1">Add Users Email</label>
-                <input type="email" class="form-control" placeholder="add email" name="email">
+                <input type="email" class="form-control @error('email') is-invalid @enderror" placeholder="add email" name="email">
+                @error('email')
+                <div class="alert alert-danger mt-2">
+                        {{ $message }}
+                </div>
+                @enderror
 
                 <label for="exampleInputEmail1">Add Users Password</label>
-                <input type="password" class="form-control" placeholder="add password" name="password">
+                <input type="password" class="form-control @error('password') is-invalid @enderror" placeholder="add password" name="password">
+                @error('password')
+                <div class="alert alert-danger mt-2">
+                        {{ $message }}
+                </div>
+                @enderror
 
             </div>
 
